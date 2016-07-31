@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/lc_000000"
+    android:gravity="center"
+    >
+
+    <com.jhworks.library.view.HackyViewPager
+        android:id="@+id/view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/actionBarSize"
+        android:background="@color/lc_80000000"
+        android:minHeight="?android:attr/actionBarSize"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <android.support.v7.widget.AppCompatCheckBox
+            android:id="@+id/check_image"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:background="@null"
+            android:button="@drawable/ic_check_circle_while_24dp"
+            android:gravity="center_vertical"
+            android:paddingEnd="18dp"
+            android:paddingRight="18dp"
+            android:paddingStart="18dp"
+            />
+    </android.support.v7.widget.Toolbar>
+
+</RelativeLayout>

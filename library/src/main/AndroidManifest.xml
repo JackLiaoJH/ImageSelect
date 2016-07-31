@@ -10,6 +10,13 @@
         android:supportsRtl="true"
         >
 
+        <activity
+            android:name=".ui.ImageSelectActivity"
+            android:configChanges="orientation|screenSize"/>
+
+        <activity
+            android:name=".ui.ImageActivity"
+            android:configChanges="orientation|screenSize"/>
     </application>
 
 </manifest>
