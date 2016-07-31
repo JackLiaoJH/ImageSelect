@@ -28,17 +28,17 @@ android 经量级选择图片框架，支持拍照，获取相册图片，可以
 				
 ####  获取结果 override onActivityResult()
 
-ex：
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_IMAGE) {
-            if (resultCode == RESULT_OK) {
-                mSelectPath = data.getStringArrayListExtra(ImageSelector.EXTRA_RESULT);
-               // data  ..
-            }
-        }
-    }
+	ex：
+    	    @Override
+	    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+	        super.onActivityResult(requestCode, resultCode, data);
+	        if (requestCode == REQUEST_IMAGE) {
+	            if (resultCode == RESULT_OK) {
+	                mSelectPath = data.getStringArrayListExtra(ImageSelector.EXTRA_RESULT);
+	               // data  ..
+	            }
+	        }
+	    }
 	
 #### detail 
 	使用与这个框架一样：
