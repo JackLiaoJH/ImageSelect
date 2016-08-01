@@ -12,6 +12,24 @@ android 经量级选择图片框架，支持拍照，获取相册图片，可以
 
 ![列表效果](https://github.com/JackLiaoJH/ImageSelect/blob/master/images/image1.png)
 ![图片详情](https://github.com/JackLiaoJH/ImageSelect/blob/master/images/image2.png)
+
+### Get it
+
+- Step1： Add it in your root build.gradle at the end of repositories:
+	
+		allprojects {
+			repositories {
+				...
+				maven { url "https://jitpack.io" }
+			}
+		}
+
+- Step2 ： Add the dependency
+	
+		dependencies {
+		        compile 'com.github.JackLiaoJH:ImageSelect:v1.0.0'
+		}
+
   
 ### 使用
 
