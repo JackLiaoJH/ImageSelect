@@ -50,4 +50,8 @@ public interface Constant {
      * Current Position
      */
     String KEY_EXTRA_CURRENT_POSITION = "current_position";
+    /**
+     * OPEN CAMERA ONLY
+     */
+    String KEY_EXTRA_OPEN_CAMERA_ONLY = "open_camera_only";
 }

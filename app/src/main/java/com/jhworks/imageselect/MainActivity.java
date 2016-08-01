@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -27,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private RadioGroup mChoiceMode, mShowCamera;
     private EditText mRequestNum;
     private EditText mImageSpanCount;
+    private Button mBtnOpenCameraOnly;
     private Toolbar mToolbar;
 
     private ArrayList<String> mSelectPath;
@@ -46,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
         mShowCamera = (RadioGroup) findViewById(R.id.show_camera);
         mRequestNum = (EditText) findViewById(R.id.request_num);
         mImageSpanCount = (EditText) findViewById(R.id.image_span_count);
+        mBtnOpenCameraOnly = (Button) findViewById(R.id.btn_open_camera_only);
 
         mChoiceMode.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -64,14 +67,20 @@ public class MainActivity extends AppCompatActivity {
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    pickImage();
+                    pickImage(false);
                 }
             });
         }
 
+        mBtnOpenCameraOnly.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pickImage(true);
+            }
+        });
     }
 
-    private void pickImage() {
+    private void pickImage(boolean isOpneCameraOnly) {
         boolean showCamera = mShowCamera.getCheckedRadioButtonId() == R.id.show;
         int maxNum = 9;
 
@@ -98,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
         }
         selector.origin(mSelectPath)
                 .showCamera(showCamera)
+                .openCameraOnly(isOpneCameraOnly)
                 .count(maxNum)
                 .spanCount(imageSpanCount)
                 .start(MainActivity.this, REQUEST_IMAGE);

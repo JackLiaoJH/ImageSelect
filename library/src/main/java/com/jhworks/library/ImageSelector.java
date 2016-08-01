@@ -24,6 +24,7 @@ public class ImageSelector {
     private ArrayList<String> mOriginData;
     private static ImageSelector sSelector;
     private int mImageSpanCount = Constant.DEFAULT_IMAGE_SPAN_COUNT;
+    private boolean mOpenCameraOnly = false;  // is open camera only
 
     private ImageSelector() {
     }
@@ -99,14 +100,19 @@ public class ImageSelector {
         return sSelector;
     }
 
+    public ImageSelector openCameraOnly(boolean openCameraOnly) {
+        mOpenCameraOnly = openCameraOnly;
+        return sSelector;
+    }
+
     public void start(Activity activity, int requestCode) {
         ImageSelectActivity.start(activity, requestCode, mOriginData, mShowCamera, mMaxCount,
-                mMode, mImageSpanCount);
+                mMode, mImageSpanCount,mOpenCameraOnly);
     }
 
     public void start(Fragment fragment, int requestCode) {
         ImageSelectActivity.start(fragment, requestCode, mOriginData, mShowCamera, mMaxCount,
-                mMode, mImageSpanCount);
+                mMode, mImageSpanCount,mOpenCameraOnly);
     }
 
     private boolean hasPermission(Context context) {

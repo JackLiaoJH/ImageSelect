@@ -122,6 +122,12 @@
             android:layout_height="wrap_content"
             android:text="@string/go_select"/>
 
+        <Button
+            android:id="@+id/btn_open_camera_only"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/open_camera_only"/>
+
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">

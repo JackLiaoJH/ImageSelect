@@ -13,5 +13,6 @@
     <string name="enable">Enable</string>
     <string name="disable">Disable</string>
     <string name="go_select">Select</string>
-    <string name="max_image_span_count">图片列表个数</string>
+    <string name="open_camera_only">Open Camera Only</string>
+    <string name="max_image_span_count">image span count</string>
 </resources>

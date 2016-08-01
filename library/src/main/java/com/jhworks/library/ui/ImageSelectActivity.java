@@ -36,10 +36,11 @@ public class ImageSelectActivity extends ImageBaseActivity
     private int mDefaultCount = Constant.DEFAULT_IMAGE_SIZE;
     private int mMode;
     private boolean mIsShowCamera;
+    private boolean mIsOnlyOpenCamera;
     private int mImageImageSpanCount = Constant.DEFAULT_IMAGE_SPAN_COUNT;
 
     private static Intent createIntent(Context context, ArrayList<String> originData, boolean showCamera,
-                                       int maxCount, int mode, int imageSpanCount) {
+                                       int maxCount, int mode, int imageSpanCount, boolean onlyOpenCamera) {
         Intent intent = new Intent(context, ImageSelectActivity.class);
         intent.putExtra(Constant.KEY_EXTRA_SHOW_CAMERA, showCamera);
         intent.putExtra(Constant.KEY_EXTRA_SELECT_COUNT, maxCount);
@@ -48,6 +49,7 @@ public class ImageSelectActivity extends ImageBaseActivity
         }
         intent.putExtra(Constant.KEY_EXTRA_SELECT_MODE, mode);
         intent.putExtra(Constant.KEY_EXTRA_IMAGE_SPAN_COUNT, imageSpanCount);
+        intent.putExtra(Constant.KEY_EXTRA_OPEN_CAMERA_ONLY, onlyOpenCamera);
         return intent;
     }
 
@@ -63,7 +65,7 @@ public class ImageSelectActivity extends ImageBaseActivity
      * @param imageSpanCount image span list count
      */
     public static void start(Activity activity, int requestCode, ArrayList<String> originData,
-                             boolean showCamera, int maxCount, int mode, int imageSpanCount) {
+                             boolean showCamera, int maxCount, int mode, int imageSpanCount, boolean onlyOpenCamera) {
         if (activity == null || activity.isFinishing()) return;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN // Permission was added in API Level 16
                 && ActivityCompat.checkSelfPermission(activity, Manifest.permission.READ_EXTERNAL_STORAGE)
@@ -73,7 +75,7 @@ public class ImageSelectActivity extends ImageBaseActivity
                     REQUEST_STORAGE_READ_ACCESS_PERMISSION);
         } else {
             activity.startActivityForResult(createIntent(activity, originData, showCamera, maxCount,
-                    mode, imageSpanCount), requestCode);
+                    mode, imageSpanCount, onlyOpenCamera), requestCode);
         }
     }
 
@@ -89,7 +91,7 @@ public class ImageSelectActivity extends ImageBaseActivity
      * @param imageSpanCount image span list count
      */
     public static void start(Fragment fragment, int requestCode, ArrayList<String> originData,
-                             boolean showCamera, int maxCount, int mode, int imageSpanCount) {
+                             boolean showCamera, int maxCount, int mode, int imageSpanCount, boolean onlyOpenCamera) {
         if (fragment == null) return;
         final Activity activity = fragment.getActivity();
         if (activity == null || activity.isFinishing()) return;
@@ -101,7 +103,7 @@ public class ImageSelectActivity extends ImageBaseActivity
                     REQUEST_STORAGE_READ_ACCESS_PERMISSION);
         } else {
             fragment.startActivityForResult(createIntent(activity, originData, showCamera, maxCount,
-                    mode, imageSpanCount), requestCode);
+                    mode, imageSpanCount, onlyOpenCamera), requestCode);
         }
     }
 
@@ -128,7 +130,7 @@ public class ImageSelectActivity extends ImageBaseActivity
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == REQUEST_STORAGE_READ_ACCESS_PERMISSION) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                startActivityForResult(createIntent(this, resultList, mIsShowCamera, mDefaultCount, mMode, mImageImageSpanCount), requestCode);
+                startActivityForResult(createIntent(this, resultList, mIsShowCamera, mDefaultCount, mMode, mImageImageSpanCount, mIsOnlyOpenCamera), requestCode);
             }
         } else {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -151,6 +153,7 @@ public class ImageSelectActivity extends ImageBaseActivity
         mImageImageSpanCount = intent.getIntExtra(Constant.KEY_EXTRA_IMAGE_SPAN_COUNT, Constant.DEFAULT_IMAGE_SPAN_COUNT);
         mMode = intent.getIntExtra(Constant.KEY_EXTRA_SELECT_MODE, Constant.MODE_MULTI);
         mIsShowCamera = intent.getBooleanExtra(Constant.KEY_EXTRA_SHOW_CAMERA, true);
+        mIsOnlyOpenCamera = intent.getBooleanExtra(Constant.KEY_EXTRA_OPEN_CAMERA_ONLY, false);
         if (mMode == Constant.MODE_MULTI && intent.hasExtra(Constant.KEY_EXTRA_DEFAULT_SELECTED_LIST)) {
             resultList = intent.getStringArrayListExtra(Constant.KEY_EXTRA_DEFAULT_SELECTED_LIST);
         }
@@ -181,6 +184,7 @@ public class ImageSelectActivity extends ImageBaseActivity
             bundle.putInt(Constant.KEY_EXTRA_SELECT_COUNT, mDefaultCount);
             bundle.putInt(Constant.KEY_EXTRA_SELECT_MODE, mMode);
             bundle.putBoolean(Constant.KEY_EXTRA_SHOW_CAMERA, mIsShowCamera);
+            bundle.putBoolean(Constant.KEY_EXTRA_OPEN_CAMERA_ONLY, mIsOnlyOpenCamera);
             bundle.putStringArrayList(Constant.KEY_EXTRA_DEFAULT_SELECTED_LIST, resultList);
             bundle.putInt(Constant.KEY_EXTRA_IMAGE_SPAN_COUNT, mImageImageSpanCount);
 

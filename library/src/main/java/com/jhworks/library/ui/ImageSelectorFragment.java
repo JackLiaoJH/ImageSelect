@@ -94,6 +94,7 @@ public class ImageSelectorFragment extends Fragment implements LoaderManager.Loa
     private RequestManager mRequestManager;
     private Context mContext;
     private ArrayList<Media> mAllMediaList = new ArrayList<>();
+    private boolean mIsOnlyOpenCamera;
 
 
     @Override
@@ -107,18 +108,14 @@ public class ImageSelectorFragment extends Fragment implements LoaderManager.Loa
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.mis_fragment_multi_image, container, false);
-    }
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        mRequestManager = Glide.with(this);
-        mContext = getContext();
-
-        final int mode = selectMode();
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         Bundle arguments = getArguments();
+        if (arguments != null) {
+            mImageSpanCount = arguments.getInt(Constant.KEY_EXTRA_IMAGE_SPAN_COUNT);
+            mIsOnlyOpenCamera = arguments.getBoolean(Constant.KEY_EXTRA_OPEN_CAMERA_ONLY);
+        }
+        int mode = selectMode();
 
         if (mode == MODE_MULTI && arguments != null) {
             ArrayList<String> tmp = arguments.getStringArrayList(Constant.KEY_EXTRA_DEFAULT_SELECTED_LIST);
@@ -126,9 +123,25 @@ public class ImageSelectorFragment extends Fragment implements LoaderManager.Loa
                 resultList = tmp;
             }
         }
-        if (arguments != null)
-            mImageSpanCount = arguments.getInt(Constant.KEY_EXTRA_IMAGE_SPAN_COUNT);
+    }
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.mis_fragment_multi_image, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        if (mIsOnlyOpenCamera) {
+            showCameraAction();
+            return;
+        }
+        mRequestManager = Glide.with(this);
+        mContext = getContext();
+
+        final int mode = selectMode();
         mImageAdapter = new ImageAdapter(getActivity(), mRequestManager, showCamera(), mImageSpanCount);
         mImageAdapter.showSelectIndicator(mode == MODE_MULTI);
 
@@ -334,6 +347,8 @@ public class ImageSelectorFragment extends Fragment implements LoaderManager.Loa
                         mTmpFile = null;
                     }
                 }
+                if (mIsOnlyOpenCamera)
+                    getActivity().finish();
             }
         } else if (requestCode == REQUEST_IMAGE_VIEW) {
             if (resultCode == Activity.RESULT_OK) {
@@ -469,7 +484,7 @@ public class ImageSelectorFragment extends Fragment implements LoaderManager.Loa
 
     @Override
     public void onLoadFinished(Loader<List<Media>> loader, List<Media> data) {
-
+        if (mIsOnlyOpenCamera) return;
         if (loader instanceof MediaDataLoader) {
             MediaDataLoader mediaDataLoader = (MediaDataLoader) loader;
             if (mResultFolder.size() > 0)
