@@ -117,7 +117,8 @@ public class ImageActivity extends ImageBaseActivity implements ViewPager.OnPage
     }
 
     private void setCheckBoxSelect(int position, boolean setCheckStatus) {
-        if (mAllMediaList != null && mAllMediaList.size() > 0) {
+        if (mAllMediaList != null && mAllMediaList.size() > 0
+                && position >= 0 && position < mAllMediaList.size()) {
             Media media = mAllMediaList.get(position);
             if (media != null) {
                 if (setCheckStatus)

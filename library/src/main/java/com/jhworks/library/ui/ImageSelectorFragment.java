@@ -2,6 +2,8 @@ package com.jhworks.library.ui;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,6 +13,7 @@ import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -18,6 +21,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
@@ -27,6 +31,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.TextView;
@@ -51,9 +56,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Multi image selector Fragment
- * Created by Nereo on 2015/4/7.
- * Updated by nereo on 2016/5/18.
+ * Multi image selector Fragment Created by Nereo on 2015/4/7. Updated by nereo
+ * on 2016/5/18.
  */
 public class ImageSelectorFragment extends Fragment implements LoaderManager.LoaderCallbacks<List<Media>> {
 
@@ -96,7 +100,6 @@ public class ImageSelectorFragment extends Fragment implements LoaderManager.Loa
     private ArrayList<Media> mAllMediaList = new ArrayList<>();
     private boolean mIsOnlyOpenCamera;
 
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -126,7 +129,8 @@ public class ImageSelectorFragment extends Fragment implements LoaderManager.Loa
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.mis_fragment_multi_image, container, false);
     }
 
@@ -174,52 +178,48 @@ public class ImageSelectorFragment extends Fragment implements LoaderManager.Loa
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.addItemDecoration(new DividerGridItemDecoration(mContext, R.drawable.divider));
         mRecyclerView.setAdapter(mImageAdapter);
-        mImageAdapter.setOnItemClickListener(
-                new ImageAdapter.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(Media media, int position) {
-                        if (mImageAdapter.isShowCamera()) {
-                            if (position == 0) {
-                                showCameraAction();
-                            } else {
-                                openImageActivity(position - 1, mode, media.path);
-                            }
-                        } else {
-                            openImageActivity(position - 1, mode, media.path);
-                        }
+        mImageAdapter.setOnItemClickListener(new ImageAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Media media, int position) {
+                if (mImageAdapter.isShowCamera()) {
+                    if (position == 0) {
+                        showCameraAction();
+                    } else {
+                        openImageActivity(position - 1, mode, media.path);
                     }
-
-                    @Override
-                    public void onCheckClick(Media media, int position) {
-                        if (mImageAdapter.isShowCamera()) {
-                            if (position == 0) {
-                                showCameraAction();
-                            } else {
-                                selectImageFromGrid(media, mode);
-                            }
-                        } else {
-                            selectImageFromGrid(media, mode);
-                        }
-                    }
+                } else {
+                    openImageActivity(position - 1, mode, media.path);
                 }
-        );
+            }
 
-        mRecyclerView.addOnScrollListener(
-                new RecyclerView.OnScrollListener() {
-                    @Override
-                    public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                        super.onScrollStateChanged(recyclerView, newState);
-                        if (newState == AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
-                            mRequestManager.pauseRequests();
-                        } else {
-                            mRequestManager.resumeRequests();
-                        }
+            @Override
+            public void onCheckClick(Media media, int position) {
+                if (mImageAdapter.isShowCamera()) {
+                    if (position == 0) {
+                        showCameraAction();
+                    } else {
+                        selectImageFromGrid(media, mode);
                     }
+                } else {
+                    selectImageFromGrid(media, mode);
                 }
+            }
+        });
+
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                                              @Override
+                                              public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                                                  super.onScrollStateChanged(recyclerView, newState);
+                                                  if (newState == AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
+                                                      mRequestManager.pauseRequests();
+                                                  } else {
+                                                      mRequestManager.resumeRequests();
+                                                  }
+                                              }
+                                          }
 
         );
-        mFolderAdapter = new FolderAdapter(getActivity(), mRequestManager
-        );
+        mFolderAdapter = new FolderAdapter(getActivity(), mRequestManager);
     }
 
     private void openImageActivity(int position, int mode, String path) {
@@ -228,7 +228,8 @@ public class ImageSelectorFragment extends Fragment implements LoaderManager.Loa
             if (mAllMediaList != null) {
 
                 for (String imagePath : resultList) {
-                    if (TextUtils.isEmpty(imagePath)) continue;
+                    if (TextUtils.isEmpty(imagePath))
+                        continue;
                     for (Media media : mAllMediaList) {
                         if (imagePath.equals(media.path)) {
                             media.isSelect = true;
@@ -271,14 +272,15 @@ public class ImageSelectorFragment extends Fragment implements LoaderManager.Loa
                 final int index = i;
                 final AdapterView v = adapterView;
 
-               /* new Handler()*/
+                /* new Handler() */
                 mRecyclerView.postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         mFolderPopupWindow.dismiss();
 
                         if (index == 0) {
-                            getLoaderManager().restartLoader(R.id.loader_all_media_store_data, null, ImageSelectorFragment.this);
+                            getLoaderManager().restartLoader(R.id.loader_all_media_store_data, null,
+                                    ImageSelectorFragment.this);
                             mCategoryText.setText(R.string.mis_folder_all);
                             if (showCamera()) {
                                 mImageAdapter.setShowCamera(true);
@@ -379,12 +381,12 @@ public class ImageSelectorFragment extends Fragment implements LoaderManager.Loa
      * Open camera
      */
     private void showCameraAction() {
-        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(getContext(),
+                Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                    getString(R.string.mis_permission_rationale_write_storage),
-                    REQUEST_STORAGE_WRITE_ACCESS_PERMISSION);
+                    getString(R.string.mis_permission_rationale_write_storage), REQUEST_STORAGE_WRITE_ACCESS_PERMISSION);
         } else {
+
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
                 try {
@@ -393,7 +395,16 @@ public class ImageSelectorFragment extends Fragment implements LoaderManager.Loa
                     e.printStackTrace();
                 }
                 if (mTmpFile != null && mTmpFile.exists()) {
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mTmpFile));
+                    // // FIXME: 2017/4/11 修复android N 打开相机崩溃
+                    if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+                        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mTmpFile));
+                    } else {
+                        ContentValues contentValues = new ContentValues(1);
+                        contentValues.put(MediaStore.Images.Media.DATA, mTmpFile.getAbsolutePath());
+                        Uri uri = getContext().getContentResolver().insert(
+                                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
+                        intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+                    }
                     startActivityForResult(intent, REQUEST_CAMERA);
                 } else {
                     Toast.makeText(getActivity(), R.string.mis_error_image_not_exist, Toast.LENGTH_SHORT).show();
@@ -406,24 +417,21 @@ public class ImageSelectorFragment extends Fragment implements LoaderManager.Loa
 
     private void requestPermission(final String permission, String rationale, final int requestCode) {
         if (shouldShowRequestPermissionRationale(permission)) {
-            new AlertDialog.Builder(getContext())
-                    .setTitle(R.string.mis_permission_dialog_title)
-                    .setMessage(rationale)
+            new AlertDialog.Builder(getContext()).setTitle(R.string.mis_permission_dialog_title).setMessage(rationale)
                     .setPositiveButton(R.string.mis_permission_dialog_ok, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             requestPermissions(new String[]{permission}, requestCode);
                         }
-                    })
-                    .setNegativeButton(R.string.mis_permission_dialog_cancel, null)
-                    .create().show();
+                    }).setNegativeButton(R.string.mis_permission_dialog_cancel, null).create().show();
         } else {
             requestPermissions(new String[]{permission}, requestCode);
         }
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
         if (requestCode == REQUEST_STORAGE_WRITE_ACCESS_PERMISSION) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 showCameraAction();
@@ -474,7 +482,8 @@ public class ImageSelectorFragment extends Fragment implements LoaderManager.Loa
     }
 
     private int selectImageCount() {
-        return getArguments() == null ? Constant.DEFAULT_IMAGE_SIZE : getArguments().getInt(Constant.KEY_EXTRA_SELECT_COUNT);
+        return getArguments() == null ? Constant.DEFAULT_IMAGE_SIZE
+                : getArguments().getInt(Constant.KEY_EXTRA_SELECT_COUNT);
     }
 
     @Override
@@ -484,7 +493,8 @@ public class ImageSelectorFragment extends Fragment implements LoaderManager.Loa
 
     @Override
     public void onLoadFinished(Loader<List<Media>> loader, List<Media> data) {
-        if (mIsOnlyOpenCamera) return;
+        if (mIsOnlyOpenCamera)
+            return;
         if (loader instanceof MediaDataLoader) {
             MediaDataLoader mediaDataLoader = (MediaDataLoader) loader;
             if (mResultFolder.size() > 0)
@@ -496,7 +506,8 @@ public class ImageSelectorFragment extends Fragment implements LoaderManager.Loa
             }
         }
 
-        if (data == null) return;
+        if (data == null)
+            return;
         if (mAllMediaList.size() > 0)
             mAllMediaList.clear();
         mAllMediaList.addAll(data);
