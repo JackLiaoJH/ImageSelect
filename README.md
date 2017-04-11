@@ -7,6 +7,7 @@ android 经量级选择图片框架，支持拍照，获取相册图片，可以
   2. 将图片的加载框架替换替换成了Glide，优化了加载图片速度；
   3. 新增多图选择时，点击图片进入产看图片模式，方便预览；
   4. 集成5.0以上权限处理问题。
+  5. 支持最新android N版本。
 
 ### 效果
 
@@ -27,7 +28,7 @@ android 经量级选择图片框架，支持拍照，获取相册图片，可以
 - Step2 ： Add the dependency
 	
 		dependencies {
-		        compile 'com.github.JackLiaoJH:ImageSelect:v1.0.0'
+		        compile 'com.github.JackLiaoJH:ImageSelect:V1.0.2'
 		}
 
   
