@@ -18,6 +18,7 @@ import android.widget.Button;
 
 import com.jhworks.library.Constant;
 import com.jhworks.library.R;
+import com.jhworks.library.bean.MediaSelectConfig;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -31,41 +32,25 @@ public class ImageSelectActivity extends ImageBaseActivity
         implements ImageSelectorFragment.Callback {
     protected static final int REQUEST_STORAGE_READ_ACCESS_PERMISSION = 101;
 
+
     private ArrayList<String> resultList = new ArrayList<>();
     private Button mSubmitButton;
-    private int mDefaultCount = Constant.DEFAULT_IMAGE_SIZE;
-    private int mMode;
-    private boolean mIsShowCamera;
-    private boolean mIsOnlyOpenCamera;
-    private int mImageImageSpanCount = Constant.DEFAULT_IMAGE_SPAN_COUNT;
+    private MediaSelectConfig mMediaSelectConfig;
 
-    private static Intent createIntent(Context context, ArrayList<String> originData, boolean showCamera,
-                                       int maxCount, int mode, int imageSpanCount, boolean onlyOpenCamera) {
+    private static Intent createIntent(Context context, MediaSelectConfig mediaSelectConfig) {
         Intent intent = new Intent(context, ImageSelectActivity.class);
-        intent.putExtra(Constant.KEY_EXTRA_SHOW_CAMERA, showCamera);
-        intent.putExtra(Constant.KEY_EXTRA_SELECT_COUNT, maxCount);
-        if (originData != null) {
-            intent.putStringArrayListExtra(Constant.KEY_EXTRA_DEFAULT_SELECTED_LIST, originData);
-        }
-        intent.putExtra(Constant.KEY_EXTRA_SELECT_MODE, mode);
-        intent.putExtra(Constant.KEY_EXTRA_IMAGE_SPAN_COUNT, imageSpanCount);
-        intent.putExtra(Constant.KEY_EXTRA_OPEN_CAMERA_ONLY, onlyOpenCamera);
+        intent.putExtra(Constant.KEY_MEDIA_SELECT_CONFIG, mediaSelectConfig);
         return intent;
     }
 
     /**
      * start image select
      *
-     * @param activity
-     * @param requestCode
-     * @param originData
-     * @param showCamera
-     * @param maxCount
-     * @param mode
-     * @param imageSpanCount image span list count
+     * @param activity          -
+     * @param requestCode       -
+     * @param mediaSelectConfig -
      */
-    public static void start(Activity activity, int requestCode, ArrayList<String> originData,
-                             boolean showCamera, int maxCount, int mode, int imageSpanCount, boolean onlyOpenCamera) {
+    public static void start(Activity activity, int requestCode, MediaSelectConfig mediaSelectConfig) {
         if (activity == null || activity.isFinishing()) return;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN // Permission was added in API Level 16
                 && ActivityCompat.checkSelfPermission(activity, Manifest.permission.READ_EXTERNAL_STORAGE)
@@ -74,24 +59,18 @@ public class ImageSelectActivity extends ImageBaseActivity
                     activity.getString(R.string.mis_permission_rationale),
                     REQUEST_STORAGE_READ_ACCESS_PERMISSION);
         } else {
-            activity.startActivityForResult(createIntent(activity, originData, showCamera, maxCount,
-                    mode, imageSpanCount, onlyOpenCamera), requestCode);
+            activity.startActivityForResult(createIntent(activity, mediaSelectConfig), requestCode);
         }
     }
 
     /**
      * start image select
      *
-     * @param fragment
-     * @param requestCode
-     * @param originData
-     * @param showCamera
-     * @param maxCount
-     * @param mode
-     * @param imageSpanCount image span list count
+     * @param fragment          -
+     * @param requestCode       -
+     * @param mediaSelectConfig -
      */
-    public static void start(Fragment fragment, int requestCode, ArrayList<String> originData,
-                             boolean showCamera, int maxCount, int mode, int imageSpanCount, boolean onlyOpenCamera) {
+    public static void start(Fragment fragment, int requestCode, MediaSelectConfig mediaSelectConfig) {
         if (fragment == null) return;
         final Activity activity = fragment.getActivity();
         if (activity == null || activity.isFinishing()) return;
@@ -102,8 +81,7 @@ public class ImageSelectActivity extends ImageBaseActivity
                     activity.getString(R.string.mis_permission_rationale),
                     REQUEST_STORAGE_READ_ACCESS_PERMISSION);
         } else {
-            fragment.startActivityForResult(createIntent(activity, originData, showCamera, maxCount,
-                    mode, imageSpanCount, onlyOpenCamera), requestCode);
+            fragment.startActivityForResult(createIntent(activity, mediaSelectConfig), requestCode);
         }
     }
 
@@ -130,7 +108,7 @@ public class ImageSelectActivity extends ImageBaseActivity
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == REQUEST_STORAGE_READ_ACCESS_PERMISSION) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                startActivityForResult(createIntent(this, resultList, mIsShowCamera, mDefaultCount, mMode, mImageImageSpanCount, mIsOnlyOpenCamera), requestCode);
+                startActivityForResult(createIntent(this, mMediaSelectConfig), requestCode);
             }
         } else {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -142,23 +120,20 @@ public class ImageSelectActivity extends ImageBaseActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTheme(R.style.MIS_NO_ACTIONBAR);
-        setContentView(R.layout.mis_activity_default);
+        setContentView(R.layout.activity_image_select);
         mToolbar = findView(R.id.toolbar);
         mSubmitButton = findView(R.id.commit);
         initToolBar(true);
         mToolbar.setTitle(R.string.select_phone);
 
         final Intent intent = getIntent();
-        mDefaultCount = intent.getIntExtra(Constant.KEY_EXTRA_SELECT_COUNT, Constant.DEFAULT_IMAGE_SIZE);
-        mImageImageSpanCount = intent.getIntExtra(Constant.KEY_EXTRA_IMAGE_SPAN_COUNT, Constant.DEFAULT_IMAGE_SPAN_COUNT);
-        mMode = intent.getIntExtra(Constant.KEY_EXTRA_SELECT_MODE, Constant.MODE_MULTI);
-        mIsShowCamera = intent.getBooleanExtra(Constant.KEY_EXTRA_SHOW_CAMERA, true);
-        mIsOnlyOpenCamera = intent.getBooleanExtra(Constant.KEY_EXTRA_OPEN_CAMERA_ONLY, false);
-        if (mMode == Constant.MODE_MULTI && intent.hasExtra(Constant.KEY_EXTRA_DEFAULT_SELECTED_LIST)) {
-            resultList = intent.getStringArrayListExtra(Constant.KEY_EXTRA_DEFAULT_SELECTED_LIST);
+        mMediaSelectConfig = intent.getParcelableExtra(Constant.KEY_MEDIA_SELECT_CONFIG);
+        if (mMediaSelectConfig.selectMode == MediaSelectConfig.MODE_MULTI
+                && mMediaSelectConfig.originData != null) {
+            resultList = mMediaSelectConfig.originData;
         }
 
-        if (mMode == Constant.MODE_MULTI) {
+        if (mMediaSelectConfig.selectMode == MediaSelectConfig.MODE_MULTI) {
             updateDoneText(resultList);
             mSubmitButton.setVisibility(View.VISIBLE);
             mSubmitButton.setOnClickListener(new View.OnClickListener() {
@@ -181,15 +156,10 @@ public class ImageSelectActivity extends ImageBaseActivity
 
         if (savedInstanceState == null) {
             Bundle bundle = new Bundle();
-            bundle.putInt(Constant.KEY_EXTRA_SELECT_COUNT, mDefaultCount);
-            bundle.putInt(Constant.KEY_EXTRA_SELECT_MODE, mMode);
-            bundle.putBoolean(Constant.KEY_EXTRA_SHOW_CAMERA, mIsShowCamera);
-            bundle.putBoolean(Constant.KEY_EXTRA_OPEN_CAMERA_ONLY, mIsOnlyOpenCamera);
-            bundle.putStringArrayList(Constant.KEY_EXTRA_DEFAULT_SELECTED_LIST, resultList);
-            bundle.putInt(Constant.KEY_EXTRA_IMAGE_SPAN_COUNT, mImageImageSpanCount);
-
+            bundle.putParcelable(Constant.KEY_MEDIA_SELECT_CONFIG, mMediaSelectConfig);
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.image_grid, Fragment.instantiate(this, ImageSelectorFragment.class.getName(), bundle))
+                    .add(R.id.image_grid, Fragment.instantiate(this,
+                            ImageSelectorFragment.class.getName(), bundle))
                     .commit();
         }
 
@@ -216,7 +186,7 @@ public class ImageSelectActivity extends ImageBaseActivity
             mSubmitButton.setEnabled(true);
         }
         mSubmitButton.setText(getString(R.string.mis_action_button_string,
-                getString(R.string.mis_action_done), size, mDefaultCount));
+                getString(R.string.mis_action_done), size, mMediaSelectConfig.imageSpanCount));
     }
 
     @Override

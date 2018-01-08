@@ -1,0 +1,38 @@
+ext {
+    android = [
+            compileSdkVersion: 26,
+            buildToolsVersion: "26.0.2",
+            minSdkVersion    : 14,
+            targetSdkVersion : 26,
+            versionCode      : 3,
+            versionName      : '1.0.2',
+    ]
+
+    libsVersion = [
+            // App dependencies version
+            supportLibraryVersion = "27.0.2",
+
+            photoviewVsersion = "2.0.0",
+            glideVsrsion = "4.5.0",
+            rxjava = "2.1.7",
+            rxjava_android = "2.0.1",
+            rxlifecycle = "2.1.0",
+            rxlifecycle_components = "2.1.0",
+    ]
+
+    dependencies = [
+            appcompatV7            : "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion",
+            recycleview            : "com.android.support:recyclerview-v7:$rootProject.supportLibraryVersion",
+            support_v4             : "com.android.support:support-v4:$rootProject.supportLibraryVersion",
+            annotations            : "com.android.support:support-annotations:$rootProject.supportLibraryVersion",
+            design                 : "com.android.support:design:$rootProject.supportLibraryVersion",
+
+            photoview              : "com.github.chrisbanes:PhotoView:$rootProject.photoviewVsersion",
+            glide                  : "com.github.bumptech.glide:glide:$rootProject.glideVsrsion",
+            glideCompiler          : "com.github.bumptech.glide:compiler:$rootProject.glideVsrsion",
+            rxjava2                : "io.reactivex.rxjava2:rxjava:$rootProject.rxjava",
+            rxjava2_android        : "io.reactivex.rxjava2:rxandroid:$rootProject.rxjava_android",
+            rxlifecycle2           : "com.trello.rxlifecycle2:rxlifecycle:$rootProject.rxlifecycle",
+            rxlifecycle2_components: "com.trello.rxlifecycle2:rxlifecycle-components:$rootProject.rxlifecycle_components",
+    ]
+}

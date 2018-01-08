@@ -12,7 +12,10 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
 import com.bumptech.glide.RequestManager;
+import com.bumptech.glide.request.RequestOptions;
 import com.jhworks.library.R;
 import com.jhworks.library.bean.Media;
 
@@ -42,10 +45,11 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageHolder>
     final int mGridWidth;
     private FrameLayout.LayoutParams mLayoutParams;
     private final int mSpaceSize;
+    private RequestOptions mRequestOptions;
 
-    public ImageAdapter(Context context, RequestManager requestManager, boolean showCamera, int column) {
+    public ImageAdapter(Context context, boolean showCamera, int column) {
         mContext = context;
-        mRequestManager = requestManager;
+
         mColumn = column;
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.showCamera = showCamera;
@@ -61,6 +65,13 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageHolder>
         mSpaceSize = (int) mContext.getResources().getDimension(R.dimen.mis_space_size);
         mGridWidth = (width - mSpaceSize * (2 + column - 1)) / column;
         mLayoutParams = new FrameLayout.LayoutParams(mGridWidth, mGridWidth);
+
+        mRequestOptions = new RequestOptions()
+                .placeholder(R.drawable.ic_photo_gray_63dp)
+                .error(R.drawable.ic_photo_gray_63dp)
+                .override(mGridWidth, mGridWidth)
+                .centerCrop()
+                .priority(Priority.HIGH);
     }
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
@@ -222,12 +233,9 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageHolder>
         }
         File imageFile = new File(data.path);
         if (imageFile.exists()) {
-            mRequestManager
+            Glide.with(mContext)
                     .load(imageFile)
-                    .placeholder(R.drawable.ic_photo_gray_63dp)
-                    .override(mGridWidth, mGridWidth)
-                    .centerCrop()
-                    .crossFade(300)
+                    .apply(mRequestOptions)
                     .into(holder.image);
         } else {
             holder.image.setImageResource(R.drawable.ic_photo_gray_63dp);

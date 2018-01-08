@@ -1,14 +1,10 @@
 package com.jhworks.imageselect;
 
-import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,6 +12,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.jhworks.library.ImageSelector;
+import com.jhworks.library.bean.MediaSelectConfig;
 
 import java.util.ArrayList;
 
@@ -99,17 +96,17 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
-        ImageSelector selector = ImageSelector.create();
-        if (mChoiceMode.getCheckedRadioButtonId() == R.id.single) {
-            selector.single();
-        } else {
-            selector.multi();
-        }
-        selector.origin(mSelectPath)
-                .showCamera(showCamera)
-                .openCameraOnly(isOpneCameraOnly)
-                .count(maxNum)
-                .spanCount(imageSpanCount)
+        MediaSelectConfig config = new MediaSelectConfig()
+                .setSelectMode(mChoiceMode.getCheckedRadioButtonId() == R.id.single ?
+                        MediaSelectConfig.MODE_SINGLE : MediaSelectConfig.MODE_MULTI)
+                .setOriginData(mSelectPath)
+                .setShowCamera(showCamera)
+                .setOpenCameraOnly(isOpneCameraOnly)
+                .setMaxCount(maxNum)
+                .setImageSpanCount(imageSpanCount);
+
+        ImageSelector.create()
+                .setMediaConfig(config)
                 .start(MainActivity.this, REQUEST_IMAGE);
 
     }

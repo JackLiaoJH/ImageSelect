@@ -19,6 +19,8 @@ import java.util.List;
 
 /**
  * Loads metadata from the media store for images and videos.
+ *
+ * @author jiahui
  */
 public class MediaDataLoader extends AsyncTaskLoader<List<Media>> {
     public static final String KEY_TYPE_CATEGORY = "path";
@@ -110,13 +112,6 @@ public class MediaDataLoader extends AsyncTaskLoader<List<Media>> {
     @Override
     public List<Media> loadInBackground() {
         List<Media> data = queryImages();
-//        data.addAll(queryVideos());
-        /*Collections.sort(data, new Comparator<Media>() {
-            @Override
-            public int compare(Media mediaStoreData, Media mediaStoreData2) {
-                return Long.valueOf(mediaStoreData2.dateTaken).compareTo(mediaStoreData.dateTaken);
-            }
-        });*/
         cached = data;
         return data;
     }
@@ -153,7 +148,7 @@ public class MediaDataLoader extends AsyncTaskLoader<List<Media>> {
         return query(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, cursor, Media.Type.VIDEO);
     }
 
-    private List<Media> query(Uri contentUri, Cursor cursor,int type) {
+    private List<Media> query(Uri contentUri, Cursor cursor, int type) {
         List<Media> data = new ArrayList<>();
         if (cursor == null) return data;
         try {
@@ -200,10 +195,7 @@ public class MediaDataLoader extends AsyncTaskLoader<List<Media>> {
     }
 
     private boolean fileExist(String path) {
-        if (!TextUtils.isEmpty(path)) {
-            return new File(path).exists();
-        }
-        return false;
+        return !TextUtils.isEmpty(path) && new File(path).exists();
     }
 
     private Folder getFolderByPath(String path) {

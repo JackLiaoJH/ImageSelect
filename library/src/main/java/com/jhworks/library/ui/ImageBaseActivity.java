@@ -13,6 +13,8 @@ import android.view.MenuItem;
  * Desc ：base
  * <br/>
  * Date ：2016/7/31 0031 <br/>
+ *
+ * @author jiahui
  */
 public class ImageBaseActivity extends AppCompatActivity {
     protected Toolbar mToolbar;
@@ -48,6 +50,7 @@ public class ImageBaseActivity extends AppCompatActivity {
                 onNavagitationClick();
                 finish();
                 return true;
+            default:
         }
         return super.onOptionsItemSelected(item);
     }

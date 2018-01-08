@@ -2,24 +2,21 @@ package com.jhworks.library.ui;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatCheckBox;
-import android.support.v7.widget.Toolbar;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.RequestManager;
+import com.bumptech.glide.Priority;
+import com.bumptech.glide.request.RequestOptions;
+import com.github.chrisbanes.photoview.PhotoView;
 import com.jhworks.library.Constant;
 import com.jhworks.library.R;
 import com.jhworks.library.bean.Media;
@@ -27,7 +24,6 @@ import com.jhworks.library.view.HackyViewPager;
 
 import java.util.ArrayList;
 
-import uk.co.senab.photoview.PhotoView;
 
 /**
  * User ：LiaoJH <br/>
@@ -91,7 +87,7 @@ public class ImageActivity extends ImageBaseActivity implements ViewPager.OnPage
                 }
             }
         });
-        ImagePageAdapter adapter = new ImagePageAdapter(this, mAllMediaList, Glide.with(this));
+        ImagePageAdapter adapter = new ImagePageAdapter(this, mAllMediaList);
         mViewPager.setAdapter(adapter);
         mViewPager.setCurrentItem(mCurrentPosition);
         mViewPager.addOnPageChangeListener(this);
@@ -161,12 +157,17 @@ public class ImageActivity extends ImageBaseActivity implements ViewPager.OnPage
     private static class ImagePageAdapter extends PagerAdapter {
         private Context mContext;
         private ArrayList<Media> mMedias;
-        private RequestManager mRequestManager;
+        private RequestOptions mRequestOptions;
 
-        public ImagePageAdapter(Context context, ArrayList<Media> medias, RequestManager requestManager) {
+        ImagePageAdapter(Context context, ArrayList<Media> medias) {
             mContext = context;
             mMedias = medias;
-            mRequestManager = requestManager;
+            mRequestOptions = new RequestOptions()
+                    .centerCrop()
+                    .placeholder(R.drawable.ic_photo_gray_63dp)
+                    .error(R.drawable.ic_photo_gray_63dp)
+                    .fitCenter()
+                    .priority(Priority.HIGH);
         }
 
         @Override
@@ -175,19 +176,19 @@ public class ImageActivity extends ImageBaseActivity implements ViewPager.OnPage
         }
 
         @Override
-        public boolean isViewFromObject(View view, Object object) {
+        public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
             return view == object;
         }
 
+        @NonNull
         @Override
-        public Object instantiateItem(ViewGroup container, int position) {
+        public Object instantiateItem(@NonNull ViewGroup container, int position) {
             PhotoView photoView = new PhotoView(mContext);
             Media media = mMedias.get(position);
             if (media != null) {
-                mRequestManager
+                Glide.with(container.getContext())
                         .load(media.path)
-                        .placeholder(R.drawable.ic_photo_gray_63dp)
-                        .fitCenter()
+                        .apply(mRequestOptions)
                         .into(photoView)
                 ;
             }
@@ -196,7 +197,7 @@ public class ImageActivity extends ImageBaseActivity implements ViewPager.OnPage
         }
 
         @Override
-        public void destroyItem(ViewGroup container, int position, Object object) {
+        public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
             container.removeView((View) object);
         }
     }

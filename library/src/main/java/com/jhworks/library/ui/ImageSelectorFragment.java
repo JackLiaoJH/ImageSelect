@@ -2,7 +2,6 @@ package com.jhworks.library.ui;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.ActivityNotFoundException;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -21,7 +20,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.FileProvider;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
@@ -31,20 +29,17 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.MimeTypeMap;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.RequestManager;
 import com.jhworks.library.Constant;
 import com.jhworks.library.R;
 import com.jhworks.library.adapter.FolderAdapter;
 import com.jhworks.library.adapter.ImageAdapter;
 import com.jhworks.library.bean.Folder;
 import com.jhworks.library.bean.Media;
+import com.jhworks.library.bean.MediaSelectConfig;
 import com.jhworks.library.decoration.DividerGridItemDecoration;
 import com.jhworks.library.load.MediaDataLoader;
 import com.jhworks.library.utils.FileUtils;
@@ -56,12 +51,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Multi image selector Fragment Created by Nereo on 2015/4/7. Updated by nereo
- * on 2016/5/18.
+ * @author Nereo
+ * @date 2016/5/18
  */
 public class ImageSelectorFragment extends Fragment implements LoaderManager.LoaderCallbacks<List<Media>> {
-
-    public static final String TAG = "ImageSelectorFragment";
 
     private static final int REQUEST_STORAGE_WRITE_ACCESS_PERMISSION = 110;
     private static final int REQUEST_CAMERA = 100;
@@ -69,12 +62,6 @@ public class ImageSelectorFragment extends Fragment implements LoaderManager.Loa
 
     private static final String KEY_TEMP_FILE = "key_temp_file";
 
-    // Single choice
-    public static final int MODE_SINGLE = 0;
-    // Multi choice
-    public static final int MODE_MULTI = 1;
-
-    private int mImageSpanCount = Constant.DEFAULT_IMAGE_SPAN_COUNT;
 
     // image result data set
     private ArrayList<String> resultList = new ArrayList<>();
@@ -95,10 +82,9 @@ public class ImageSelectorFragment extends Fragment implements LoaderManager.Loa
     private boolean hasFolderGened = false;
 
     private File mTmpFile;
-    private RequestManager mRequestManager;
     private Context mContext;
     private ArrayList<Media> mAllMediaList = new ArrayList<>();
-    private boolean mIsOnlyOpenCamera;
+    private MediaSelectConfig mMediaSelectConfig;
 
     @Override
     public void onAttach(Context context) {
@@ -115,21 +101,17 @@ public class ImageSelectorFragment extends Fragment implements LoaderManager.Loa
         super.onCreate(savedInstanceState);
         Bundle arguments = getArguments();
         if (arguments != null) {
-            mImageSpanCount = arguments.getInt(Constant.KEY_EXTRA_IMAGE_SPAN_COUNT);
-            mIsOnlyOpenCamera = arguments.getBoolean(Constant.KEY_EXTRA_OPEN_CAMERA_ONLY);
+            mMediaSelectConfig = arguments.getParcelable(Constant.KEY_MEDIA_SELECT_CONFIG);
         }
         int mode = selectMode();
 
-        if (mode == MODE_MULTI && arguments != null) {
-            ArrayList<String> tmp = arguments.getStringArrayList(Constant.KEY_EXTRA_DEFAULT_SELECTED_LIST);
-            if (tmp != null && tmp.size() > 0) {
-                resultList = tmp;
-            }
+        if (mode == MediaSelectConfig.MODE_MULTI && mMediaSelectConfig != null) {
+            resultList = mMediaSelectConfig.originData;
         }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.mis_fragment_multi_image, container, false);
     }
@@ -138,20 +120,21 @@ public class ImageSelectorFragment extends Fragment implements LoaderManager.Loa
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        if (mIsOnlyOpenCamera) {
+        if (isOpenCameraOnly()) {
             showCameraAction();
             return;
         }
-        mRequestManager = Glide.with(this);
         mContext = getContext();
 
         final int mode = selectMode();
-        mImageAdapter = new ImageAdapter(getActivity(), mRequestManager, showCamera(), mImageSpanCount);
-        mImageAdapter.showSelectIndicator(mode == MODE_MULTI);
+        int imageSpanCount = mMediaSelectConfig == null ?
+                Constant.DEFAULT_IMAGE_SPAN_COUNT : mMediaSelectConfig.imageSpanCount;
+        mImageAdapter = new ImageAdapter(getActivity(), showCamera(), imageSpanCount);
+        mImageAdapter.showSelectIndicator(mode == MediaSelectConfig.MODE_MULTI);
 
         mPopupAnchorView = view.findViewById(R.id.footer);
 
-        mCategoryText = (TextView) view.findViewById(R.id.category_btn);
+        mCategoryText = view.findViewById(R.id.category_btn);
         mCategoryText.setText(R.string.mis_folder_all);
         mCategoryText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -173,8 +156,8 @@ public class ImageSelectorFragment extends Fragment implements LoaderManager.Loa
             }
         });
 
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.grid);
-        GridLayoutManager layoutManager = new GridLayoutManager(getContext(), mImageSpanCount);
+        mRecyclerView = view.findViewById(R.id.grid);
+        GridLayoutManager layoutManager = new GridLayoutManager(getContext(), imageSpanCount);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.addItemDecoration(new DividerGridItemDecoration(mContext, R.drawable.divider));
         mRecyclerView.setAdapter(mImageAdapter);
@@ -206,24 +189,12 @@ public class ImageSelectorFragment extends Fragment implements LoaderManager.Loa
             }
         });
 
-        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-                                              @Override
-                                              public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                                                  super.onScrollStateChanged(recyclerView, newState);
-                                                  if (newState == AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
-                                                      mRequestManager.pauseRequests();
-                                                  } else {
-                                                      mRequestManager.resumeRequests();
-                                                  }
-                                              }
-                                          }
 
-        );
-        mFolderAdapter = new FolderAdapter(getActivity(), mRequestManager);
+        mFolderAdapter = new FolderAdapter(getActivity());
     }
 
     private void openImageActivity(int position, int mode, String path) {
-        if (mode == MODE_MULTI) {
+        if (mode == MediaSelectConfig.MODE_MULTI) {
             Intent intent = new Intent(mContext, ImageActivity.class);
             if (mAllMediaList != null) {
 
@@ -241,7 +212,7 @@ public class ImageSelectorFragment extends Fragment implements LoaderManager.Loa
             intent.putExtra(Constant.KEY_EXTRA_CURRENT_POSITION, position);
             intent.putExtra(Constant.KEY_EXTRA_SELECT_COUNT, selectImageCount());
             startActivityForResult(intent, REQUEST_IMAGE_VIEW);
-        } else if (mode == MODE_SINGLE) {
+        } else if (mode == MediaSelectConfig.MODE_SINGLE) {
             if (mCallback != null) {
                 mCallback.onSingleImageSelected(path);
             }
@@ -349,8 +320,9 @@ public class ImageSelectorFragment extends Fragment implements LoaderManager.Loa
                         mTmpFile = null;
                     }
                 }
-                if (mIsOnlyOpenCamera)
+                if (isShowCamera()) {
                     getActivity().finish();
+                }
             }
         } else if (requestCode == REQUEST_IMAGE_VIEW) {
             if (resultCode == Activity.RESULT_OK) {
@@ -365,6 +337,24 @@ public class ImageSelectorFragment extends Fragment implements LoaderManager.Loa
                 }
             }
         }
+    }
+
+    private boolean isShowCamera() {
+        return mMediaSelectConfig != null && mMediaSelectConfig.isShowCamera;
+    }
+
+    private boolean isOpenCameraOnly() {
+        return mMediaSelectConfig != null && mMediaSelectConfig.openCameraOnly;
+    }
+
+    private boolean isSingleMode() {
+        return mMediaSelectConfig != null
+                && mMediaSelectConfig.selectMode == MediaSelectConfig.MODE_SINGLE;
+    }
+
+    private boolean isMultiMode() {
+        return mMediaSelectConfig != null
+                && mMediaSelectConfig.selectMode == MediaSelectConfig.MODE_MULTI;
     }
 
     @Override
@@ -448,7 +438,7 @@ public class ImageSelectorFragment extends Fragment implements LoaderManager.Loa
      */
     private void selectImageFromGrid(Media media, int mode) {
         if (media != null) {
-            if (mode == MODE_MULTI) {
+            if (mode == MediaSelectConfig.MODE_MULTI) {
                 if (resultList.contains(media.path)) {
                     resultList.remove(media.path);
                     if (mCallback != null) {
@@ -465,7 +455,7 @@ public class ImageSelectorFragment extends Fragment implements LoaderManager.Loa
                     }
                 }
                 mImageAdapter.select(media);
-            } else if (mode == MODE_SINGLE) {
+            } else if (mode == MediaSelectConfig.MODE_SINGLE) {
                 if (mCallback != null) {
                     mCallback.onSingleImageSelected(media.path);
                 }
@@ -474,11 +464,11 @@ public class ImageSelectorFragment extends Fragment implements LoaderManager.Loa
     }
 
     private boolean showCamera() {
-        return getArguments() == null || getArguments().getBoolean(Constant.KEY_EXTRA_SHOW_CAMERA, true);
+        return mMediaSelectConfig == null || mMediaSelectConfig.isShowCamera;
     }
 
     private int selectMode() {
-        return getArguments() == null ? MODE_MULTI : getArguments().getInt(Constant.KEY_EXTRA_SELECT_MODE);
+        return mMediaSelectConfig == null ? MediaSelectConfig.MODE_MULTI : mMediaSelectConfig.selectMode;
     }
 
     private int selectImageCount() {
@@ -493,7 +483,7 @@ public class ImageSelectorFragment extends Fragment implements LoaderManager.Loa
 
     @Override
     public void onLoadFinished(Loader<List<Media>> loader, List<Media> data) {
-        if (mIsOnlyOpenCamera)
+        if (isOpenCameraOnly())
             return;
         if (loader instanceof MediaDataLoader) {
             MediaDataLoader mediaDataLoader = (MediaDataLoader) loader;

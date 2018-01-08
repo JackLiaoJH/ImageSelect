@@ -8,8 +8,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-
-import com.bumptech.glide.RequestManager;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.jhworks.library.R;
 import com.jhworks.library.bean.Folder;
 
@@ -25,7 +25,7 @@ import java.util.List;
 public class FolderAdapter extends BaseAdapter {
 
     private Context mContext;
-    private RequestManager mRequestManager;
+
     private LayoutInflater mInflater;
 
     private List<Folder> mFolders = new ArrayList<>();
@@ -33,12 +33,18 @@ public class FolderAdapter extends BaseAdapter {
     int mImageSize;
 
     int lastSelected = 0;
+    private RequestOptions mRequestOptions;
 
-    public FolderAdapter(Context context, RequestManager requestManager) {
+    public FolderAdapter(Context context) {
         mContext = context;
-        mRequestManager = requestManager;
+
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mImageSize = mContext.getResources().getDimensionPixelOffset(R.dimen.mis_folder_cover_size);
+        mRequestOptions = new RequestOptions()
+                .error(R.drawable.ic_photo_gray_63dp)
+                .override((int) mContext.getResources().getDimension(R.dimen.mis_folder_cover_size)
+                        , (int) mContext.getResources().getDimension(R.dimen.mis_folder_cover_size))
+                .centerCrop();
     }
 
     /**
@@ -88,12 +94,9 @@ public class FolderAdapter extends BaseAdapter {
                 if (mFolders.size() > 0) {
                     Folder f = mFolders.get(0);
                     if (f != null) {
-                        mRequestManager
+                        Glide.with(mContext)
                                 .load(new File(f.cover.path))
-                                .error(R.drawable.ic_photo_gray_63dp)
-                                .override((int) mContext.getResources().getDimension(R.dimen.mis_folder_cover_size)
-                                        , (int) mContext.getResources().getDimension(R.dimen.mis_folder_cover_size))
-                                .centerCrop()
+                                .apply(mRequestOptions)
                                 .into(holder.cover);
                     } else {
                         holder.cover.setImageResource(R.drawable.ic_photo_gray_63dp);
@@ -161,12 +164,9 @@ public class FolderAdapter extends BaseAdapter {
             }
             if (data.cover != null) {
                 // 显示图片
-                mRequestManager
+                Glide.with(mContext)
                         .load(new File(data.cover.path))
-                        .placeholder(R.drawable.ic_photo_gray_63dp)
-                        .override((int) mContext.getResources().getDimension(R.dimen.mis_folder_cover_size)
-                                , (int) mContext.getResources().getDimension(R.dimen.mis_folder_cover_size))
-                        .centerCrop()
+                        .apply(mRequestOptions)
                         .into(cover);
             } else {
                 cover.setImageResource(R.drawable.ic_photo_gray_63dp);
