@@ -13,8 +13,17 @@ android 经量级选择图片框架，支持拍照，获取相册图片，可以
 
 ### 效果
 
-![列表效果](https://github.com/JackLiaoJH/ImageSelect/blob/master/images/image1.png =100x200)
-![图片详情](https://github.com/JackLiaoJH/ImageSelect/blob/master/images/image2.png =100x200)
+<center>
+<img src="https://github.com/JackLiaoJH/ImageSelect/blob/master/images/image1.png" width="50%" height="50%" />
+$ $
+列表效果
+</center>
+<center>
+<img src="https://github.com/JackLiaoJH/ImageSelect/blob/master/images/image2.png" width="50%" height="50%" />
+$ $
+图片详情
+</center>
+
 
 ### Get it
 
