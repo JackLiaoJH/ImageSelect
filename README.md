@@ -2,7 +2,7 @@
 android 经量级选择图片框架，支持拍照，获取相册图片，可以多选，单选
 
 ### 声明
-  此框架是基于lovetuzitong大大的MultiImageSelector框架修改而来的，主要的修改有以下几点：
+ 此框架功能点有：
 
   1. 新增对图片列表展示的个数；
   2. 将图片的加载框架替换替换成了Glide，优化了加载图片速度；
@@ -13,8 +13,18 @@ android 经量级选择图片框架，支持拍照，获取相册图片，可以
 
 ### 效果
 
-![列表效果](https://github.com/JackLiaoJH/ImageSelect/blob/master/images/image1.png)
-![图片详情](https://github.com/JackLiaoJH/ImageSelect/blob/master/images/image2.png)
+<center>
+列表效果
+	
+<img src="https://github.com/JackLiaoJH/ImageSelect/blob/master/images/image1.png" width="50%" height="50%" />
+</center>
+
+<center>
+图片详情
+	
+<img src="https://github.com/JackLiaoJH/ImageSelect/blob/master/images/image2.png" width="50%" height="50%" />
+</center>
+
 
 ### Get it
 
@@ -37,7 +47,7 @@ android 经量级选择图片框架，支持拍照，获取相册图片，可以
 ### 使用
 
 #### 简单使用
-
+```java
 	ImageSelector selector = ImageSelector.create();
         // selector.single();  // single mode
         selector.multi();  // multi mode, default mode;
@@ -46,9 +56,10 @@ android 经量级选择图片框架，支持拍照，获取相册图片，可以
                 .count(maxNum)   // max select image size, 9 by default. used width #.multi()
                 .spanCount(imageSpanCount)  // image span count ，default is 3.
                 .start(MainActivity.this, REQUEST_IMAGE); 
+```
 				
 ####  获取结果 override onActivityResult()
-
+```java
 	ex：
     	    @Override
 	    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -60,18 +71,13 @@ android 经量级选择图片框架，支持拍照，获取相册图片，可以
 	            }
 	        }
 	    }
-	
-#### detail 
-	使用与这个框架一样：
-	https://github.com/lovetuzitong/MultiImageSelector
-		
-#### Thanks 
-	thanks lovetuzitong！
+```	    
 		
 		
 #### License
 
->       /*
+>       
+	/*
 	 * Copyright (c) 2016 LiaoJH. 
 	 * Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
 	 * Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan. 
