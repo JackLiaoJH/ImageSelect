@@ -27,14 +27,26 @@ public class MediaSelectConfig implements Parcelable {
     public @interface SelectMode {
     }
 
-    public boolean isShowCamera = true;
-    public int maxCount = Constant.DEFAULT_IMAGE_SIZE;
-    public int selectMode = MODE_MULTI;
-    public ArrayList<String> originData;
-    public int imageSpanCount = Constant.DEFAULT_IMAGE_SPAN_COUNT;
-    public boolean openCameraOnly;
+    // image
+    public static final int IMAGE = 10;
+    // VIDEO
+    public static final int VIDEO = 11;
 
-    public MediaSelectConfig(){}
+    @IntDef({IMAGE, VIDEO})
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface MediaType {
+    }
+
+    private boolean isShowCamera = false;
+    private int maxCount = Constant.DEFAULT_IMAGE_SIZE;
+    private int selectMode = MODE_MULTI;
+    private ArrayList<String> originData;
+    private int imageSpanCount = Constant.DEFAULT_IMAGE_SPAN_COUNT;
+    private boolean openCameraOnly;
+    private int mediaType;
+
+    public MediaSelectConfig() {
+    }
 
     protected MediaSelectConfig(Parcel in) {
         isShowCamera = in.readByte() != 0;
@@ -43,6 +55,7 @@ public class MediaSelectConfig implements Parcelable {
         originData = in.createStringArrayList();
         imageSpanCount = in.readInt();
         openCameraOnly = in.readByte() != 0;
+        mediaType = in.readInt();
     }
 
     @Override
@@ -53,6 +66,7 @@ public class MediaSelectConfig implements Parcelable {
         dest.writeStringList(originData);
         dest.writeInt(imageSpanCount);
         dest.writeByte((byte) (openCameraOnly ? 1 : 0));
+        dest.writeInt(mediaType);
     }
 
     @Override
@@ -123,5 +137,37 @@ public class MediaSelectConfig implements Parcelable {
     public MediaSelectConfig setOpenCameraOnly(boolean openCameraOnly) {
         this.openCameraOnly = openCameraOnly;
         return this;
+    }
+
+    public boolean isShowCamera() {
+        return isShowCamera;
+    }
+
+    public int getMaxCount() {
+        return maxCount;
+    }
+
+    public int getSelectMode() {
+        return selectMode;
+    }
+
+    public ArrayList<String> getOriginData() {
+        return originData;
+    }
+
+    public int getImageSpanCount() {
+        return imageSpanCount;
+    }
+
+    public boolean isOpenCameraOnly() {
+        return openCameraOnly;
+    }
+
+    public int getMediaType() {
+        return mediaType;
+    }
+
+    public void setMediaType(@MediaType int mediaType) {
+        this.mediaType = mediaType;
     }
 }

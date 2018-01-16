@@ -128,12 +128,12 @@ public class ImageSelectActivity extends ImageBaseActivity
 
         final Intent intent = getIntent();
         mMediaSelectConfig = intent.getParcelableExtra(Constant.KEY_MEDIA_SELECT_CONFIG);
-        if (mMediaSelectConfig.selectMode == MediaSelectConfig.MODE_MULTI
-                && mMediaSelectConfig.originData != null) {
-            resultList = mMediaSelectConfig.originData;
+        if (mMediaSelectConfig.getSelectMode() == MediaSelectConfig.MODE_MULTI
+                && mMediaSelectConfig.getOriginData() != null) {
+            resultList = mMediaSelectConfig.getOriginData();
         }
 
-        if (mMediaSelectConfig.selectMode == MediaSelectConfig.MODE_MULTI) {
+        if (mMediaSelectConfig.getSelectMode() == MediaSelectConfig.MODE_MULTI) {
             updateDoneText(resultList);
             mSubmitButton.setVisibility(View.VISIBLE);
             mSubmitButton.setOnClickListener(new View.OnClickListener() {
@@ -186,7 +186,7 @@ public class ImageSelectActivity extends ImageBaseActivity
             mSubmitButton.setEnabled(true);
         }
         mSubmitButton.setText(getString(R.string.mis_action_button_string,
-                getString(R.string.mis_action_done), size, mMediaSelectConfig.maxCount));
+                getString(R.string.mis_action_done), size, mMediaSelectConfig.getMaxCount()));
     }
 
     @Override

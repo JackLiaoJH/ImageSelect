@@ -43,13 +43,27 @@ public class ImageSelector {
         return sSelector;
     }
 
-    public void start(Activity activity, int requestCode) {
+    public void startImageAction(Activity activity, int requestCode) {
         CheckNullUtils.check(mMediaSelectConfig);
+        mMediaSelectConfig.setMediaType(MediaSelectConfig.IMAGE);
         ImageSelectActivity.start(activity, requestCode, mMediaSelectConfig);
     }
 
-    public void start(Fragment fragment, int requestCode) {
+    public void startImageAction(Fragment fragment, int requestCode) {
         CheckNullUtils.check(mMediaSelectConfig);
+        mMediaSelectConfig.setMediaType(MediaSelectConfig.IMAGE);
+        ImageSelectActivity.start(fragment, requestCode, mMediaSelectConfig);
+    }
+
+    public void startVideoAction(Activity activity, int requestCode) {
+        CheckNullUtils.check(mMediaSelectConfig);
+        mMediaSelectConfig.setMediaType(MediaSelectConfig.VIDEO);
+        ImageSelectActivity.start(activity, requestCode, mMediaSelectConfig);
+    }
+
+    public void startVideoAction(Fragment fragment, int requestCode) {
+        CheckNullUtils.check(mMediaSelectConfig);
+        mMediaSelectConfig.setMediaType(MediaSelectConfig.VIDEO);
         ImageSelectActivity.start(fragment, requestCode, mMediaSelectConfig);
     }
 }

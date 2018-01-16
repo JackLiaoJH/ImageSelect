@@ -1,10 +1,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical"
-              tools:context=".MainActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
 
 
     <android.support.v7.widget.Toolbar
@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
         android:minHeight="?android:attr/actionBarSize"
-        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -32,7 +32,7 @@
             android:text="@string/select_mode"
             android:textColor="@android:color/black"
             android:textSize="16sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <RadioGroup
             android:id="@+id/choice_mode"
@@ -45,13 +45,13 @@
                 android:id="@+id/single"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/mode_single"/>
+                android:text="@string/mode_single" />
 
             <RadioButton
                 android:id="@+id/multi"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/mode_multi"/>
+                android:text="@string/mode_multi" />
 
         </RadioGroup>
 
@@ -61,14 +61,14 @@
             android:text="@string/max_select_amount"
             android:textColor="@android:color/black"
             android:textSize="16sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <EditText
             android:id="@+id/request_num"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/hint_default_amount"
-            android:inputType="number"/>
+            android:inputType="number" />
 
 
         <TextView
@@ -77,14 +77,14 @@
             android:text="@string/max_image_span_count"
             android:textColor="@android:color/black"
             android:textSize="16sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <EditText
             android:id="@+id/image_span_count"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/hint_default_image_count"
-            android:inputType="number"/>
+            android:inputType="number" />
 
         <TextView
             android:layout_width="match_parent"
@@ -92,7 +92,7 @@
             android:text="@string/enable_camera"
             android:textColor="@android:color/black"
             android:textSize="16sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <RadioGroup
             android:id="@+id/show_camera"
@@ -105,14 +105,14 @@
                 android:id="@+id/show"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/enable"/>
+                android:text="@string/enable" />
 
 
             <RadioButton
                 android:id="@+id/no_show"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/disable"/>
+                android:text="@string/disable" />
 
         </RadioGroup>
 
@@ -120,13 +120,19 @@
             android:id="@+id/button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/go_select"/>
+            android:text="@string/go_select" />
 
         <Button
             android:id="@+id/btn_open_camera_only"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/open_camera_only"/>
+            android:text="@string/open_camera_only" />
+
+        <Button
+            android:id="@+id/btn_open_video"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/open_video" />
 
         <ScrollView
             android:layout_width="match_parent"
@@ -135,7 +141,7 @@
             <TextView
                 android:id="@+id/result"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content" />
 
         </ScrollView>
     </LinearLayout>

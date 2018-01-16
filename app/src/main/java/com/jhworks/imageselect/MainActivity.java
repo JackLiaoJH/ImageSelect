@@ -75,6 +75,43 @@ public class MainActivity extends AppCompatActivity {
                 pickImage(true);
             }
         });
+
+        findViewById(R.id.btn_open_video).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pickVideo();
+            }
+        });
+    }
+
+    private void pickVideo() {
+        int maxNum = 9;
+
+        if (!TextUtils.isEmpty(mRequestNum.getText())) {
+            try {
+                maxNum = Integer.valueOf(mRequestNum.getText().toString());
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
+        }
+        int imageSpanCount = 3;
+        if (!TextUtils.isEmpty(mImageSpanCount.getText())) {
+            try {
+                imageSpanCount = Integer.valueOf(mImageSpanCount.getText().toString());
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
+        }
+        MediaSelectConfig config = new MediaSelectConfig()
+                .setSelectMode(mChoiceMode.getCheckedRadioButtonId() == R.id.single ?
+                        MediaSelectConfig.MODE_SINGLE : MediaSelectConfig.MODE_MULTI)
+                .setOriginData(mSelectPath)
+                .setMaxCount(maxNum)
+                .setImageSpanCount(imageSpanCount);
+
+        ImageSelector.create()
+                .setMediaConfig(config)
+                .startVideoAction(MainActivity.this, REQUEST_IMAGE);
     }
 
     private void pickImage(boolean isOpneCameraOnly) {
@@ -107,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
 
         ImageSelector.create()
                 .setMediaConfig(config)
-                .start(MainActivity.this, REQUEST_IMAGE);
+                .startImageAction(MainActivity.this, REQUEST_IMAGE);
 
     }
 

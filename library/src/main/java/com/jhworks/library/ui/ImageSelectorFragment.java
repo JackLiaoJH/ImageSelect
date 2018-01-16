@@ -107,8 +107,8 @@ public class ImageSelectorFragment extends Fragment
         int mode = selectMode();
 
         if (mode == MediaSelectConfig.MODE_MULTI && mMediaSelectConfig != null
-                && mMediaSelectConfig.originData != null) {
-            resultList = mMediaSelectConfig.originData;
+                && mMediaSelectConfig.getOriginData() != null) {
+            resultList = mMediaSelectConfig.getOriginData();
         }
     }
 
@@ -130,7 +130,7 @@ public class ImageSelectorFragment extends Fragment
 
         final int mode = selectMode();
         int imageSpanCount = mMediaSelectConfig == null ?
-                Constant.DEFAULT_IMAGE_SPAN_COUNT : mMediaSelectConfig.imageSpanCount;
+                Constant.DEFAULT_IMAGE_SPAN_COUNT : mMediaSelectConfig.getImageSpanCount();
         mImageAdapter = new ImageAdapter(getActivity(), showCamera(), imageSpanCount);
         mImageAdapter.showSelectIndicator(mode == MediaSelectConfig.MODE_MULTI);
 
@@ -209,6 +209,7 @@ public class ImageSelectorFragment extends Fragment
                         }
                     }
                 }
+                // todo  FAILED BINDER TRANSACTION !!!  (parcel size = 1242716)
                 intent.putParcelableArrayListExtra(Constant.KEY_EXTRA_IMAGE_LIST, mAllMediaList);
             }
             intent.putExtra(Constant.KEY_EXTRA_CURRENT_POSITION, position);
@@ -338,21 +339,21 @@ public class ImageSelectorFragment extends Fragment
     }
 
     private boolean isShowCamera() {
-        return mMediaSelectConfig != null && mMediaSelectConfig.isShowCamera;
+        return mMediaSelectConfig != null && mMediaSelectConfig.isShowCamera();
     }
 
     private boolean isOpenCameraOnly() {
-        return mMediaSelectConfig != null && mMediaSelectConfig.openCameraOnly;
+        return mMediaSelectConfig != null && mMediaSelectConfig.isOpenCameraOnly();
     }
 
     private boolean isSingleMode() {
         return mMediaSelectConfig != null
-                && mMediaSelectConfig.selectMode == MediaSelectConfig.MODE_SINGLE;
+                && mMediaSelectConfig.getSelectMode() == MediaSelectConfig.MODE_SINGLE;
     }
 
     private boolean isMultiMode() {
         return mMediaSelectConfig != null
-                && mMediaSelectConfig.selectMode == MediaSelectConfig.MODE_MULTI;
+                && mMediaSelectConfig.getSelectMode() == MediaSelectConfig.MODE_MULTI;
     }
 
     @Override
@@ -464,21 +465,21 @@ public class ImageSelectorFragment extends Fragment
     }
 
     private boolean showCamera() {
-        return mMediaSelectConfig == null || mMediaSelectConfig.isShowCamera;
+        return mMediaSelectConfig == null || mMediaSelectConfig.isShowCamera();
     }
 
     private int selectMode() {
-        return mMediaSelectConfig == null ? MediaSelectConfig.MODE_MULTI : mMediaSelectConfig.selectMode;
+        return mMediaSelectConfig == null ? MediaSelectConfig.MODE_MULTI : mMediaSelectConfig.getSelectMode();
     }
 
     private int selectImageCount() {
         return mMediaSelectConfig == null ? Constant.DEFAULT_IMAGE_SIZE
-                : mMediaSelectConfig.maxCount;
+                : mMediaSelectConfig.getMaxCount();
     }
 
     @Override
     public Loader<List<Media>> onCreateLoader(int id, Bundle args) {
-        return new MediaDataLoader(getActivity(), id, args);
+        return new MediaDataLoader(getActivity(), id, args, mMediaSelectConfig);
     }
 
     @Override

@@ -12,6 +12,7 @@ import android.text.TextUtils;
 import com.jhworks.library.R;
 import com.jhworks.library.bean.Folder;
 import com.jhworks.library.bean.Media;
+import com.jhworks.library.bean.MediaSelectConfig;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -60,12 +61,15 @@ public class MediaDataLoader extends AsyncTaskLoader<List<Media>> {
 
     private int mId;
     private Bundle mBundle;
+    private int mMediaType = MediaSelectConfig.IMAGE;
 
 
-    public MediaDataLoader(Context context, int id, Bundle bundle) {
+    public MediaDataLoader(Context context, int id, Bundle bundle, MediaSelectConfig mediaSelectConfig) {
         super(context);
         mId = id;
         mBundle = bundle;
+        if (mediaSelectConfig != null)
+            mMediaType = mediaSelectConfig.getMediaType();
     }
 
     @Override
@@ -111,7 +115,7 @@ public class MediaDataLoader extends AsyncTaskLoader<List<Media>> {
 
     @Override
     public List<Media> loadInBackground() {
-        List<Media> data = queryImages();
+        List<Media> data = mMediaType == MediaSelectConfig.IMAGE ? queryImages() : queryVideos();
         cached = data;
         return data;
     }

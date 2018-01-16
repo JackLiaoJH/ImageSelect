@@ -15,4 +15,5 @@
     <string name="go_select">Select</string>
     <string name="open_camera_only">Open Camera Only</string>
     <string name="max_image_span_count">image span count</string>
+    <string name="open_video">Video Select</string>
 </resources>
