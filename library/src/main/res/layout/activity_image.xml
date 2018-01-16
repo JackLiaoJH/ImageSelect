@@ -26,7 +26,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="end"
             android:background="@null"
-            android:button="@drawable/ic_check_circle_while_24dp"
+            android:button="@mipmap/ic_select_normal"
             android:gravity="center_vertical"
             android:paddingEnd="18dp"
             android:paddingRight="18dp"

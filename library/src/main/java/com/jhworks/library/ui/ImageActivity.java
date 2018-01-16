@@ -81,8 +81,8 @@ public class ImageActivity extends ImageBaseActivity implements ViewPager.OnPage
                             mSelectList.add(media.path);
                         else
                             mSelectList.remove(media.path);
-                        mCheckBox.setButtonDrawable(media.isSelect ? R.drawable.ic_check_circle_green_24dp
-                                : R.drawable.ic_check_circle_while_24dp);
+                        mCheckBox.setButtonDrawable(media.isSelect ? R.mipmap.ic_select_pressed
+                                : R.mipmap.ic_select_normal);
                     }
                 }
             }
@@ -119,8 +119,8 @@ public class ImageActivity extends ImageBaseActivity implements ViewPager.OnPage
             if (media != null) {
                 if (setCheckStatus)
                     mCheckBox.setChecked(media.isSelect);
-                mCheckBox.setButtonDrawable(media.isSelect ? R.drawable.ic_check_circle_green_24dp
-                        : R.drawable.ic_check_circle_while_24dp);
+                mCheckBox.setButtonDrawable(media.isSelect ? R.mipmap.ic_select_pressed
+                        : R.mipmap.ic_select_normal);
             }
         }
     }
@@ -164,8 +164,8 @@ public class ImageActivity extends ImageBaseActivity implements ViewPager.OnPage
             mMedias = medias;
             mRequestOptions = new RequestOptions()
                     .centerCrop()
-                    .placeholder(R.drawable.ic_photo_gray_63dp)
-                    .error(R.drawable.ic_photo_gray_63dp)
+                    .placeholder(R.mipmap.ic_image_default)
+                    .error(R.mipmap.ic_image_default)
                     .fitCenter()
                     .priority(Priority.HIGH);
         }

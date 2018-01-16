@@ -1,5 +1,6 @@
 package com.jhworks.library.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Point;
 import android.os.Build;
@@ -33,7 +34,6 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageHolder>
     private static final int TYPE_NORMAL = 1;
 
     private Context mContext;
-    private RequestManager mRequestManager;
     private int mColumn;
     private LayoutInflater mInflater;
     private boolean showCamera = true;
@@ -54,21 +54,17 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageHolder>
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.showCamera = showCamera;
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        int width = 0;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-            Point size = new Point();
-            wm.getDefaultDisplay().getSize(size);
-            width = size.x;
-        } else {
-            width = wm.getDefaultDisplay().getWidth();
-        }
+        int width;
+        Point size = new Point();
+        wm.getDefaultDisplay().getSize(size);
+        width = size.x;
         mSpaceSize = (int) mContext.getResources().getDimension(R.dimen.mis_space_size);
         mGridWidth = (width - mSpaceSize * (2 + column - 1)) / column;
         mLayoutParams = new FrameLayout.LayoutParams(mGridWidth, mGridWidth);
 
         mRequestOptions = new RequestOptions()
-                .placeholder(R.drawable.ic_photo_gray_63dp)
-                .error(R.drawable.ic_photo_gray_63dp)
+                .placeholder(R.mipmap.ic_image_default)
+                .error(R.mipmap.ic_image_default)
                 .override(mGridWidth, mGridWidth)
                 .centerCrop()
                 .priority(Priority.HIGH);
@@ -226,8 +222,8 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageHolder>
                     }
                 }
             });
-            holder.mCheckBox.setButtonDrawable(mSelectedImages.contains(data) ? R.drawable.ic_check_circle_green_24dp :
-                    R.drawable.ic_check_circle_while_24dp);
+            holder.mCheckBox.setButtonDrawable(mSelectedImages.contains(data) ? R.mipmap.ic_select_pressed :
+                    R.mipmap.ic_select_normal);
         } else {
             holder.mCheckBox.setVisibility(View.GONE);
         }
@@ -238,7 +234,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageHolder>
                     .apply(mRequestOptions)
                     .into(holder.image);
         } else {
-            holder.image.setImageResource(R.drawable.ic_photo_gray_63dp);
+            holder.image.setImageResource(R.mipmap.ic_image_default);
         }
     }
 

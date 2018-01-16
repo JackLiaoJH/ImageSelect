@@ -54,7 +54,8 @@ import java.util.List;
  * @author Nereo
  * @date 2016/5/18
  */
-public class ImageSelectorFragment extends Fragment implements LoaderManager.LoaderCallbacks<List<Media>> {
+public class ImageSelectorFragment extends Fragment
+        implements LoaderManager.LoaderCallbacks<List<Media>> {
 
     private static final int REQUEST_STORAGE_WRITE_ACCESS_PERMISSION = 110;
     private static final int REQUEST_CAMERA = 100;
@@ -105,7 +106,8 @@ public class ImageSelectorFragment extends Fragment implements LoaderManager.Loa
         }
         int mode = selectMode();
 
-        if (mode == MediaSelectConfig.MODE_MULTI && mMediaSelectConfig != null) {
+        if (mode == MediaSelectConfig.MODE_MULTI && mMediaSelectConfig != null
+                && mMediaSelectConfig.originData != null) {
             resultList = mMediaSelectConfig.originData;
         }
     }
@@ -253,11 +255,7 @@ public class ImageSelectorFragment extends Fragment implements LoaderManager.Loa
                             getLoaderManager().restartLoader(R.id.loader_all_media_store_data, null,
                                     ImageSelectorFragment.this);
                             mCategoryText.setText(R.string.mis_folder_all);
-                            if (showCamera()) {
-                                mImageAdapter.setShowCamera(true);
-                            } else {
-                                mImageAdapter.setShowCamera(false);
-                            }
+                            mImageAdapter.setShowCamera(showCamera());
                         } else {
                             Folder folder = (Folder) v.getAdapter().getItem(index);
                             if (null != folder) {
@@ -407,7 +405,9 @@ public class ImageSelectorFragment extends Fragment implements LoaderManager.Loa
 
     private void requestPermission(final String permission, String rationale, final int requestCode) {
         if (shouldShowRequestPermissionRationale(permission)) {
-            new AlertDialog.Builder(getContext()).setTitle(R.string.mis_permission_dialog_title).setMessage(rationale)
+            new AlertDialog.Builder(getContext())
+                    .setTitle(R.string.mis_permission_dialog_title)
+                    .setMessage(rationale)
                     .setPositiveButton(R.string.mis_permission_dialog_ok, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -472,8 +472,8 @@ public class ImageSelectorFragment extends Fragment implements LoaderManager.Loa
     }
 
     private int selectImageCount() {
-        return getArguments() == null ? Constant.DEFAULT_IMAGE_SIZE
-                : getArguments().getInt(Constant.KEY_EXTRA_SELECT_COUNT);
+        return mMediaSelectConfig == null ? Constant.DEFAULT_IMAGE_SIZE
+                : mMediaSelectConfig.maxCount;
     }
 
     @Override

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@android:color/white"
-                android:orientation="horizontal"
-                android:paddingBottom="10dp"
-                android:paddingTop="10dp">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    android:orientation="horizontal"
+    android:paddingBottom="10dp"
+    android:paddingTop="10dp">
 
     <ImageView
         android:id="@+id/cover"
@@ -16,8 +16,7 @@
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="10dp"
         android:scaleType="centerInside"
-        android:src="@drawable/ic_photo_gray_63dp"
-       />
+        android:src="@mipmap/ic_image_default" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -35,7 +34,7 @@
             android:layout_height="wrap_content"
             android:textColor="@android:color/black"
             android:textSize="16sp"
-            tools:text="img"/>
+            tools:text="img" />
 
         <TextView
             android:id="@+id/path"
@@ -45,7 +44,7 @@
             android:singleLine="true"
             android:textColor="#AFAFAF"
             android:textSize="12sp"
-            tools:text="/sdcard/a/"/>
+            tools:text="/sdcard/a/" />
 
         <TextView
             android:id="@+id/size"
@@ -56,7 +55,7 @@
             android:singleLine="true"
             android:textColor="#AFAFAF"
             android:textSize="12sp"
-            tools:text="1张"/>
+            tools:text="1张" />
 
     </LinearLayout>
 
@@ -64,11 +63,12 @@
         android:id="@+id/indicator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_gravity="center_vertical"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="20dp"
-        android:src="@drawable/ic_check_circle_green_24dp"/>
+        android:layout_marginEnd="18dp"
+        android:layout_marginRight="18dp"
+        android:src="@mipmap/ic_select_pressed" />
 
 </RelativeLayout>

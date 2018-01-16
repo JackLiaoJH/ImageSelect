@@ -186,7 +186,7 @@ public class ImageSelectActivity extends ImageBaseActivity
             mSubmitButton.setEnabled(true);
         }
         mSubmitButton.setText(getString(R.string.mis_action_button_string,
-                getString(R.string.mis_action_done), size, mMediaSelectConfig.imageSpanCount));
+                getString(R.string.mis_action_done), size, mMediaSelectConfig.maxCount));
     }
 
     @Override

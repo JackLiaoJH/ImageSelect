@@ -41,7 +41,7 @@ public class FolderAdapter extends BaseAdapter {
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mImageSize = mContext.getResources().getDimensionPixelOffset(R.dimen.mis_folder_cover_size);
         mRequestOptions = new RequestOptions()
-                .error(R.drawable.ic_photo_gray_63dp)
+                .error(R.mipmap.ic_image_default)
                 .override((int) mContext.getResources().getDimension(R.dimen.mis_folder_cover_size)
                         , (int) mContext.getResources().getDimension(R.dimen.mis_folder_cover_size))
                 .centerCrop();
@@ -99,7 +99,7 @@ public class FolderAdapter extends BaseAdapter {
                                 .apply(mRequestOptions)
                                 .into(holder.cover);
                     } else {
-                        holder.cover.setImageResource(R.drawable.ic_photo_gray_63dp);
+                        holder.cover.setImageResource(R.mipmap.ic_image_default);
                     }
                 }
             } else {
@@ -169,7 +169,7 @@ public class FolderAdapter extends BaseAdapter {
                         .apply(mRequestOptions)
                         .into(cover);
             } else {
-                cover.setImageResource(R.drawable.ic_photo_gray_63dp);
+                cover.setImageResource(R.mipmap.ic_image_default);
             }
         }
     }

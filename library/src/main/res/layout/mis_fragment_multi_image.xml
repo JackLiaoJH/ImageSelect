@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    android:layout_height="match_parent">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/grid"
@@ -12,13 +10,12 @@
         android:layout_height="wrap_content"
         android:paddingBottom="60dp"
         android:paddingLeft="@dimen/mis_space_size"
-        android:scrollbars="vertical"
-        />
+        android:scrollbars="vertical" />
 
-    <RelativeLayout
+    <FrameLayout
         android:id="@+id/footer"
         android:layout_width="match_parent"
-        android:layout_height="?android:attr/actionBarSize"
+        android:layout_height="@dimen/mis_bottom_size"
         android:layout_gravity="bottom"
         android:background="#cc000000"
         android:clickable="true">
@@ -38,8 +35,8 @@
             android:singleLine="true"
             android:textColor="@color/mis_folder_text_color"
             android:textSize="16sp"
-            tools:text="所有图片"/>
+            tools:text="所有图片" />
 
-    </RelativeLayout>
+    </FrameLayout>
 
 </FrameLayout>
