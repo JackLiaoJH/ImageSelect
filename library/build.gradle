@@ -12,6 +12,10 @@ android {
         versionCode rootProject.ext.android.versionCode
         versionName rootProject.ext.android.versionName
     }
+
+    lintOptions {
+        abortOnError false
+    }
 }
 
 //添加
@@ -20,7 +24,7 @@ publish {
     repoName = 'jiahui'//要传到的maven的名字。你可能有多个maven，要传哪个写哪个。
     groupId = 'com.jhworks.library'//jcenter上的路径
     artifactId = 'ImageSelect'//项目名称
-    publishVersion = '1.0.1'//版本号
+    publishVersion = '1.1.0'//版本号
     desc = 'Easy Image Select'//描述，不重要
     website = 'https://github.com/JackLiaoJH'//网站，不重要
 }

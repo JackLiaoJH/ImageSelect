@@ -16,5 +16,6 @@
     <string name="max_image_span_count">图片列表个数</string>
     <string name="open_camera_only">仅打开相机</string>
     <string name="open_video">视频选择</string>
+    <string name="image_content_description">图片</string>
 
 </resources>

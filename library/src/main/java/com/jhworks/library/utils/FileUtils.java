@@ -12,7 +12,6 @@ import static android.os.Environment.MEDIA_MOUNTED;
 
 /**
  * 文件操作类
- * Created by Nereo on 2015/4/8.
  */
 public class FileUtils {
 
@@ -44,7 +43,7 @@ public class FileUtils {
      * Android defines cache directory on device's file system.
      *
      * @param context Application context
-     * @return Cache {@link File directory}.<br />
+     * @return Cache {@link File directory}.
      * <b>NOTE:</b> Can be null in some unpredictable cases (if SD card is unmounted and
      * {@link android.content.Context#getCacheDir() Context.getCacheDir()} returns null).
      */
@@ -59,7 +58,7 @@ public class FileUtils {
      *
      * @param context        Application context
      * @param preferExternal Whether prefer external location for cache
-     * @return Cache {@link File directory}.<br />
+     * @return Cache {@link File directory}.
      * <b>NOTE:</b> Can be null in some unpredictable cases (if SD card is unmounted and
      * {@link android.content.Context#getCacheDir() Context.getCacheDir()} returns null).
      */

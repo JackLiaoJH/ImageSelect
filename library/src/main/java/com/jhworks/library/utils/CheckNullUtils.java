@@ -1,10 +1,10 @@
 package com.jhworks.library.utils;
 
 /**
- * <p> </p>
+ * <p>空对象检查 </p>
  *
  * @author jiahui
- * @date 2018/1/9
+ *         date 2018/1/9
  */
 public class CheckNullUtils {
 

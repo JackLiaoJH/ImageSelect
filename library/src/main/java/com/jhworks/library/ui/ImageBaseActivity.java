@@ -9,11 +9,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 /**
- * User ：LiaoJH <br/>
- * Desc ：base
- * <br/>
- * Date ：2016/7/31 0031 <br/>
- *
  * @author jiahui
  */
 public class ImageBaseActivity extends AppCompatActivity {

@@ -1,5 +1,5 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
-apply from:"config.gradle"
+apply from: "config.gradle"
 buildscript {
     repositories {
         maven { url "https://jitpack.io" }
@@ -26,13 +26,16 @@ allprojects {
     }
 
     tasks.withType(Javadoc) {
-        options{
+        options {
             encoding "UTF-8"
             charSet 'UTF-8'
+            author true
             links "http://docs.oracle.com/javase/7/docs/api"
         }
     }
 }
+
+
 
 task clean(type: Delete) {
     delete rootProject.buildDir

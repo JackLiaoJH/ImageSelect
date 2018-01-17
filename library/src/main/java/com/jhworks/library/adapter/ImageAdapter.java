@@ -1,9 +1,7 @@
 package com.jhworks.library.adapter;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Point;
-import android.os.Build;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,7 +13,6 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
-import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.request.RequestOptions;
 import com.jhworks.library.R;
 import com.jhworks.library.bean.Media;
@@ -77,7 +74,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageHolder>
     /**
      * 显示选择指示器
      *
-     * @param b
+     * @param b -
      */
     public void showSelectIndicator(boolean b) {
         showSelectIndicator = b;
@@ -97,7 +94,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageHolder>
     /**
      * 选择某个图片，改变选择状态
      *
-     * @param media
+     * @param media -
      */
     public void select(Media media) {
         if (mSelectedImages.contains(media)) {
@@ -111,7 +108,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageHolder>
     /**
      * 通过图片路径设置默认选择
      *
-     * @param resultList
+     * @param resultList -
      */
     public void setDefaultSelected(ArrayList<String> resultList) {
         for (String path : resultList) {
@@ -139,7 +136,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageHolder>
     /**
      * 设置数据集
      *
-     * @param images
+     * @param images -
      */
     public void setData(List<Media> images) {
         mSelectedImages.clear();

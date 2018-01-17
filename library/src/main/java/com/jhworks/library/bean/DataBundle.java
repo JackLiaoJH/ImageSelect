@@ -6,7 +6,7 @@ import java.util.ArrayList;
  * <p>全局存数据  </p>
  *
  * @author jiahui
- * @date 2018/1/17
+ *         date 2018/1/17
  */
 public class DataBundle {
     private ArrayList<Media> mMediaList;

@@ -1,11 +1,5 @@
 package com.jhworks.library;
 
-/**
- * User ：LiaoJH <br/>
- * Desc ： 常量
- * <br/>
- * Date ：2016/7/30 0030 <br/>
- */
 public interface Constant {
 
     // Default image size

@@ -14,7 +14,7 @@ import java.util.ArrayList;
  * <p> 媒体配置</p>
  *
  * @author jiahui
- * @date 2018/1/9
+ *         date 2018/1/9
  */
 public class MediaSelectConfig implements Parcelable {
     // Single choice
@@ -95,7 +95,7 @@ public class MediaSelectConfig implements Parcelable {
      * set select multi count
      *
      * @param maxCount select multi count
-     * @return
+     * @return -
      */
     public MediaSelectConfig setMaxCount(int maxCount) {
         this.maxCount = maxCount;
@@ -105,7 +105,8 @@ public class MediaSelectConfig implements Parcelable {
     /**
      * set select media mode
      *
-     * @return
+     * @param selectMode 选择模式
+     * @return -
      */
     public MediaSelectConfig setSelectMode(@SelectMode int selectMode) {
         this.selectMode = selectMode;
@@ -116,7 +117,7 @@ public class MediaSelectConfig implements Parcelable {
      * set origin image list resource
      *
      * @param originData origin image list resource
-     * @return
+     * @return -
      */
     public MediaSelectConfig setOriginData(ArrayList<String> originData) {
         this.originData = originData;
@@ -127,7 +128,7 @@ public class MediaSelectConfig implements Parcelable {
      * image span count
      *
      * @param imageSpanCount span count ,default:4
-     * @return
+     * @return -
      */
     public MediaSelectConfig setImageSpanCount(int imageSpanCount) {
         this.imageSpanCount = imageSpanCount;

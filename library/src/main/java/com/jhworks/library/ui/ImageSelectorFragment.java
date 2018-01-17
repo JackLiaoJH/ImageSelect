@@ -52,8 +52,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author Nereo
- * @date 2016/5/18
+ * @author jiahui
+ *         date 2016/5/18
  */
 public class ImageSelectorFragment extends Fragment
         implements LoaderManager.LoaderCallbacks<List<Media>> {

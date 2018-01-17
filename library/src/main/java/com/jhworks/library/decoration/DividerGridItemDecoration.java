@@ -21,7 +21,6 @@ public class DividerGridItemDecoration extends RecyclerView.ItemDecoration {
 
     public DividerGridItemDecoration(Context context) {
         TypedArray a = context.obtainStyledAttributes(ATTRS);
-//        mDivider = new ColorDrawable(Color.RED);
         mDivider = a.getDrawable(0);
         a.recycle();
     }

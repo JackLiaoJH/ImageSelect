@@ -11,7 +11,7 @@ import com.jhworks.library.utils.CheckNullUtils;
  * 图片选择器
  *
  * @author jiahui
- * @date 16/3/17
+ *         date 16/3/17
  */
 public class ImageSelector {
     public static final String EXTRA_RESULT = Constant.KEY_EXTRA_RESULT;
@@ -35,8 +35,8 @@ public class ImageSelector {
     /**
      * set media config
      *
-     * @param config @{@link MediaSelectConfig}
-     * @return @{@link ImageSelector}
+     * @param config {@link MediaSelectConfig}
+     * @return {@link ImageSelector}
      */
     public ImageSelector setMediaConfig(MediaSelectConfig config) {
         mMediaSelectConfig = config;

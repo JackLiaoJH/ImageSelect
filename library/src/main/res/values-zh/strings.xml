@@ -1,4 +1,5 @@
 <resources>
+    <string name="app_name">library</string>
     <string name="mis_folder_all">所有照片</string>
     <string name="mis_preview">预览</string>
     <string name="mis_msg_no_camera">没有系统相机</string>

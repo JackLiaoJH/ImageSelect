@@ -27,10 +27,7 @@ import java.util.ArrayList;
 
 
 /**
- * User ：LiaoJH <br/>
- * Desc ： 图片查看界面
- * <br/>
- * Date ：2016/7/30 0030 <br/>
+ * 图片查看界面
  */
 public class ImageActivity extends ImageBaseActivity implements ViewPager.OnPageChangeListener {
 

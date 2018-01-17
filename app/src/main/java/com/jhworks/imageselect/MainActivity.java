@@ -102,6 +102,7 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+        if (mSelectPath != null && mSelectPath.size() > 0) mSelectPath.clear();
         MediaSelectConfig config = new MediaSelectConfig()
                 .setSelectMode(mChoiceMode.getCheckedRadioButtonId() == R.id.single ?
                         MediaSelectConfig.MODE_SINGLE : MediaSelectConfig.MODE_MULTI)
@@ -133,6 +134,8 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+        if (mSelectPath != null && mSelectPath.size() > 0) mSelectPath.clear();
+
         MediaSelectConfig config = new MediaSelectConfig()
                 .setSelectMode(mChoiceMode.getCheckedRadioButtonId() == R.id.single ?
                         MediaSelectConfig.MODE_SINGLE : MediaSelectConfig.MODE_MULTI)
