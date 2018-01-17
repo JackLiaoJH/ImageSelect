@@ -19,6 +19,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.jhworks.library.Constant;
 import com.jhworks.library.R;
+import com.jhworks.library.bean.DataBundle;
 import com.jhworks.library.bean.Media;
 import com.jhworks.library.view.HackyViewPager;
 
@@ -51,10 +52,10 @@ public class ImageActivity extends ImageBaseActivity implements ViewPager.OnPage
 
         Intent intent = getIntent();
         if (intent != null) {
-            mAllMediaList = intent.getParcelableArrayListExtra(Constant.KEY_EXTRA_IMAGE_LIST);
             mCurrentPosition = intent.getIntExtra(Constant.KEY_EXTRA_CURRENT_POSITION, 0);
             maxImageCount = intent.getIntExtra(Constant.KEY_EXTRA_SELECT_COUNT, Constant.DEFAULT_IMAGE_SIZE);
         }
+        mAllMediaList = DataBundle.get().getMediaList();
         if (mAllMediaList == null || mAllMediaList.size() == 0) {
             finish();
             return;

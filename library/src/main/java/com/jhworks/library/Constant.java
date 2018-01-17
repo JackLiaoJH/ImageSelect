@@ -23,10 +23,6 @@ public interface Constant {
      */
     String KEY_EXTRA_RESULT = "select_result";
 
-    /**
-     * Image List
-     */
-    String KEY_EXTRA_IMAGE_LIST = "image_list";
     String KEY_EXTRA_IMAGE_SELECT_LIST = "image_select_list";
     /**
      * Current Position
