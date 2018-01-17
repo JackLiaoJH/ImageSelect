@@ -37,6 +37,7 @@ import com.jhworks.library.Constant;
 import com.jhworks.library.R;
 import com.jhworks.library.adapter.FolderAdapter;
 import com.jhworks.library.adapter.ImageAdapter;
+import com.jhworks.library.bean.DataBundle;
 import com.jhworks.library.bean.Folder;
 import com.jhworks.library.bean.Media;
 import com.jhworks.library.bean.MediaSelectConfig;
@@ -209,8 +210,7 @@ public class ImageSelectorFragment extends Fragment
                         }
                     }
                 }
-                // todo  FAILED BINDER TRANSACTION !!!  (parcel size = 1242716)
-                intent.putParcelableArrayListExtra(Constant.KEY_EXTRA_IMAGE_LIST, mAllMediaList);
+                DataBundle.get().setMediaList(mAllMediaList);
             }
             intent.putExtra(Constant.KEY_EXTRA_CURRENT_POSITION, position);
             intent.putExtra(Constant.KEY_EXTRA_SELECT_COUNT, selectImageCount());
