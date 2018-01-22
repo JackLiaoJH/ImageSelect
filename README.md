@@ -8,7 +8,8 @@ android 经量级选择图片框架，支持拍照，获取相册图片，可以
   2. 将图片的加载框架替换替换成了Glide，优化了加载图片速度；
   3. 新增多图选择时，点击图片进入产看图片模式，方便预览；
   4. 集成5.0以上权限处理问题；
-  5. 支持最新android N版本。
+  5. 支持最新android N版本;
+  6. 支持视频加载展示，优化了api接口调用。
   
 
 ### 效果
@@ -27,53 +28,63 @@ android 经量级选择图片框架，支持拍照，获取相册图片，可以
 
 
 ### Get it
+- step1: add to your project build.gradle
+```
+buildscript {
+    repositories {
+     maven { url "https://jitpack.io" }
+     ...
+     }
+}
+```
 
-- Step1： Add it in your root build.gradle at the end of repositories:
-	
-		allprojects {
-			repositories {
-				...
-				maven { url "https://jitpack.io" }
-			}
+- step2: Add the dependency
+```
+dependencies {
+		        compile 'com.jhworks.library:ImageSelect:1.1.1'
 		}
-
-- Step2 ： Add the dependency
-	
-		dependencies {
-		        compile 'com.github.JackLiaoJH:ImageSelect:V1.0.2'
-		}
+```
 
   
 ### 使用
 
 #### 简单使用
 ```java
-	ImageSelector selector = ImageSelector.create();
-        // selector.single();  // single mode
-        selector.multi();  // multi mode, default mode;
-        selector.origin(mSelectPath) // original select data set, used width #.multi()
-                .showCamera(showCamera)   // show camera or not. true by default
-                .count(maxNum)   // max select image size, 9 by default. used width #.multi()
-                .spanCount(imageSpanCount)  // image span count ，default is 3.
-                .start(MainActivity.this, REQUEST_IMAGE); 
+MediaSelectConfig config = new MediaSelectConfig()
+                .setSelectMode(mChoiceMode.getCheckedRadioButtonId() == R.id.single ?
+                        MediaSelectConfig.MODE_SINGLE : MediaSelectConfig.MODE_MULTI) //设置选择图片模式，单选与多选
+                .setOriginData(mSelectPath) //已选择图片地址
+                .setShowCamera(showCamera) //是否展示打开摄像头拍照入口，只针对照片，视频列表无效
+                .setOpenCameraOnly(isOpneCameraOnly) //是否只是打开摄像头拍照而已
+                .setMaxCount(maxNum) //选择最大集合，默认9
+                .setImageSpanCount(imageSpanCount) //自定义列表展示个数，默认3
+;
+
+//打开照片列表
+ImageSelector.create()
+                .setMediaConfig(config)
+                .startImageAction(MainActivity.this, REQUEST_IMAGE);
+
+//打开视频列表
+ ImageSelector.create()
+                .setMediaConfig(config)
+                .startVideoAction(MainActivity.this, REQUEST_IMAGE);
 ```
 				
-####  获取结果 override onActivityResult()
+### 获取结果，重写onActivityResult()方法
 ```java
-	ex：
-    	    @Override
-	    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-	        super.onActivityResult(requestCode, resultCode, data);
-	        if (requestCode == REQUEST_IMAGE) {
-	            if (resultCode == RESULT_OK) {
-	                mSelectPath = data.getStringArrayListExtra(ImageSelector.EXTRA_RESULT);
-	               // data  ..
-	            }
-	        }
-	    }
-```	    
-		
-		
+ @Override
+protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+     super.onActivityResult(requestCode, resultCode, data);
+     if (requestCode == REQUEST_IMAGE) {
+         if (resultCode == RESULT_OK) {
+            mSelectPath = data.getStringArrayListExtra(ImageSelector.EXTRA_RESULT);
+            ...
+        }
+    }
+}
+```
+
 #### License
 
 >       
