@@ -2,7 +2,7 @@ ext {
     android = [
             compileSdkVersion: 26,
             buildToolsVersion: "26.0.2",
-            minSdkVersion    : 14,
+            minSdkVersion    : 19,
             targetSdkVersion : 26,
             versionCode      : 4,
             versionName      : '1.1.0',
@@ -10,10 +10,10 @@ ext {
 
     libsVersion = [
             // App dependencies version
-            supportLibraryVersion = "27.0.2",
+            supportLibraryVersion = "27.1.1",
 
             photoviewVsersion = "2.0.0",
-            glideVsrsion = "4.5.0",
+            glideVsrsion = "4.8.0",
             rxjava = "2.1.7",
             rxjava_android = "2.0.1",
             rxlifecycle = "2.1.0",

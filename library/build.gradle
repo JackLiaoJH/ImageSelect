@@ -34,8 +34,8 @@ dependencies {
     compile rootProject.ext.dependencies.appcompatV7
     compile rootProject.ext.dependencies.recycleview
 
-    implementation rootProject.ext.dependencies.photoview
-    implementation rootProject.ext.dependencies.glide
+    compile rootProject.ext.dependencies.photoview
+    compile rootProject.ext.dependencies.glide
     annotationProcessor rootProject.ext.dependencies.glideCompiler
 
    /* compile rootProject.ext.dependencies.rxjava2
