@@ -1,16 +1,18 @@
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
 apply plugin: 'com.novoda.bintray-release'//添加
 
 
 android {
-    compileSdkVersion rootProject.ext.android.compileSdkVersion
-    buildToolsVersion rootProject.ext.android.buildToolsVersion
+    compileSdkVersion versions.compileSdk
+    buildToolsVersion versions.buildTools
 
     defaultConfig {
-        minSdkVersion rootProject.ext.android.minSdkVersion
-        targetSdkVersion rootProject.ext.android.targetSdkVersion
-        versionCode rootProject.ext.android.versionCode
-        versionName rootProject.ext.android.versionName
+        minSdkVersion versions.minSdk
+        targetSdkVersion versions.compileSdk
+
+        versionCode versions.versionCode
+        versionName versions.versionName
     }
 
     lintOptions {
@@ -31,27 +33,13 @@ publish {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    compile rootProject.ext.dependencies.appcompatV7
-    compile rootProject.ext.dependencies.recycleview
+    implementation deps.kotlin.stdlib
+    implementation deps.androidx.appcompat
+    implementation deps.androidx.core_ktx
+    implementation deps.androidx.recyclerview
 
-    compile rootProject.ext.dependencies.photoview
-    compile rootProject.ext.dependencies.glide
-    annotationProcessor rootProject.ext.dependencies.glideCompiler
-
-   /* compile rootProject.ext.dependencies.rxjava2
-    compile(rootProject.ext.dependencies.rxjava2_android) {
-        exclude module: "rxjava"
-    }
-    compile(rootProject.ext.dependencies.rxlifecycle2) {
-        exclude module: 'rxjava'
-        exclude module: 'jsr305'
-    }
-    compile(rootProject.ext.dependencies.rxlifecycle2_components) {
-        exclude module: 'support-v4'
-        exclude module: 'appcompat-v7'
-        exclude module: 'support-annotations'
-        exclude module: 'rxjava'
-        exclude module: 'rxandroid'
-        exclude module: 'rxlifecycle'
-    }*/
+    implementation deps.photoview
+}
+repositories {
+    mavenCentral()
 }

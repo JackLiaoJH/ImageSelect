@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <android.support.v7.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -16,22 +16,23 @@
 
         <Button
             android:id="@+id/commit"
+            style="?android:attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:layout_marginRight="16dp"
+            android:layout_gravity="end"
+            android:layout_marginEnd="16dp"
             android:background="@drawable/mis_action_btn"
-            android:minHeight="1dp"
             android:minWidth="1dp"
-            android:paddingBottom="5dp"
+            android:minHeight="1dp"
             android:paddingLeft="10dp"
-            android:paddingRight="10dp"
             android:paddingTop="5dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="5dp"
             android:textColor="@color/mis_default_text_color"
             android:textSize="14sp"
             tools:text="完成(1/3)" />
 
-    </android.support.v7.widget.Toolbar>
+    </androidx.appcompat.widget.Toolbar>
 
     <FrameLayout
         android:id="@+id/image_grid"

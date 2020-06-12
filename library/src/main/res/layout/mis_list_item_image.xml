@@ -8,14 +8,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:scaleType="fitXY"
-        android:src="@mipmap/ic_image_default" />
+        android:src="@drawable/ic_image_default" />
 
-    <android.support.v7.widget.AppCompatCheckBox
+    <androidx.appcompat.widget.AppCompatCheckBox
         android:id="@+id/checkmark"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
-        android:button="@mipmap/ic_select_normal"
+        android:button="@drawable/ic_select_normal"
         android:padding="5.5dp"
         android:visibility="gone" />
 

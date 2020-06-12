@@ -8,3 +8,5 @@
 /captures
 .idea/inspectionProfiles/Project_Default.xml
 .idea/
+/.idea/
+/gradle/wrapper/gradle-wrapper.properties

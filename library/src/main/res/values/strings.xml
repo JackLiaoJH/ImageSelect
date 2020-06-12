@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">library</string>
-    <string name="mis_folder_all">All Images</string>
+    <string name="mis_folder_image_all">All Images</string>
+    <string name="mis_folder_video_all">All Videos</string>
     <string name="mis_preview">Preview</string>
     <string name="mis_msg_no_camera">No system camera found</string>
     <string name="mis_msg_amount_limit">Select images amount is limit</string>
@@ -18,4 +19,5 @@
     <string name="mis_permission_rationale_write_storage">Storage write permission is needed to save the image.</string>
     <string name="sd_card">/sdcard</string>
     <string name="select_phone">select photo</string>
+    <string name="select_video">select video</string>
 </resources>

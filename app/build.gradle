@@ -1,4 +1,6 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 
 android {
     signingConfigs {
@@ -9,15 +11,19 @@ android {
             storePassword '123456'
         }
     }
-    compileSdkVersion rootProject.ext.android.compileSdkVersion
-    buildToolsVersion rootProject.ext.android.buildToolsVersion
+
+    compileSdkVersion versions.compileSdk
+    buildToolsVersion versions.buildTools
+
     defaultConfig {
         applicationId "com.jhworks.imageselect"
-        minSdkVersion rootProject.ext.android.minSdkVersion
-        targetSdkVersion rootProject.ext.android.targetSdkVersion
-        versionCode rootProject.ext.android.versionCode
-        versionName rootProject.ext.android.versionName
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        minSdkVersion versions.minSdk
+        targetSdkVersion versions.compileSdk
+
+        versionCode versions.versionCode
+        versionName versions.versionName
+
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
 
     signingConfigs {
@@ -45,12 +51,29 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     testImplementation 'junit:junit:4.12'
-    //    androidTestCompile('com.android.support.test.espresso:espresso-core:3.0.1', {
-    //        exclude group: 'com.android.support', module: 'support-annotations'
-    //    })
-    compile rootProject.ext.dependencies.design
-    compile project(':library')
+    implementation deps.kotlin.stdlib
+    implementation deps.androidx.appcompat
+    implementation deps.androidx.core_ktx
+
+    // glide
+    implementation (deps.glide.code) {
+        exclude group: "com.android.support"
+    }
+    kapt deps.glide.compiler
+
+    // 内存泄漏检测
+    debugImplementation deps.leakcanary
+    // 界面卡顿检测
+    debugImplementation deps.blockcanary.debug
+    releaseImplementation deps.blockcanary.release
+
+//    implementation rootProject.ext.dependencies.design
+    implementation project(':library')
+
     //    compile 'com.jhworks.library:ImageSelect:1.1.1'
+}
+repositories {
+    mavenCentral()
 }
