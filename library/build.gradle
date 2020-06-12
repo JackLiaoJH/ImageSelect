@@ -1,7 +1,9 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'com.novoda.bintray-release'//添加
 
+// 以下内容是将Library上传到Bintray的相关配置
+apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'com.jfrog.bintray'
 
 android {
     compileSdkVersion versions.compileSdk
@@ -20,17 +22,6 @@ android {
     }
 }
 
-//添加
-publish {
-    userOrg = 'jiahui'//bintray.com用户名
-    repoName = 'jiahui'//要传到的maven的名字。你可能有多个maven，要传哪个写哪个。
-    groupId = 'com.jhworks.library'//jcenter上的路径
-    artifactId = 'ImageSelect'//项目名称
-    publishVersion = '1.2.0'//版本号
-    desc = 'Easy Image Select'//描述，不重要
-    website = 'https://github.com/JackLiaoJH'//网站，不重要
-}
-
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation deps.kotlin.stdlib
@@ -42,4 +33,118 @@ dependencies {
 }
 repositories {
     mavenCentral()
+}
+
+//添加
+//publish {
+//    userOrg = 'jiahui'//bintray.com用户名
+//    repoName = 'jiahui'//要传到的maven的名字。你可能有多个maven，要传哪个写哪个。
+//    groupId = 'com.jhworks.library'//jcenter上的路径
+//    artifactId = 'ImageSelect'//项目名称
+//    publishVersion = '1.2.0'//版本号
+//    desc = 'Easy Image Select'//描述，不重要
+//    website = 'https://github.com/JackLiaoJH'//网站，不重要
+//}
+
+
+group = "com.jhworks.library"
+version = versions.versionName
+
+def bintrayUser = ""
+def bintrayKey = ""
+
+def siteUrl = 'https://github.com/JackLiaoJH/ImageSelect'
+def gitUrl = 'https://github.com/JackLiaoJH/ImageSelect.git'
+def libName = "ImageSelect"
+def javaDocLinks = "https://github.com/JackLiaoJH"
+def bintrayRepo = "jiahui"
+def bintrayDesc = "Easy Image Select"
+def bintrayUserOrg = "jiahui"
+
+//生成源文件
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
+}
+//生成文档
+task javadoc(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+    //以下两个为项目中带有中文注释的支持
+    options.encoding "UTF-8"
+    options.charSet 'UTF-8'
+    options.author true
+    options.version true
+    options.links javaDocLinks
+    failOnError false
+}
+
+//文档打包成jar
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+//拷贝javadoc文件
+task copyDoc(type: Copy) {
+    from "${buildDir}/docs/"
+    into "docs"
+}
+
+//上传到jcenter所需要的源码文件
+artifacts {
+    archives javadocJar
+    archives sourcesJar
+}
+
+// 配置maven库，生成POM.xml文件
+install {
+    repositories.mavenInstaller {
+        // This generates POM.xml with proper parameters
+        pom {
+            project {
+                packaging 'aar'
+                //项目名称和描述
+                name 'ImageSelect'
+                description 'Easy Image Select'
+                url siteUrl
+                licenses {
+                    license {
+                        //开源协议,在bintray中创建仓库时选择的license为Apache-2.0，复制下面的就可以
+                        name 'The Apache Software License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    //开发者的个人信息
+                    developer {
+                        id 'developer id '
+                        name 'jacksonliao'
+                        email '583125288@qq.com'
+                    }
+                }
+                scm {
+                    connection gitUrl
+                    developerConnection gitUrl
+                    url siteUrl
+                }
+            }
+        }
+    }
+}
+
+//上传到jcenter
+bintray {
+    user = bintrayUser
+    key = bintrayKey
+    configurations = ['archives']
+    pkg {
+        userOrg = bintrayUserOrg
+        repo = bintrayRepo
+        name = libName
+        desc =  bintrayDesc
+        websiteUrl = siteUrl
+        vcsUrl = gitUrl
+        licenses = ["Apache-2.0"]
+        publish = true
+    }
 }
