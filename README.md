@@ -1,14 +1,14 @@
 # ImageSelect
-android 经量级选择图片框架，支持拍照，获取相册图片，可以多选，单选
+android 经量级选择图片框架，支持拍照，获取相册图片,获取本地视频，可以多选，单选
 
 ### 声明
  此框架功能点有：
 
   1. 新增对图片列表展示的个数；
-  2. 将图片的加载框架替换替换成了Glide，优化了加载图片速度；
+  2. 将图片的加载框架默认不处理，需要自己去实现IEngine接口来实现图片加载，详情查看demo里面的GlideEngine.kt类；
   3. 新增多图选择时，点击图片进入产看图片模式，方便预览；
   4. 集成5.0以上权限处理问题；
-  5. 支持最新android N版本;
+  5. 支持Androidx;
   6. 支持视频加载展示，优化了api接口调用。
   
 
@@ -29,60 +29,81 @@ android 经量级选择图片框架，支持拍照，获取相册图片，可以
 
 ### Get it
 - step1: add to your project build.gradle
-```
-buildscript {
+```groovy
+allprojects {
     repositories {
-     maven { url "https://jitpack.io" }
-     ...
-     }
+        maven { url "https://jitpack.io" }
+        jcenter()
+        mavenCentral()
+        google()
+    }
 }
 ```
 
 - step2: Add the dependency
-```
-dependencies {
-		        compile 'com.jhworks.library:ImageSelect:1.1.1'
-		}
+```groovy
+implementation 'com.github.JackLiaoJH:ImageSelect:1.2.0'
 ```
 
   
 ### 使用
 
-#### 简单使用
-```java
-MediaSelectConfig config = new MediaSelectConfig()
-                .setSelectMode(mChoiceMode.getCheckedRadioButtonId() == R.id.single ?
-                        MediaSelectConfig.MODE_SINGLE : MediaSelectConfig.MODE_MULTI) //设置选择图片模式，单选与多选
-                .setOriginData(mSelectPath) //已选择图片地址
-                .setShowCamera(showCamera) //是否展示打开摄像头拍照入口，只针对照片，视频列表无效
-                .setOpenCameraOnly(isOpneCameraOnly) //是否只是打开摄像头拍照而已
-                .setMaxCount(maxNum) //选择最大集合，默认9
-                .setImageSpanCount(imageSpanCount) //自定义列表展示个数，默认3
-;
+#### 初始化
+```kotlin
+// 实现IEngine接口,如glide加载
+class GlideEngine : IEngine {
+    override fun loadImage(imageView: ImageView, uiConfig: MediaUiConfigVo) {
+        Glide.with(imageView)
+                .load(uiConfig.path)
+                .placeholder(uiConfig.placeholderResId)
+                .error(uiConfig.errorResId)
+                .override(uiConfig.width, uiConfig.height)
+                .centerCrop()
+                .into(imageView)
+    }
+}
 
+//在Application里面初始化框架图片加载逻辑:
+override fun onCreate() {
+    super.onCreate()
+    ImageSelector.setImageEngine(GlideEngine())
+}
+```
+
+#### 简单使用
+```kotlin
 //打开照片列表
-ImageSelector.create()
-                .setMediaConfig(config)
-                .startImageAction(MainActivity.this, REQUEST_IMAGE);
+ ImageSelector.startImageAction(
+    this, IMAGE_CODE, MediaSelectConfig.Builder()
+        .setShowCamera(true) //是否展示打开摄像头拍照入口，只针对照片，视频列表无效
+        .setOpenCameraOnly(isOpneCameraOnly) //是否只是打开摄像头拍照而已
+        .setOriginData(mSelectPath) //已选择图片地址
+        .setMaxCount(9)//选择最大集合，默认9
+        .setImageSpanCount(4) //自定义列表展示个数，默认3
+        .setPlaceholderResId(R.mipmap.ic_launcher) //预览图
+        .build()
+    )
 
 //打开视频列表
- ImageSelector.create()
-                .setMediaConfig(config)
-                .startVideoAction(MainActivity.this, REQUEST_IMAGE);
+ ImageSelector.startVideoAction(
+    this, IMAGE_CODE, MediaSelectConfig.Builder()
+        .setOriginData(mSelectPath) //已选择图片地址
+        .setImageSpanCount(4) //自定义列表展示个数，默认3
+        .build()
+    )
 ```
 				
 ### 获取结果，重写onActivityResult()方法
-```java
- @Override
-protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-     super.onActivityResult(requestCode, resultCode, data);
-     if (requestCode == REQUEST_IMAGE) {
-         if (resultCode == RESULT_OK) {
-            mSelectPath = data.getStringArrayListExtra(ImageSelector.EXTRA_RESULT);
-            ...
+```kotlin
+ override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_IMAGE) {
+            if (resultCode == Activity.RESULT_OK) {
+                mSelectPath = ImageSelector.getSelectResults(data)
+                Log.e("ImageSelect", "结果： $mSelectPath")
+            }
         }
     }
-}
 ```
 
 #### License

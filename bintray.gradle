@@ -1,36 +1,43 @@
-//#仓库名称
-//PROJ_REPO=reactnativehotfix
-//#包名称
-//PROJ_NAME=reactnativehotfix
-//#群组 PROJ_GROUP:PROJ_ARTIFACTID:PROJ_VERSION 的依赖显示形式
-//PROJ_GROUP=com.kye.android
-//#项目名称
-//PROJ_ARTIFACTID=reactnativehotfix
-//#开源协议
-//PROJ_LICENSES=Apache-2.0
-//#开源标签
-//PROJ_LABELS=android
-//#发布的版本
-//PROJ_VERSION=1.0.0
-//#项目主页
-//PROJ_WEBSITEURL=https://github.com/yangyunfeng666/ReactNativeHotFix
-//#项目的issues主页
-//PROJ_ISSUETRACKERURL=https://github.com/yangyunfeng666/ReactNativeHotFix/issues
-//#项目版本git地址
-//PROJ_VCSURL=https://github.com/yangyunfeng666/ReactNativeHotFix.git
-//#项目描述
-//PROJ_DESCRIPTION=reactnative hot fix for android
+//// 以下内容是将Library上传到Bintray的相关配置
+//apply plugin: 'com.github.dcendents.android-maven'
+//apply plugin: 'com.jfrog.bintray'
 //
-//#创作作者id 名称
-//DEVELOPER_ID=yangjaker
-//#bintray 登陆名称
-//DEVELOPER_NAME=jakercode
-//#bintray 登陆邮箱
-//DEVELOPER_EMAIL=jakercode@gmail.com
+//group = "com.jhworks.library"
+//version = versions.versionName
+//
+////#仓库名称
+//def PROJ_REPO = "jiahui"
+////#包名称
+//def PROJ_NAME = reactnativehotfix
+////#群组 PROJ_GROUP:PROJ_ARTIFACTID:PROJ_VERSION 的依赖显示形式
+//def PROJ_GROUP = "com.jhworks.library"
+////#项目名称
+//def PROJ_ARTIFACTID = reactnativehotfix
+////#开源协议
+//def PROJ_LICENSES = Apache - 2.0
+////#开源标签
+//def PROJ_LABELS = android
+////#发布的版本
+//def PROJ_VERSION = 1.0.0
+////#项目主页
+//def PROJ_WEBSITEURL = https ://github.com/yangyunfeng666/ReactNativeHotFix
+////#项目的issues主页
+//def PROJ_ISSUETRACKERURL = https ://github.com/yangyunfeng666/ReactNativeHotFix/issues
+////#项目版本git地址
+//def PROJ_VCSURL = https ://github.com/yangyunfeng666/ReactNativeHotFix.git
+////#项目描述
+//def PROJ_DESCRIPTION = reactnative hot fix
+//for
+//android
+//
+////#创作作者id 名称
+//def DEVELOPER_ID = yangjaker
+////#bintray 登陆名称
+//def DEVELOPER_NAME = jakercode
+////#bintray 登陆邮箱
+//def DEVELOPER_EMAIL = jakercode @gmail.com
 //
 //project.archivesBaseName = PROJ_ARTIFACTID
-//apply plugin: 'com.jfrog.bintray'
-//apply plugin: 'com.github.dcendents.android-maven'
 //
 //
 //group = PROJ_GROUP //这个gruop很重要，参考 compile 'groupId:artifactId:version'     groupId就是这个，artifactId就是包名，version就是顶部那个

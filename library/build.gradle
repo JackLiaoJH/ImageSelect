@@ -107,6 +107,7 @@ install {
                 name 'ImageSelect'
                 description 'Easy Image Select'
                 url siteUrl
+                version  versions.versionName
                 licenses {
                     license {
                         //开源协议,在bintray中创建仓库时选择的license为Apache-2.0，复制下面的就可以
@@ -117,7 +118,7 @@ install {
                 developers {
                     //开发者的个人信息
                     developer {
-                        id 'developer id '
+                        id 'jacksonliao'
                         name 'jacksonliao'
                         email '583125288@qq.com'
                     }
@@ -144,7 +145,16 @@ bintray {
         desc =  bintrayDesc
         websiteUrl = siteUrl
         vcsUrl = gitUrl
+        labels = ['android']    //标签
         licenses = ["Apache-2.0"]
         publish = true
+        publicDownloadNumbers = true
+    }
+
+    javadoc { //jav doc采用utf-8编码否则会报“GBK的不可映射字符”错误
+        options {
+            encoding "UTF-8"
+            charSet 'UTF-8'
+        }
     }
 }

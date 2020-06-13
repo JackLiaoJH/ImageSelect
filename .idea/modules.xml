@@ -5,8 +5,11 @@
       <module fileurl="file://$PROJECT_DIR$/ImageSelect.iml" filepath="$PROJECT_DIR$/ImageSelect.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/ImageSelect-app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/ImageSelect-app.iml" group="ImageSelect/app" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/library/ImageSelect-library.iml" filepath="$PROJECT_DIR$/.idea/modules/library/ImageSelect-library.iml" group="ImageSelect/library" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/android-github-ImageSelect.iml" filepath="$PROJECT_DIR$/.idea/modules/android-github-ImageSelect.iml" group="ImageSelect" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/library/com.jhworks.library-library.iml" filepath="$PROJECT_DIR$/.idea/modules/library/com.jhworks.library-library.iml" group="ImageSelect/library" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/github-ImageSelect.iml" filepath="$PROJECT_DIR$/.idea/modules/github-ImageSelect.iml" group="ImageSelect" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/github-ImageSelect-app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/github-ImageSelect-app.iml" group="ImageSelect/app" />
       <module fileurl="file://$PROJECT_DIR$/library/library.iml" filepath="$PROJECT_DIR$/library/library.iml" />
     </modules>
   </component>
