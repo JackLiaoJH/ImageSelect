@@ -22,11 +22,11 @@ class FolderAdapter(private val mContext: Context,
     : BaseAdapter() {
     private val mInflater = LayoutInflater.from(mContext)
     private var mFolders = arrayListOf<FolderVo>()
-    var mImageSize = mContext.resources.getDimensionPixelOffset(R.dimen.mis_folder_cover_size)
+    var mImageSize = mContext.resources.getDimensionPixelOffset(R.dimen.sl_folder_cover_size)
     private var lastSelected = 0
-    private val folderSize = mContext.resources.getDimensionPixelSize(R.dimen.mis_folder_cover_size)
-    var placeholderResId = mediaConfig?.placeholderResId ?: R.drawable.ic_image_default
-    var errorResId = mediaConfig?.errorResId ?: R.drawable.ic_image_default
+    private val folderSize = mContext.resources.getDimensionPixelSize(R.dimen.sl_folder_cover_size)
+    var placeholderResId = mediaConfig?.placeholderResId ?: R.drawable.ic_sl_image_default
+    var errorResId = mediaConfig?.errorResId ?: R.drawable.ic_sl_image_default
 
     /**
      * 设置数据集
@@ -57,7 +57,7 @@ class FolderAdapter(private val mContext: Context,
         var view = contentView
         val holder: ViewHolder?
         if (view == null) {
-            view = mInflater.inflate(R.layout.mis_list_item_folder, viewGroup, false)
+            view = mInflater.inflate(R.layout.sl_list_item_folder, viewGroup, false)
             holder = ViewHolder(view)
         } else {
             holder = view.tag as? ViewHolder
@@ -66,11 +66,11 @@ class FolderAdapter(private val mContext: Context,
             if (i == 0) {
                 holder.name.setText(
                         if (mediaConfig?.mediaType == MediaType.IMAGE)
-                            R.string.mis_folder_image_all
+                            R.string.sl_folder_image_all
                         else
-                            R.string.mis_folder_video_all)
-                holder.path.setText(R.string.sd_card)
-                holder.size.text = mContext.resources.getString(R.string.mis_photo_unit, totalImageSize)
+                            R.string.sl_folder_video_all)
+                holder.path.setText(R.string.sl_sd_card)
+                holder.size.text = mContext.resources.getString(R.string.sl_photo_unit, totalImageSize)
                 if (mFolders.size > 0) {
                     val f = mFolders[0]
                     ImageSelector.getImageEngine().loadImage(holder.cover,
@@ -109,11 +109,11 @@ class FolderAdapter(private val mContext: Context,
         }
 
     internal inner class ViewHolder(view: View) {
-        var cover: ImageView = view.findViewById(R.id.cover)
-        var name: TextView = view.findViewById(R.id.name)
-        var path: TextView = view.findViewById(R.id.path)
-        var size: TextView = view.findViewById(R.id.size)
-        var indicator: ImageView = view.findViewById(R.id.indicator)
+        var cover: ImageView = view.findViewById(R.id.sl_cover)
+        var name: TextView = view.findViewById(R.id.sl_name)
+        var path: TextView = view.findViewById(R.id.sl_path)
+        var size: TextView = view.findViewById(R.id.sl_size)
+        var indicator: ImageView = view.findViewById(R.id.sl_indicator)
 
         fun bindData(data: FolderVo?) {
             data ?: return
@@ -121,10 +121,10 @@ class FolderAdapter(private val mContext: Context,
             name.text = data.name
             path.text = data.path
             if (data.mediaStoreList != null) {
-                size.text = mContext.resources.getString(R.string.mis_photo_unit,
+                size.text = mContext.resources.getString(R.string.sl_photo_unit,
                         data.mediaStoreList!!.size)
             } else {
-                size.text = mContext.resources.getString(R.string.mis_no_photo_unit)
+                size.text = mContext.resources.getString(R.string.sl_no_photo_unit)
             }
             if (data.cover != null) {
                 ImageSelector.getImageEngine().loadImage(cover,

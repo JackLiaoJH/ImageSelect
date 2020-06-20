@@ -3,21 +3,23 @@ package com.jhworks.library.utils
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
+import android.net.Uri
+import android.os.Build
 import android.os.Environment
 import android.text.TextUtils
+import androidx.core.content.FileProvider
 import java.io.File
 import java.io.IOException
 
 /**
  * 文件操作类
  */
-object FileUtils {
+object SlFileUtils {
     private const val JPEG_FILE_PREFIX = "IMG_"
     private const val JPEG_FILE_SUFFIX = ".jpg"
 
     private const val EXTERNAL_STORAGE_PERMISSION = "android.permission.WRITE_EXTERNAL_STORAGE"
 
-    @JvmStatic
     @Throws(IOException::class)
     fun createTmpFile(context: Context): File {
         var dir: File?
@@ -33,6 +35,24 @@ object FileUtils {
             dir = getCacheDirectory(context, true)
         }
         return File.createTempFile(JPEG_FILE_PREFIX, JPEG_FILE_SUFFIX, dir)
+    }
+
+    fun getUriFromPath(context: Context, path: String?): Uri? {
+        if (path == null) return null
+        try {
+            return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                FileProvider.getUriForFile(
+                        context,
+                        "${context.applicationInfo?.packageName}.sl.fileprovider",
+                        File(path)
+                )
+            } else {
+                Uri.fromFile(File(path))
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return null
     }
 
 
@@ -80,7 +100,7 @@ object FileUtils {
             appCacheDir = context.cacheDir
         }
         if (appCacheDir == null) {
-            val cacheDirPath = "/data/data/${ context.packageName}/cache/"
+            val cacheDirPath = "/data/data/${context.packageName}/cache/"
             appCacheDir = File(cacheDirPath)
         }
         return appCacheDir

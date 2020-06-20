@@ -39,10 +39,10 @@ class MediaSelectConfig private constructor(builder: Builder) {
         var originData: ArrayList<String>? = null
 
         @DrawableRes
-        var errorResId: Int = R.drawable.ic_image_default
+        var errorResId: Int = R.drawable.ic_sl_image_default
 
         @DrawableRes
-        var placeholderResId: Int = R.drawable.ic_image_default
+        var placeholderResId: Int = R.drawable.ic_sl_image_default
 
         @SelectMode
         private var selectMode = SelectMode.MODE_MULTI

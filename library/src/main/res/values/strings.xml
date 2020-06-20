@@ -1,23 +1,22 @@
 <resources>
-    <string name="app_name">library</string>
-    <string name="mis_folder_image_all">All Images</string>
-    <string name="mis_folder_video_all">All Videos</string>
-    <string name="mis_preview">Preview</string>
-    <string name="mis_msg_no_camera">No system camera found</string>
-    <string name="mis_msg_amount_limit">Select images amount is limit</string>
-    <string name="mis_action_done">Done</string>
-    <string name="mis_action_button_string">%1$s(%2$d/%3$d)</string>
-    <string name="mis_photo_unit">%1$d Shot</string>
-    <string name="mis_no_photo_unit">* Shot</string>
-    <string name="mis_tip_take_photo">Take photo</string>
-    <string name="mis_error_image_not_exist">Image error</string>
-    <string name="mis_error_no_permission">Has no permission</string>
-    <string name="mis_permission_dialog_title">Permission Deny</string>
-    <string name="mis_permission_dialog_ok">OK</string>
-    <string name="mis_permission_dialog_cancel">CANCEL</string>
-    <string name="mis_permission_rationale">Storage read permission is needed to pick files.</string>
-    <string name="mis_permission_rationale_write_storage">Storage write permission is needed to save the image.</string>
-    <string name="sd_card">/sdcard</string>
-    <string name="select_phone">select photo</string>
-    <string name="select_video">select video</string>
+    <string name="sl_folder_image_all">All Images</string>
+    <string name="sl_folder_video_all">All Videos</string>
+    <string name="sl_preview">Preview</string>
+    <string name="sl_msg_no_camera">No system camera found</string>
+    <string name="sl_msg_amount_limit">Select images amount is limit</string>
+    <string name="sl_action_done">Done</string>
+    <string name="sl_action_button_string" translatable="false">%1$s(%2$d/%3$d)</string>
+    <string name="sl_photo_unit">%1$d Shot</string>
+    <string name="sl_no_photo_unit">* Shot</string>
+    <string name="sl_tip_take_photo">Take photo</string>
+    <string name="sl_error_image_not_exist">Image error</string>
+    <string name="sl_error_no_permission">Has no permission</string>
+    <string name="sl_permission_dialog_title">Permission Deny</string>
+    <string name="sl_permission_dialog_ok">OK</string>
+    <string name="sl_permission_dialog_cancel">Cancel</string>
+    <string name="sl_permission_rationale">Storage read permission is needed to pick files.</string>
+    <string name="sl_permission_rationale_write_storage">Storage write permission is needed to save the image.</string>
+    <string name="sl_sd_card" translatable="false">/sdcard</string>
+    <string name="sl_select_phone">select photo</string>
+    <string name="sl_select_video">select video</string>
 </resources>

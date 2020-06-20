@@ -12,6 +12,7 @@ import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.provider.MediaStore
 import android.text.TextUtils
 import android.view.LayoutInflater
@@ -32,8 +33,8 @@ import com.jhworks.library.core.vo.MediaType
 import com.jhworks.library.core.vo.MediaVo
 import com.jhworks.library.core.vo.SelectMode
 import com.jhworks.library.decoration.DividerGridItemDecoration
-import com.jhworks.library.utils.FileUtils
-import com.jhworks.library.utils.ScreenUtils
+import com.jhworks.library.utils.SlFileUtils
+import com.jhworks.library.utils.SlScreenUtils
 import java.io.File
 import java.io.IOException
 
@@ -104,7 +105,7 @@ class ImageSelectorFragment : MediaLoaderFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.mis_fragment_multi_image, container, false)
+        return inflater.inflate(R.layout.sl_fragment_multi_image, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -123,10 +124,10 @@ class ImageSelectorFragment : MediaLoaderFragment() {
         val imageSpanCount = imageSpanCount()
         mMediaAdapter = MediaAdapter(context!!, showCamera(), imageSpanCount, mMediaConfig)
         mMediaAdapter.showSelectIndicator = selectMode == SelectMode.MODE_MULTI
-        mRecyclerView = view.findViewById(R.id.grid)
+        mRecyclerView = view.findViewById(R.id.sl_grid)
         val layoutManager = GridLayoutManager(context, imageSpanCount)
         mRecyclerView.layoutManager = layoutManager
-        mRecyclerView.addItemDecoration(DividerGridItemDecoration(context!!, R.drawable.divider))
+        mRecyclerView.addItemDecoration(DividerGridItemDecoration(context!!, R.drawable.sl_divider))
         mRecyclerView.adapter = mMediaAdapter
         mMediaAdapter.mOnItemClickListener = object : OnItemClickListener {
             override fun onItemClick(media: MediaVo?, position: Int) {
@@ -155,8 +156,8 @@ class ImageSelectorFragment : MediaLoaderFragment() {
             }
         }
 
-        mPopupAnchorView = view.findViewById(R.id.footer)
-        mCategoryText = view.findViewById(R.id.category_btn)
+        mPopupAnchorView = view.findViewById(R.id.sl_footer)
+        mCategoryText = view.findViewById(R.id.sl_category_btn)
         setFolderName()
         mCategoryText.setOnClickListener { showFolderPopWin() }
 
@@ -223,9 +224,9 @@ class ImageSelectorFragment : MediaLoaderFragment() {
     private fun setFolderName() {
         mCategoryText.setText(
                 if (mMediaConfig?.mediaType == MediaType.IMAGE)
-                    R.string.mis_folder_image_all
+                    R.string.sl_folder_image_all
                 else
-                    R.string.mis_folder_video_all)
+                    R.string.sl_folder_video_all)
     }
 
     private fun openImageActivity(position: Int, mode: Int, path: String?) {
@@ -256,7 +257,7 @@ class ImageSelectorFragment : MediaLoaderFragment() {
                 mCallback?.onImageUnselected(media.path)
             } else {
                 if (selectImageCount() == mResultList.size) {
-                    Toast.makeText(activity, R.string.mis_msg_amount_limit, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(activity, R.string.sl_msg_amount_limit, Toast.LENGTH_SHORT).show()
                     return
                 }
                 mResultList.add(media.path!!)
@@ -287,7 +288,7 @@ class ImageSelectorFragment : MediaLoaderFragment() {
      * Create popup ListView
      */
     private fun createPopupFolderList() {
-        val point = ScreenUtils.getScreenSize(context!!)
+        val point = SlScreenUtils.getScreenSize(context!!)
         val width = point.x
         val height = (point.y * (4.5f / 8.0f)).toInt()
         mFolderPopupWindow = ListPopupWindow(activity!!)
@@ -337,13 +338,13 @@ class ImageSelectorFragment : MediaLoaderFragment() {
         if (ContextCompat.checkSelfPermission(context!!,
                         Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                    getString(R.string.mis_permission_rationale_write_storage),
+                    getString(R.string.sl_permission_rationale_write_storage),
                     REQUEST_STORAGE_WRITE_ACCESS_PERMISSION)
         } else {
             val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
             if (intent.resolveActivity(activity!!.packageManager) != null) {
                 try {
-                    mTmpFile = FileUtils.createTmpFile(activity!!)
+                    mTmpFile = SlFileUtils.createTmpFile(activity!!)
                 } catch (e: IOException) {
                     e.printStackTrace()
                 }
@@ -353,28 +354,36 @@ class ImageSelectorFragment : MediaLoaderFragment() {
                     } else {
                         val contentValues = ContentValues(1)
                         contentValues.put(MediaStore.Images.Media.DATA, mTmpFile?.absolutePath)
-                        val uri = context?.contentResolver?.insert(
-                                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
+                        val uri = createImageUri(contentValues)
                         intent.putExtra(MediaStore.EXTRA_OUTPUT, uri)
                     }
                     startActivityForResult(intent, REQUEST_CAMERA)
                 } else {
-                    Toast.makeText(activity, R.string.mis_error_image_not_exist, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(activity, R.string.sl_error_image_not_exist, Toast.LENGTH_SHORT).show()
                 }
             } else {
-                Toast.makeText(activity, R.string.mis_msg_no_camera, Toast.LENGTH_SHORT).show()
+                Toast.makeText(activity, R.string.sl_msg_no_camera, Toast.LENGTH_SHORT).show()
             }
+        }
+    }
+
+    private fun createImageUri(contentValues: ContentValues): Uri? {
+        val status: String = Environment.getExternalStorageState()
+        return if (status == Environment.MEDIA_MOUNTED) {
+            context?.let { context?.contentResolver?.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues) }
+        } else {
+            context?.let { context?.contentResolver?.insert(MediaStore.Images.Media.INTERNAL_CONTENT_URI, contentValues) }
         }
     }
 
     private fun requestPermission(permission: String, rationale: String, requestCode: Int) {
         if (shouldShowRequestPermissionRationale(permission)) {
             AlertDialog.Builder(context!!)
-                    .setTitle(R.string.mis_permission_dialog_title)
+                    .setTitle(R.string.sl_permission_dialog_title)
                     .setMessage(rationale)
-                    .setPositiveButton(R.string.mis_permission_dialog_ok) { _, _ ->
+                    .setPositiveButton(R.string.sl_permission_dialog_ok) { _, _ ->
                         requestPermissions(arrayOf(permission), requestCode)
-                    }.setNegativeButton(R.string.mis_permission_dialog_cancel, null)
+                    }.setNegativeButton(R.string.sl_permission_dialog_cancel, null)
                     .create()
                     .show()
         } else {

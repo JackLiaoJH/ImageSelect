@@ -4,18 +4,18 @@
     android:layout_height="wrap_content">
 
     <ImageView
-        android:id="@+id/image"
+        android:id="@+id/sl_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:scaleType="fitXY"
-        android:src="@drawable/ic_image_default" />
+        android:src="@drawable/ic_sl_image_default" />
 
     <androidx.appcompat.widget.AppCompatCheckBox
-        android:id="@+id/checkmark"
+        android:id="@+id/sl_checkmark"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
-        android:button="@drawable/ic_select_normal"
+        android:button="@drawable/ic_sl_select_normal"
         android:padding="5.5dp"
         android:visibility="gone" />
 

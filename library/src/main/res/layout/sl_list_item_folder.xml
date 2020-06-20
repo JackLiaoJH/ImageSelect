@@ -9,14 +9,14 @@
     android:paddingBottom="10dp">
 
     <ImageView
-        android:id="@+id/cover"
-        android:layout_width="@dimen/mis_folder_cover_size"
-        android:layout_height="@dimen/mis_folder_cover_size"
+        android:id="@+id/sl_cover"
+        android:layout_width="@dimen/sl_folder_cover_size"
+        android:layout_height="@dimen/sl_folder_cover_size"
         android:layout_centerVertical="true"
         android:layout_gravity="center_vertical"
         android:layout_marginStart="10dp"
         android:scaleType="centerInside"
-        android:src="@drawable/ic_image_default" />
+        android:src="@drawable/ic_sl_image_default" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -24,12 +24,12 @@
         android:layout_centerVertical="true"
         android:layout_gravity="center_vertical"
         android:layout_marginStart="16dp"
-        android:layout_toStartOf="@+id/indicator"
-        android:layout_toEndOf="@+id/cover"
+        android:layout_toStartOf="@+id/sl_indicator"
+        android:layout_toEndOf="@+id/sl_cover"
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/name"
+            android:id="@+id/sl_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@android:color/black"
@@ -37,7 +37,7 @@
             tools:text="img" />
 
         <TextView
-            android:id="@+id/path"
+            android:id="@+id/sl_path"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ellipsize="middle"
@@ -47,7 +47,7 @@
             tools:text="/sdcard/a/" />
 
         <TextView
-            android:id="@+id/size"
+            android:id="@+id/sl_size"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
@@ -60,13 +60,13 @@
     </LinearLayout>
 
     <ImageView
-        android:id="@+id/indicator"
+        android:id="@+id/sl_indicator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:layout_gravity="center_vertical"
         android:layout_marginEnd="18dp"
-        android:src="@drawable/ic_select_pressed" />
+        android:src="@drawable/ic_sl_select_pressed" />
 
 </RelativeLayout>

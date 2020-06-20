@@ -5,34 +5,34 @@
     android:layout_height="match_parent">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/grid"
+        android:id="@+id/sl_grid"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingStart="@dimen/mis_space_size"
-        android:paddingBottom="@dimen/mis_bottom_size"
+        android:paddingStart="@dimen/sl_space_size"
+        android:paddingBottom="@dimen/sl_bottom_size"
         android:scrollbars="vertical"
         tools:ignore="RtlSymmetry" />
 
     <FrameLayout
-        android:id="@+id/footer"
+        android:id="@+id/sl_footer"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/mis_bottom_size"
+        android:layout_height="@dimen/sl_bottom_size"
         android:layout_gravity="bottom"
         android:background="#cc000000">
 
         <Button
-            android:id="@+id/category_btn"
+            android:id="@+id/sl_category_btn"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:background="@null"
-            android:drawableEnd="@drawable/ic_signal_cellular_0_bar_black_24dp"
+            android:drawableEnd="@drawable/ic_sl_signal_cellular_black"
             android:drawablePadding="5dp"
             android:ellipsize="end"
             android:gravity="center_vertical"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
             android:singleLine="true"
-            android:textColor="@color/mis_folder_text_color"
+            android:textColor="@color/sl_folder_text_color"
             android:textSize="16sp"
             tools:text="所有图片" />
 

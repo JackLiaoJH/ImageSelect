@@ -82,15 +82,15 @@ class ImageSelectActivity : ImagePermissionActivity(), ImageSelectorFragment.Cal
 
         requestPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
 
-        setTheme(R.style.MIS_NO_ACTIONBAR)
-        setContentView(R.layout.activity_image_select)
-        mToolbar = findViewById(R.id.toolbar)
-        mSubmitButton = findViewById(R.id.commit)
+        setTheme(R.style.SL_NO_ACTIONBAR)
+        setContentView(R.layout.activity_sl_image_select)
+        mToolbar = findViewById(R.id.sl_toolbar)
+        mSubmitButton = findViewById(R.id.sl_commit)
         mToolbar?.setTitle(
                 if (mMediaConfig?.mediaType == MediaType.IMAGE)
-                    R.string.select_phone
+                    R.string.sl_select_phone
                 else
-                    R.string.select_video)
+                    R.string.sl_select_video)
         initToolBar(true)
 
         if (mMediaConfig!!.selectMode == SelectMode.MODE_MULTI) {
@@ -121,7 +121,7 @@ class ImageSelectActivity : ImagePermissionActivity(), ImageSelectorFragment.Cal
         val bundle = Bundle()
         bundle.putParcelable(KEY_MEDIA_SELECT_CONFIG, mMediaConfig)
         supportFragmentManager.beginTransaction()
-                .add(R.id.image_grid, Fragment.instantiate(this,
+                .add(R.id.sl_image_grid, Fragment.instantiate(this,
                         ImageSelectorFragment::class.java.name, bundle))
                 .commit()
     }
@@ -143,14 +143,14 @@ class ImageSelectActivity : ImagePermissionActivity(), ImageSelectorFragment.Cal
     private fun updateDoneText(resultList: MutableList<String>?) {
         var size = 0
         if (resultList == null || resultList.size <= 0) {
-            mSubmitButton.setText(R.string.mis_action_done)
+            mSubmitButton.setText(R.string.sl_action_done)
             mSubmitButton.isEnabled = false
         } else {
             size = resultList.size
             mSubmitButton.isEnabled = true
         }
-        mSubmitButton.text = getString(R.string.mis_action_button_string,
-                getString(R.string.mis_action_done), size, mMediaConfig?.maxCount ?: 0)
+        mSubmitButton.text = getString(R.string.sl_action_button_string,
+                getString(R.string.sl_action_done), size, mMediaConfig?.maxCount ?: 0)
     }
 
     override fun onSingleImageSelected(path: String?) {

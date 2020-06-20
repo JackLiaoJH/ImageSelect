@@ -14,7 +14,7 @@ import com.jhworks.library.R
 import com.jhworks.library.core.vo.MediaConfigVo
 import com.jhworks.library.core.vo.MediaUiConfigVo
 import com.jhworks.library.core.vo.MediaVo
-import com.jhworks.library.utils.ScreenUtils
+import com.jhworks.library.utils.SlScreenUtils
 import java.io.File
 
 /**
@@ -25,7 +25,7 @@ import java.io.File
  */
 class MediaAdapter(context: Context,
                    private var showCamera: Boolean,
-                   column: Int,
+                   private val column: Int,
                    mediaConfig: MediaConfigVo?)
     : RecyclerView.Adapter<MediaHolder>() {
     companion object {
@@ -42,22 +42,22 @@ class MediaAdapter(context: Context,
     private var mLayoutParams: FrameLayout.LayoutParams
     var showSelectIndicator = true
 
-    var placeholderResId = mediaConfig?.placeholderResId ?: R.drawable.ic_image_default
-    var errorResId = mediaConfig?.errorResId ?: R.drawable.ic_image_default
+    var placeholderResId = mediaConfig?.placeholderResId ?: R.drawable.ic_sl_image_default
+    var errorResId = mediaConfig?.errorResId ?: R.drawable.ic_sl_image_default
 
     init {
-        val screenSize = ScreenUtils.getScreenSize(context)
+        val screenSize = SlScreenUtils.getScreenSize(context)
         val width = screenSize.x
-        val mSpaceSize = context.resources.getDimensionPixelSize(R.dimen.mis_space_size)
+        val mSpaceSize = context.resources.getDimensionPixelSize(R.dimen.sl_space_size)
         mGridWidth = (width - mSpaceSize * (2 + column - 1)) / column
         mLayoutParams = FrameLayout.LayoutParams(mGridWidth, mGridWidth)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MediaHolder {
         return if (viewType == TYPE_CAMERA) {
-            MediaHolder(mInflater.inflate(R.layout.mis_list_item_camera, parent, false), this)
+            MediaHolder(mInflater.inflate(R.layout.sl_list_item_camera, parent, false), this)
         } else {
-            MediaHolder(mInflater.inflate(R.layout.mis_list_item_image, parent, false), this)
+            MediaHolder(mInflater.inflate(R.layout.sl_list_item_image, parent, false), this)
         }
     }
 
@@ -166,8 +166,8 @@ class MediaAdapter(context: Context,
 
 class MediaHolder(itemView: View, private val adapter: MediaAdapter)
     : RecyclerView.ViewHolder(itemView) {
-    var image: ImageView? = itemView.findViewById(R.id.image)
-    private var mCheckBox: AppCompatCheckBox? = itemView.findViewById(R.id.checkmark)
+    var image: ImageView? = itemView.findViewById(R.id.sl_image)
+    private var mCheckBox: AppCompatCheckBox? = itemView.findViewById(R.id.sl_checkmark)
 
     init {
         itemView.tag = this
@@ -183,9 +183,9 @@ class MediaHolder(itemView: View, private val adapter: MediaAdapter)
             }
             mCheckBox?.setButtonDrawable(
                     if (adapter.mSelectedImages.contains(data))
-                        R.drawable.ic_select_pressed
+                        R.drawable.ic_sl_select_pressed
                     else
-                        R.drawable.ic_select_normal)
+                        R.drawable.ic_sl_select_normal)
         } else {
             mCheckBox?.visibility = View.GONE
         }

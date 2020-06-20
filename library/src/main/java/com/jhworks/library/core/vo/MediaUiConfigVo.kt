@@ -14,8 +14,8 @@ class MediaUiConfigVo(
         var height: Int = -1,
 
         @DrawableRes
-        var placeholderResId: Int = R.drawable.ic_image_default,
+        var placeholderResId: Int = R.drawable.ic_sl_image_default,
 
         @DrawableRes
-        var errorResId: Int = R.drawable.ic_image_default) {
+        var errorResId: Int = R.drawable.ic_sl_image_default) {
 }

@@ -7,7 +7,7 @@ import android.view.WindowManager
 /**
  * 屏幕工具
  */
-object ScreenUtils {
+object SlScreenUtils {
 
     fun getScreenSize(context: Context): Point {
         val wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager

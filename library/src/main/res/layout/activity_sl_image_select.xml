@@ -7,37 +7,36 @@
     android:orientation="vertical">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
+        android:id="@+id/sl_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/mis_actionbar_color"
-        android:minHeight="?android:attr/actionBarSize"
+        android:layout_height="@dimen/sl_toolbar_height"
+        android:background="@color/sl_actionbar_color"
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
         <Button
-            android:id="@+id/commit"
+            android:id="@+id/sl_commit"
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:layout_marginEnd="16dp"
-            android:background="@drawable/mis_action_btn"
+            android:background="@drawable/sl_action_btn"
             android:minWidth="1dp"
             android:minHeight="1dp"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
             android:paddingRight="10dp"
             android:paddingBottom="5dp"
-            android:textColor="@color/mis_default_text_color"
+            android:textColor="@color/sl_default_text_color"
             android:textSize="14sp"
             tools:text="完成(1/3)" />
 
     </androidx.appcompat.widget.Toolbar>
 
     <FrameLayout
-        android:id="@+id/image_grid"
+        android:id="@+id/sl_image_grid"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="?android:attr/actionBarSize" />
+        android:layout_marginTop="@dimen/sl_toolbar_height" />
 
 </merge>

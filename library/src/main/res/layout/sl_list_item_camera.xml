@@ -10,14 +10,14 @@
     <ImageView
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:src="@drawable/mis_asy"/>
+        android:src="@drawable/sl_asy"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingBottom="10dp"
         android:paddingTop="10dp"
-        android:text="@string/mis_tip_take_photo"
+        android:text="@string/sl_tip_take_photo"
         android:textColor="#CDCECE"
         android:textSize="14sp"/>
 

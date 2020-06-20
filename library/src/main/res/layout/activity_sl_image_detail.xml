@@ -3,30 +3,29 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/lc_000000"
+    android:background="@color/sl_000000"
     android:gravity="center">
 
     <com.jhworks.library.view.HackyViewPager
-        android:id="@+id/view_pager"
+        android:id="@+id/sl_view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
+        android:id="@+id/sl_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="?android:attr/actionBarSize"
-        android:background="@color/lc_80000000"
-        android:minHeight="?android:attr/actionBarSize"
+        android:layout_height="@dimen/sl_toolbar_height"
+        android:background="@color/sl_80000000"
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
         <androidx.appcompat.widget.AppCompatCheckBox
-            android:id="@+id/check_image"
+            android:id="@+id/sl_check_image"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="end"
             android:background="@null"
-            android:button="@drawable/ic_select_normal"
+            android:button="@drawable/ic_sl_select_normal"
             android:gravity="center_vertical"
             android:paddingStart="18dp"
             android:paddingEnd="18dp" />

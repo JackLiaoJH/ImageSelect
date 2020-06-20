@@ -35,10 +35,10 @@ class ImageDetailActivity : ImageBaseActivity(), OnPageChangeListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_image_detail)
-        mToolbar = findViewById(R.id.toolbar)
-        mCheckBox = findViewById(R.id.check_image)
-        mViewPager = findViewById(R.id.view_pager)
+        setContentView(R.layout.activity_sl_image_detail)
+        mToolbar = findViewById(R.id.sl_toolbar)
+        mCheckBox = findViewById(R.id.sl_check_image)
+        mViewPager = findViewById(R.id.sl_view_pager)
         initToolBar(false)
 
         mCurrentPosition = intent.getIntExtra(MediaConstant.KEY_EXTRA_CURRENT_POSITION, 0)
@@ -57,7 +57,7 @@ class ImageDetailActivity : ImageBaseActivity(), OnPageChangeListener {
         mCheckBox.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { _, b ->
             if (mAllMediaList != null && mAllMediaList!!.isNotEmpty()) {
                 if (maxImageCount == mSelectList.size && b) {
-                    Toast.makeText(this@ImageDetailActivity, R.string.mis_msg_amount_limit, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@ImageDetailActivity, R.string.sl_msg_amount_limit, Toast.LENGTH_SHORT).show()
                     return@OnCheckedChangeListener
                 }
                 val media = mAllMediaList!![mCurrentPosition]
@@ -65,7 +65,7 @@ class ImageDetailActivity : ImageBaseActivity(), OnPageChangeListener {
                     media.isSelect = b
                     if (b) mSelectList.add(media.path) else mSelectList.remove(media.path)
                     mCheckBox.setButtonDrawable(
-                            if (media.isSelect) R.drawable.ic_select_pressed else R.drawable.ic_select_normal)
+                            if (media.isSelect) R.drawable.ic_sl_select_pressed else R.drawable.ic_sl_select_normal)
                 }
             }
         })
@@ -96,7 +96,7 @@ class ImageDetailActivity : ImageBaseActivity(), OnPageChangeListener {
             val media = mAllMediaList!![position]
             if (setCheckStatus) mCheckBox.isChecked = media.isSelect
             mCheckBox.setButtonDrawable(
-                    if (media.isSelect) R.drawable.ic_select_pressed else R.drawable.ic_select_normal)
+                    if (media.isSelect) R.drawable.ic_sl_select_pressed else R.drawable.ic_sl_select_normal)
         }
     }
 
@@ -127,7 +127,6 @@ class ImageDetailActivity : ImageBaseActivity(), OnPageChangeListener {
             private val mContext: Context,
             private val mMedias: MutableList<MediaVo>)
         : PagerAdapter() {
-        //        private val mRequestOptions: RequestOptions
         override fun getCount(): Int {
             return mMedias.size
         }
@@ -139,11 +138,6 @@ class ImageDetailActivity : ImageBaseActivity(), OnPageChangeListener {
         override fun instantiateItem(container: ViewGroup, position: Int): Any {
             val photoView = PhotoView(mContext)
             val media = mMedias[position]
-            // todo
-//            Glide.with(container.context)
-//                    .load(media.path)
-//                    .apply(mRequestOptions)
-//                    .into(photoView)
             val uiConfig = MediaUiConfigVo(media.path)
             ImageSelector.getImageEngine().loadImage(photoView, uiConfig)
             container.addView(photoView)
@@ -152,15 +146,6 @@ class ImageDetailActivity : ImageBaseActivity(), OnPageChangeListener {
 
         override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
             container.removeView(`object` as View)
-        }
-
-        init {
-//            mRequestOptions = RequestOptions()
-//                    .centerCrop()
-//                    .placeholder(R.mipmap.ic_image_default)
-//                    .error(R.mipmap.ic_image_default)
-//                    .fitCenter()
-//                    .priority(Priority.HIGH)
         }
     }
 }

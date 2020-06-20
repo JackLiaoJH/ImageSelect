@@ -19,7 +19,7 @@ import java.io.File
  * @date 2020/6/11 9:36
  */
 object MediaParse {
-    const val KEY_TYPE_CATEGORY = "path"
+    private const val KEY_TYPE_CATEGORY = "path"
 
     private val IMAGE_PROJECTION = arrayOf(
             MediaStore.Images.ImageColumns._ID,
@@ -42,12 +42,12 @@ object MediaParse {
             MediaStore.Images.ImageColumns.DISPLAY_NAME,
             MediaStore.Images.ImageColumns.DATE_ADDED,
             MediaStore.Images.ImageColumns.SIZE)
-     val MEDIA_IMAGE_URI = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-     val MEDIA_VIDEO_URI = MediaStore.Video.Media.EXTERNAL_CONTENT_URI
+    val MEDIA_IMAGE_URI: Uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+    val MEDIA_VIDEO_URI: Uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI
 
 
-     fun queryImages(context: Context, mediaId: Int, bundle: Bundle?,
-                            resultFolder: MutableList<FolderVo>): MutableList<MediaVo>? {
+    fun queryImages(context: Context, mediaId: Int, bundle: Bundle?,
+                    resultFolder: MutableList<FolderVo>): MutableList<MediaVo>? {
         val selectAction = StringBuilder()
         var selectArgs: Array<String>? = null
         if (mediaId == R.id.loader_all_media_store_data) {
@@ -76,15 +76,20 @@ object MediaParse {
         return query(MEDIA_IMAGE_URI, cursor, MediaType.IMAGE, resultFolder)
     }
 
-     fun queryVideos(context: Context, resultFolder: MutableList<FolderVo>): MutableList<MediaVo>? {
-        val cursor = context.contentResolver.query(
-                MEDIA_VIDEO_URI,
-                VIDEO_PROJECTION,
-                null,
-                null,
-                "${VIDEO_PROJECTION[1]} DESC"
-        )
-        return query(MEDIA_VIDEO_URI, cursor, MediaType.VIDEO, resultFolder)
+    fun queryVideos(context: Context, resultFolder: MutableList<FolderVo>): MutableList<MediaVo>? {
+        try {
+            val cursor = context.contentResolver.query(
+                    MEDIA_VIDEO_URI,
+                    VIDEO_PROJECTION,
+                    null,
+                    null,
+                    "${VIDEO_PROJECTION[1]} DESC"
+            )
+            return query(MEDIA_VIDEO_URI, cursor, MediaType.VIDEO, resultFolder)
+        } catch (e: IllegalArgumentException) {
+            // nothing
+        }
+        return null
     }
 
     private fun query(contentUri: Uri, cursor: Cursor?, @MediaType type: Int,

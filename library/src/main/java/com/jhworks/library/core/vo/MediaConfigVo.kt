@@ -24,9 +24,9 @@ data class MediaConfigVo(
         @MediaType
         var mediaType: Int = MediaType.IMAGE,
         @DrawableRes
-        var errorResId: Int = R.drawable.ic_image_default,
+        var errorResId: Int = R.drawable.ic_sl_image_default,
         @DrawableRes
-        var placeholderResId: Int = R.drawable.ic_image_default
+        var placeholderResId: Int = R.drawable.ic_sl_image_default
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
             parcel.readByte() != 0.toByte(),
