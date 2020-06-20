@@ -7,7 +7,7 @@ android 经量级选择图片框架，支持拍照，获取相册图片,获取�
   1. 新增对图片列表展示的个数；
   2. 将图片的加载框架默认不处理，需要自己去实现IEngine接口来实现图片加载，详情查看demo里面的GlideEngine.kt类；
   3. 新增多图选择时，点击图片进入产看图片模式，方便预览；
-  4. 集成5.0以上权限处理问题；
+  4. 集成5.0以上权限处理问题,处理android q兼容问题；
   5. 支持Androidx;
   6. 支持视频加载展示，优化了api接口调用。
   
@@ -42,7 +42,7 @@ allprojects {
 
 - step2: Add the dependency
 ```groovy
-implementation 'com.github.JackLiaoJH:ImageSelect:1.2.0'
+implementation 'com.github.JackLiaoJH:ImageSelect:1.2.1'
 ```
 
   
