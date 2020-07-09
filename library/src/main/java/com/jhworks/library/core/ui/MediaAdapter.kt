@@ -11,9 +11,11 @@ import androidx.appcompat.widget.AppCompatCheckBox
 import androidx.recyclerview.widget.RecyclerView
 import com.jhworks.library.ImageSelector
 import com.jhworks.library.R
+import com.jhworks.library.core.MediaConstant
 import com.jhworks.library.core.vo.MediaConfigVo
 import com.jhworks.library.core.vo.MediaUiConfigVo
 import com.jhworks.library.core.vo.MediaVo
+import com.jhworks.library.core.vo.SelectMode
 import com.jhworks.library.utils.SlScreenUtils
 import java.io.File
 
@@ -25,7 +27,7 @@ import java.io.File
  */
 class MediaAdapter(context: Context,
                    private var showCamera: Boolean,
-                   private val column: Int,
+                   column: Int,
                    mediaConfig: MediaConfigVo?)
     : RecyclerView.Adapter<MediaHolder>() {
     companion object {
@@ -33,7 +35,6 @@ class MediaAdapter(context: Context,
         private const val TYPE_NORMAL = 1
     }
 
-    val mSelectedImages = arrayListOf<MediaVo>()
     private var mImages = arrayListOf<MediaVo>()
 
     var mOnItemClickListener: OnItemClickListener? = null
@@ -44,6 +45,7 @@ class MediaAdapter(context: Context,
 
     var placeholderResId = mediaConfig?.placeholderResId ?: R.drawable.ic_sl_image_default
     var errorResId = mediaConfig?.errorResId ?: R.drawable.ic_sl_image_default
+    private val mMaxSelectCount = mediaConfig?.maxCount ?: MediaConstant.DEFAULT_IMAGE_SIZE
 
     init {
         val screenSize = SlScreenUtils.getScreenSize(context)
@@ -55,9 +57,9 @@ class MediaAdapter(context: Context,
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MediaHolder {
         return if (viewType == TYPE_CAMERA) {
-            MediaHolder(mInflater.inflate(R.layout.sl_list_item_camera, parent, false), this)
+            MediaHolder(mInflater.inflate(R.layout.sl_list_item_camera, parent, false), this, mMaxSelectCount)
         } else {
-            MediaHolder(mInflater.inflate(R.layout.sl_list_item_image, parent, false), this)
+            MediaHolder(mInflater.inflate(R.layout.sl_list_item_image, parent, false), this, mMaxSelectCount)
         }
     }
 
@@ -88,7 +90,7 @@ class MediaAdapter(context: Context,
         }
     }
 
-    private fun getItem(i: Int): MediaVo? {
+    fun getItem(i: Int): MediaVo? {
         return if (showCamera) {
             if (i == 0) null else mImages[i - 1]
         } else {
@@ -102,7 +104,6 @@ class MediaAdapter(context: Context,
      * @param images -
      */
     fun setData(images: MutableList<MediaVo>?) {
-        mSelectedImages.clear()
         mImages.clear()
         if (images != null && images.size > 0) {
             mImages.addAll(images)
@@ -119,52 +120,9 @@ class MediaAdapter(context: Context,
     fun isShowCamera(): Boolean {
         return showCamera
     }
-
-    /**
-     * 选择某个图片，改变选择状态
-     *
-     * @param media -
-     */
-    fun select(media: MediaVo) {
-        if (mSelectedImages.contains(media)) {
-            mSelectedImages.remove(media)
-        } else {
-            mSelectedImages.add(media)
-        }
-        notifyDataSetChanged()
-    }
-
-    /**
-     * 通过图片路径设置默认选择
-     *
-     * @param resultList -
-     */
-    fun setDefaultSelected(resultList: MutableList<String>) {
-        var media: MediaVo?
-        for (path in resultList) {
-            media = getImageByPath(path)
-            if (media != null) {
-                mSelectedImages.add(media)
-            }
-        }
-        if (mSelectedImages.size > 0) {
-            notifyDataSetChanged()
-        }
-    }
-
-    private fun getImageByPath(path: String): MediaVo? {
-        if (mImages.size > 0) {
-            for (media in mImages) {
-                if (media.path != null && media.path.equals(path, ignoreCase = true)) {
-                    return media
-                }
-            }
-        }
-        return null
-    }
 }
 
-class MediaHolder(itemView: View, private val adapter: MediaAdapter)
+class MediaHolder(itemView: View, private val adapter: MediaAdapter, private val maxCount: Int)
     : RecyclerView.ViewHolder(itemView) {
     var image: ImageView? = itemView.findViewById(R.id.sl_image)
     private var mCheckBox: AppCompatCheckBox? = itemView.findViewById(R.id.sl_checkmark)
@@ -179,13 +137,12 @@ class MediaHolder(itemView: View, private val adapter: MediaAdapter)
         if (adapter.showSelectIndicator) {
             mCheckBox?.visibility = View.VISIBLE
             mCheckBox?.setOnClickListener {
+                if (MediaConstant.getSelectMediaList().size >= maxCount) {
+                    mCheckBox?.isChecked = false
+                }
                 adapter.mOnItemClickListener?.onCheckClick(data, position)
             }
-            mCheckBox?.setButtonDrawable(
-                    if (adapter.mSelectedImages.contains(data))
-                        R.drawable.ic_sl_select_pressed
-                    else
-                        R.drawable.ic_sl_select_normal)
+            mCheckBox?.isChecked = data.isSelect
         } else {
             mCheckBox?.visibility = View.GONE
         }

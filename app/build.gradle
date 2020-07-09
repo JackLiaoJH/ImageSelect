@@ -69,8 +69,8 @@ dependencies {
     debugImplementation deps.blockcanary.debug
     releaseImplementation deps.blockcanary.release
 
-//    implementation project(':library')
-    implementation 'com.github.JackLiaoJH:ImageSelect:1.2.1'
+    implementation project(':library')
+//    implementation 'com.github.JackLiaoJH:ImageSelect:1.2.1'
 }
 repositories {
     mavenCentral()

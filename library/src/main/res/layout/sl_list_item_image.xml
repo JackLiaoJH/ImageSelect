@@ -1,22 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/sl_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:scaleType="fitXY"
         android:src="@drawable/ic_sl_image_default" />
 
+<!--    <View-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:background="@drawable/sl_bg_shadow" />-->
+
     <androidx.appcompat.widget.AppCompatCheckBox
         android:id="@+id/sl_checkmark"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
-        android:button="@drawable/ic_sl_select_normal"
-        android:padding="5.5dp"
-        android:visibility="gone" />
+        android:button="@drawable/sl_bg_checkbox"
+        android:padding="8dp"
+        android:visibility="gone"
+        tools:visibility="visible" />
 
 </FrameLayout>

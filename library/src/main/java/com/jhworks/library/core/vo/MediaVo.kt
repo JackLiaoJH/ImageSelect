@@ -3,6 +3,7 @@ package com.jhworks.library.core.vo
 import android.net.Uri
 import android.os.Parcel
 import android.os.Parcelable
+import android.text.TextUtils
 
 
 /**
@@ -58,6 +59,15 @@ data class MediaVo(
 
     override fun describeContents(): Int {
         return 0
+    }
+
+    override fun equals(o: Any?): Boolean {
+        if (this === o) return true
+        if (o == null || javaClass != o.javaClass) return false
+
+        val otherMedia = o as MediaVo
+
+        return TextUtils.equals(path, otherMedia.path)
     }
 
     override fun toString(): String {

@@ -16,7 +16,10 @@
     <string name="sl_permission_dialog_cancel">Cancel</string>
     <string name="sl_permission_rationale">Storage read permission is needed to pick files.</string>
     <string name="sl_permission_rationale_write_storage">Storage write permission is needed to save the image.</string>
+    <string name="sl_permission_camera">You need to grant permission to take photos.</string>
     <string name="sl_sd_card" translatable="false">/sdcard</string>
     <string name="sl_select_phone">select photo</string>
     <string name="sl_select_video">select video</string>
+
+    <string name="sl_menu_crop">Crop</string>
 </resources>

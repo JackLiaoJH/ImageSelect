@@ -16,6 +16,9 @@
     <string name="sl_permission_dialog_cancel">拒绝</string>
     <string name="sl_permission_rationale">浏览图片需要您提供浏览存储的权限</string>
     <string name="sl_permission_rationale_write_storage">保存拍照图片需要您提供写存储权限</string>
+    <string name="sl_permission_camera">需要授予拍照权限才能拍照</string>
     <string name="sl_select_phone">选择图片</string>
     <string name="sl_select_video">选择视频</string>
+
+    <string name="sl_menu_crop">裁剪</string>
 </resources>

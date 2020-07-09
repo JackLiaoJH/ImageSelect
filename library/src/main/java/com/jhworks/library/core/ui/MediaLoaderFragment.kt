@@ -1,9 +1,12 @@
 package com.jhworks.library.core.ui
 
+import android.content.pm.PackageManager
 import android.os.Bundle
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.loader.app.LoaderManager
 import androidx.loader.content.Loader
+import com.jhworks.library.core.MediaConstant
 import com.jhworks.library.core.MediaConstant.DEFAULT_IMAGE_SIZE
 import com.jhworks.library.core.MediaConstant.DEFAULT_IMAGE_SPAN_COUNT
 import com.jhworks.library.core.MediaConstant.KEY_MEDIA_SELECT_CONFIG
@@ -22,10 +25,9 @@ import com.jhworks.library.core.vo.SelectMode
 abstract class MediaLoaderFragment : Fragment(), LoaderManager.LoaderCallbacks<MutableList<MediaVo>> {
     protected var mMediaConfig: MediaConfigVo? = null
 
-
     // folder result data set
     protected val mResultFolder = arrayListOf<FolderVo>()
-    protected val mAllMediaList = arrayListOf<MediaVo>()
+    protected var isRestartLoaded = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,8 +44,8 @@ abstract class MediaLoaderFragment : Fragment(), LoaderManager.LoaderCallbacks<M
         if (loader is MediaLoader) {
             if (mResultFolder.isNotEmpty()) mResultFolder.clear()
             mResultFolder.addAll(loader.getResultFolder())
-            if (mAllMediaList.isNotEmpty()) mAllMediaList.clear()
-            mAllMediaList.addAll(data)
+
+            if (isRestartLoaded) setAllMediaList(data)
             // 更新ui
             onLoadFinishedUpdateUi(data)
         }
@@ -61,7 +63,7 @@ abstract class MediaLoaderFragment : Fragment(), LoaderManager.LoaderCallbacks<M
         return if (mMediaConfig == null) SelectMode.MODE_MULTI else mMediaConfig!!.selectMode
     }
 
-    protected fun selectImageCount(): Int {
+    protected fun selectImageMaxCount(): Int {
         return if (mMediaConfig == null) DEFAULT_IMAGE_SIZE else mMediaConfig!!.maxCount
     }
 
@@ -71,6 +73,28 @@ abstract class MediaLoaderFragment : Fragment(), LoaderManager.LoaderCallbacks<M
 
     protected fun showCamera(): Boolean {
         return mMediaConfig != null && mMediaConfig!!.isShowCamera
+    }
+
+    protected fun setAllMediaList(data: MutableList<MediaVo>?) {
+        if (selectMode() == SelectMode.MODE_MULTI) {
+            val selectList = MediaConstant.getSelectMediaList()
+            mMediaConfig?.originData?.forEach { selectPath ->
+                run breaking@{
+                    data?.forEach {
+                        if (it.path == selectPath) {
+                            it.isSelect = true
+                            if (!selectList.contains(it)) selectList.add(it)
+                            return@breaking
+                        }
+                    }
+                }
+            }
+        }
+        MediaConstant.setAllMediaList(data)
+    }
+
+    protected fun checkPermission(permission: String): Boolean {
+        return ContextCompat.checkSelfPermission(context!!, permission) != PackageManager.PERMISSION_GRANTED
     }
 
     abstract fun onLoadFinishedUpdateUi(data: MutableList<MediaVo>?)

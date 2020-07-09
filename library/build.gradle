@@ -20,6 +20,8 @@ android {
     lintOptions {
         abortOnError false
     }
+
+    resourcePrefix 'sl_'
 }
 
 dependencies {
@@ -28,8 +30,10 @@ dependencies {
     implementation deps.androidx.appcompat
     implementation deps.androidx.core_ktx
     implementation deps.androidx.recyclerview
+    implementation deps.androidx.exifinterface
 
     implementation deps.photoview
+    implementation "com.squareup.okhttp3:okhttp:3.12.1"
 }
 repositories {
     mavenCentral()

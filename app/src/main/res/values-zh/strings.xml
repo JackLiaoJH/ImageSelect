@@ -18,4 +18,14 @@
     <string name="open_video">视频选择</string>
     <string name="image_content_description">图片</string>
 
+    <string name="test_crop">测试裁剪</string>
+    <string name="label_aspect_ratio">宽高比</string>
+    <string name="label_freestyle_crop">自定义裁剪</string>
+    <string name="label_dynamic">动态</string>
+    <string name="label_image_source">图片源</string>
+    <string name="label_square">正方形裁剪</string>
+    <string name="label_max_cropped_image_size">图片最大裁剪大小</string>
+    <string name="label_resize_image_to_max_size">Resize image to max size</string>
+    <string name="label_compression_settings">Compression settings</string>
+    <string name="label_hide_bottom_ui_controls">隐藏底部控制ui</string>
 </resources>

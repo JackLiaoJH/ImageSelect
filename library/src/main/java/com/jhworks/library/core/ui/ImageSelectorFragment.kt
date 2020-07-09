@@ -14,7 +14,6 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
-import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,10 +21,10 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.ListPopupWindow
-import androidx.core.content.ContextCompat
 import androidx.loader.app.LoaderManager
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.SimpleItemAnimator
 import com.jhworks.library.R
 import com.jhworks.library.core.MediaConstant
 import com.jhworks.library.core.vo.FolderVo
@@ -46,7 +45,7 @@ import java.io.IOException
  */
 class ImageSelectorFragment : MediaLoaderFragment() {
     companion object {
-        private const val REQUEST_STORAGE_WRITE_ACCESS_PERMISSION = 110
+        private const val REQUEST_CAMERA_PERMISSION = 110
         private const val REQUEST_CAMERA = 100
         const val REQUEST_IMAGE_VIEW = 120
 
@@ -67,10 +66,7 @@ class ImageSelectorFragment : MediaLoaderFragment() {
 
     private var mTmpFile: File? = null
 
-    // image result data set
-    private var mResultList = arrayListOf<String>()
     private var hasFolderGened = false
-    private var isRestartLoaded = true
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -93,17 +89,6 @@ class ImageSelectorFragment : MediaLoaderFragment() {
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        val selectMode = selectMode()
-        if (selectMode == SelectMode.MODE_MULTI
-                && mMediaConfig != null
-                && mMediaConfig!!.originData != null) {
-            if (mResultList.isNotEmpty()) mResultList.clear()
-            mResultList.addAll(mMediaConfig!!.originData!!)
-        }
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.sl_fragment_multi_image, container, false)
     }
@@ -120,6 +105,7 @@ class ImageSelectorFragment : MediaLoaderFragment() {
             showCameraAction()
             return
         }
+
         val selectMode = selectMode()
         val imageSpanCount = imageSpanCount()
         mMediaAdapter = MediaAdapter(context!!, showCamera(), imageSpanCount, mMediaConfig)
@@ -128,11 +114,22 @@ class ImageSelectorFragment : MediaLoaderFragment() {
         val layoutManager = GridLayoutManager(context, imageSpanCount)
         mRecyclerView.layoutManager = layoutManager
         mRecyclerView.addItemDecoration(DividerGridItemDecoration(context!!, R.drawable.sl_divider))
+        closeDefaultAnimator()
         mRecyclerView.adapter = mMediaAdapter
+
         mMediaAdapter.mOnItemClickListener = object : OnItemClickListener {
             override fun onItemClick(media: MediaVo?, position: Int) {
                 if (mMediaAdapter.isShowCamera()) {
                     if (position == 0) {
+                        if (selectMode == SelectMode.MODE_SINGLE) {
+                            showCameraAction()
+                            return
+                        }
+                        val selectList = MediaConstant.getSelectMediaList()
+                        if (selectImageMaxCount() <= selectList.size) {
+                            Toast.makeText(activity, R.string.sl_msg_amount_limit, Toast.LENGTH_SHORT).show()
+                            return
+                        }
                         showCameraAction()
                     } else {
                         openImageActivity(position - 1, selectMode, media?.path)
@@ -144,14 +141,19 @@ class ImageSelectorFragment : MediaLoaderFragment() {
 
             override fun onCheckClick(media: MediaVo?, position: Int) {
                 media ?: return
+                val selectList = MediaConstant.getSelectMediaList()
                 if (mMediaAdapter.isShowCamera()) {
                     if (position == 0) {
+                        if (selectImageMaxCount() <= selectList.size) {
+                            Toast.makeText(activity, R.string.sl_msg_amount_limit, Toast.LENGTH_SHORT).show()
+                            return
+                        }
                         showCameraAction()
                     } else {
-                        selectImageFromGrid(media, selectMode)
+                        selectImageFromGrid(media, selectMode, position)
                     }
                 } else {
-                    selectImageFromGrid(media, selectMode)
+                    selectImageFromGrid(media, selectMode, position)
                 }
             }
         }
@@ -194,15 +196,10 @@ class ImageSelectorFragment : MediaLoaderFragment() {
             }
         } else if (requestCode == REQUEST_IMAGE_VIEW) {
             if (resultCode == Activity.RESULT_OK) {
-                if (data != null) {
-                    if (mResultList.isNotEmpty()) mResultList.clear()
-                    val selectList = data.getStringArrayListExtra(MediaConstant.KEY_EXTRA_IMAGE_SELECT_LIST)
-                    if (selectList != null) mResultList.addAll(selectList)
-
-                    if (mResultList.isNotEmpty()) {
-                        mMediaAdapter.setDefaultSelected(mResultList)
-                        mCallback?.onImageSelectList(mResultList)
-                    }
+                val selectList = MediaConstant.getSelectMediaList()
+                if (selectList.isNotEmpty()) {
+                    updateSelectMedia()
+                    mCallback?.onImageSelectList(selectList)
                 }
             }
         }
@@ -214,11 +211,19 @@ class ImageSelectorFragment : MediaLoaderFragment() {
             hasFolderGened = true
         }
         if (isRestartLoaded) {
+            isRestartLoaded = false
             mMediaAdapter.setData(data)
         }
-        if (mResultList.isNotEmpty()) {
-            mMediaAdapter.setDefaultSelected(mResultList)
-        }
+        updateSelectMedia()
+        mMediaAdapter.notifyDataSetChanged()
+    }
+
+    private fun closeDefaultAnimator() {
+        mRecyclerView.itemAnimator?.addDuration = 0
+        mRecyclerView.itemAnimator?.changeDuration = 0
+        mRecyclerView.itemAnimator?.moveDuration = 0
+        mRecyclerView.itemAnimator?.removeDuration = 0
+        (mRecyclerView.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
     }
 
     private fun setFolderName() {
@@ -231,39 +236,37 @@ class ImageSelectorFragment : MediaLoaderFragment() {
 
     private fun openImageActivity(position: Int, mode: Int, path: String?) {
         if (mode == SelectMode.MODE_MULTI) {
-            mResultList.forEach o@{
-                if (TextUtils.isEmpty(it)) return@o
-                for (media in mAllMediaList) {
-                    if (it == media.path) {
-                        media.isSelect = true
-                    }
-                }
-            }
             val intent = Intent(context, ImageDetailActivity::class.java)
-            intent.putParcelableArrayListExtra(MediaConstant.KEY_EXTRA_ALL_IMAGE_LIST, mAllMediaList)
             intent.putExtra(MediaConstant.KEY_EXTRA_CURRENT_POSITION, position)
-            intent.putExtra(MediaConstant.KEY_EXTRA_SELECT_COUNT, selectImageCount())
+            intent.putExtra(MediaConstant.KEY_EXTRA_SELECT_COUNT, selectImageMaxCount())
             startActivityForResult(intent, REQUEST_IMAGE_VIEW)
         } else if (mode == SelectMode.MODE_SINGLE) {
-            path ?: return
             mCallback?.onSingleImageSelected(path)
         }
     }
 
-    private fun selectImageFromGrid(media: MediaVo, mode: Int) {
+    private fun selectImageFromGrid(media: MediaVo, mode: Int, position: Int) {
         if (mode == SelectMode.MODE_MULTI) {
-            if (mResultList.contains(media.path)) {
-                mResultList.remove(media.path)
+            val selectList = MediaConstant.getSelectMediaList()
+            if (selectList.contains(media) && media.isSelect) {
+                selectList.remove(media)
                 mCallback?.onImageUnselected(media.path)
+                media.isSelect = false
+
+                // remove origin data
+                mMediaConfig?.originData?.let {
+                    if (it.contains(media.path)) it.remove(media.path)
+                }
             } else {
-                if (selectImageCount() == mResultList.size) {
+                if (selectImageMaxCount() <= selectList.size) {
                     Toast.makeText(activity, R.string.sl_msg_amount_limit, Toast.LENGTH_SHORT).show()
                     return
                 }
-                mResultList.add(media.path!!)
+                selectList.add(media)
                 mCallback?.onImageSelected(media.path)
+                media.isSelect = true
             }
-            mMediaAdapter.select(media)
+            mMediaAdapter.notifyItemChanged(position)
         } else if (mode == SelectMode.MODE_SINGLE) {
             mCallback?.onSingleImageSelected(media.path)
         }
@@ -311,18 +314,13 @@ class ImageSelectorFragment : MediaLoaderFragment() {
                     setFolderName()
                     mMediaAdapter.setShowCamera(showCamera())
                 } else {
-                    isRestartLoaded = false
                     val folder = adapterView.adapter.getItem(i) as? FolderVo
                     if (null != folder) {
-                        if (mAllMediaList.size > 0) mAllMediaList.clear()
-                        if (folder.mediaStoreList != null) {
-                            mAllMediaList.addAll(folder.mediaStoreList!!)
-                        }
-                        mMediaAdapter.setData(folder.mediaStoreList)
+                        setAllMediaList(folder.mediaStoreList)
+
+                        updateSelectMedia()
+                        mMediaAdapter.setData(MediaConstant.getAllMediaList())
                         mCategoryText.text = folder.name
-                        if (mResultList.size > 0) {
-                            mMediaAdapter.setDefaultSelected(mResultList)
-                        }
                     }
                     mMediaAdapter.setShowCamera(false)
                 }
@@ -331,15 +329,28 @@ class ImageSelectorFragment : MediaLoaderFragment() {
         }
     }
 
+    private fun updateSelectMedia() {
+        val selectList = MediaConstant.getSelectMediaList()
+        val allSelectList = MediaConstant.getAllMediaList()
+        selectList.forEach { selectAt ->
+            run breaking@{
+                allSelectList.forEach {
+                    if (it.path == selectAt.path) {
+                        it.isSelect = true
+                        return@breaking
+                    }
+                }
+            }
+        }
+    }
+
     /**
      * Open camera
      */
     private fun showCameraAction() {
-        if (ContextCompat.checkSelfPermission(context!!,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                    getString(R.string.sl_permission_rationale_write_storage),
-                    REQUEST_STORAGE_WRITE_ACCESS_PERMISSION)
+        if (checkPermission(Manifest.permission.CAMERA)) {
+            requestPermission(Manifest.permission.CAMERA,
+                    getString(R.string.sl_permission_camera), REQUEST_CAMERA_PERMISSION)
         } else {
             val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
             if (intent.resolveActivity(activity!!.packageManager) != null) {
@@ -392,12 +403,13 @@ class ImageSelectorFragment : MediaLoaderFragment() {
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        if (requestCode == REQUEST_STORAGE_WRITE_ACCESS_PERMISSION) {
+        if (requestCode == REQUEST_CAMERA_PERMISSION) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 showCameraAction()
             }
         } else {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
         }
     }
 
@@ -409,6 +421,6 @@ class ImageSelectorFragment : MediaLoaderFragment() {
         fun onImageSelected(path: String?)
         fun onImageUnselected(path: String?)
         fun onCameraShot(imageFile: File?)
-        fun onImageSelectList(imageList: MutableList<String>?)
+        fun onImageSelectList(imageList: MutableList<MediaVo>)
     }
 }

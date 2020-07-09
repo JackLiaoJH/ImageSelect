@@ -52,6 +52,10 @@ class MainActivity : AppCompatActivity() {
         button?.setOnClickListener { pickImage(false) }
         mBtnOpenCameraOnly!!.setOnClickListener { pickImage(true) }
         findViewById<View>(R.id.btn_open_video).setOnClickListener { pickVideo() }
+
+        findViewById<View>(R.id.btn_test_crop).setOnClickListener {
+            startActivity(Intent(this, TestImageCropActivity::class.java))
+        }
     }
 
     private fun pickVideo() {
@@ -100,7 +104,7 @@ class MainActivity : AppCompatActivity() {
                 e.printStackTrace()
             }
         }
-        if (mSelectPath != null && mSelectPath!!.size > 0) mSelectPath!!.clear()
+//        if (mSelectPath != null && mSelectPath!!.size > 0) mSelectPath!!.clear()
 
 
         ImageSelector.startImageAction(this@MainActivity, REQUEST_IMAGE,

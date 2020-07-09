@@ -15,8 +15,10 @@ import com.jhworks.library.core.MediaConstant.KEY_MEDIA_SELECT_CONFIG
 import com.jhworks.library.core.MediaSelectConfig
 import com.jhworks.library.core.vo.MediaConfigVo
 import com.jhworks.library.core.vo.MediaType
+import com.jhworks.library.core.vo.MediaVo
 import com.jhworks.library.core.vo.SelectMode
 import java.io.File
+import java.util.*
 
 /**
  *
@@ -66,7 +68,6 @@ class ImageSelectActivity : ImagePermissionActivity(), ImageSelectorFragment.Cal
         }
     }
 
-    private var mResultList = arrayListOf<String>()
     private lateinit var mSubmitButton: Button
     private var mMediaConfig: MediaConfigVo? = null
 
@@ -80,7 +81,7 @@ class ImageSelectActivity : ImagePermissionActivity(), ImageSelectorFragment.Cal
             return
         }
 
-        requestPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+        requestPermission(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
 
         setTheme(R.style.SL_NO_ACTIONBAR)
         setContentView(R.layout.activity_sl_image_select)
@@ -94,18 +95,20 @@ class ImageSelectActivity : ImagePermissionActivity(), ImageSelectorFragment.Cal
         initToolBar(true)
 
         if (mMediaConfig!!.selectMode == SelectMode.MODE_MULTI) {
-            if (mMediaConfig!!.originData != null) {
-                mResultList.clear()
-                mResultList.addAll(mMediaConfig!!.originData!!)
-            }
+            updateDoneText(mMediaConfig!!.originData?.size ?: 0)
 
-            updateDoneText(mResultList)
             mSubmitButton.visibility = View.VISIBLE
             mSubmitButton.setOnClickListener {
-                if (mResultList.isNotEmpty()) {
+                val selectList = MediaConstant.getSelectMediaList()
+                if (selectList.isNotEmpty()) {
                     // Notify success
+                    val allResultList = arrayListOf<String>()
+                    val resultList = selectList.filter { it.path != null }
+                            .map { it.path!! } as ArrayList<String>
+                    allResultList.addAll(resultList)
+
                     val data = Intent()
-                    data.putStringArrayListExtra(MediaConstant.KEY_EXTRA_RESULT, mResultList)
+                    data.putStringArrayListExtra(MediaConstant.KEY_EXTRA_RESULT, allResultList)
                     setResult(Activity.RESULT_OK, data)
                 } else {
                     setResult(Activity.RESULT_CANCELED)
@@ -138,47 +141,36 @@ class ImageSelectActivity : ImagePermissionActivity(), ImageSelectorFragment.Cal
     /**
      * Update done button by select image data
      *
-     * @param resultList selected image data
+     * @param selectCount selected image count
      */
-    private fun updateDoneText(resultList: MutableList<String>?) {
-        var size = 0
-        if (resultList == null || resultList.size <= 0) {
+    private fun updateDoneText(selectCount: Int) {
+        if (selectCount <= 0) {
             mSubmitButton.setText(R.string.sl_action_done)
             mSubmitButton.isEnabled = false
         } else {
-            size = resultList.size
             mSubmitButton.isEnabled = true
         }
         mSubmitButton.text = getString(R.string.sl_action_button_string,
-                getString(R.string.sl_action_done), size, mMediaConfig?.maxCount ?: 0)
+                getString(R.string.sl_action_done), selectCount, mMediaConfig?.maxCount ?: 0)
     }
 
     override fun onSingleImageSelected(path: String?) {
         path ?: return
 
         val data = Intent()
-        mResultList.add(path)
-        data.putStringArrayListExtra(MediaConstant.KEY_EXTRA_RESULT, mResultList)
+        data.putStringArrayListExtra(MediaConstant.KEY_EXTRA_RESULT, arrayListOf(path))
         setResult(RESULT_OK, data)
         finish()
     }
 
     override fun onImageSelected(path: String?) {
         path ?: return
-
-        if (!mResultList.contains(path)) {
-            mResultList.add(path)
-        }
-        updateDoneText(mResultList)
+        updateDoneText(MediaConstant.getSelectMediaList().size)
     }
 
     override fun onImageUnselected(path: String?) {
         path ?: return
-
-        if (mResultList.contains(path)) {
-            mResultList.remove(path)
-        }
-        updateDoneText(mResultList)
+        updateDoneText(MediaConstant.getSelectMediaList().size)
     }
 
     override fun onCameraShot(imageFile: File?) {
@@ -187,19 +179,26 @@ class ImageSelectActivity : ImagePermissionActivity(), ImageSelectorFragment.Cal
         //notify system the image has change
         sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(imageFile)))
 
+        val allResultList = arrayListOf<String>()
+        val resultList = MediaConstant.getSelectMediaList()
+                .filter { it.path != null }
+                .map { it.path!! } as ArrayList<String>
+        allResultList.addAll(resultList)
+        allResultList.add(imageFile.absolutePath)
+
         val data = Intent()
-        mResultList.add(imageFile.absolutePath)
-        data.putStringArrayListExtra(MediaConstant.KEY_EXTRA_RESULT, mResultList)
+        data.putStringArrayListExtra(MediaConstant.KEY_EXTRA_RESULT, allResultList)
         setResult(RESULT_OK, data)
         finish()
     }
 
-    override fun onImageSelectList(imageList: MutableList<String>?) {
-        imageList ?: return
+    override fun onImageSelectList(imageList: MutableList<MediaVo>) {
+        updateDoneText(imageList.size)
+    }
 
-        if (mResultList.isNotEmpty()) mResultList.clear()
-        mResultList.addAll(imageList)
-        updateDoneText(mResultList)
+    override fun onDestroy() {
+        MediaConstant.clear()
+        super.onDestroy()
     }
 
 }

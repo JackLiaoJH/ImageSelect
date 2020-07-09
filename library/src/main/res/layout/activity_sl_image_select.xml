@@ -10,7 +10,7 @@
         android:id="@+id/sl_toolbar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/sl_toolbar_height"
-        android:background="@color/sl_actionbar_color"
+        android:background="@color/sl_toolbar_color"
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
         <Button

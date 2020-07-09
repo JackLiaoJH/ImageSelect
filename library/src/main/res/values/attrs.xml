@@ -1,0 +1,32 @@
+<resources>
+
+    <declare-styleable name="sl_CropView">
+
+        <!--Crop image view-->
+        <attr name="sl_aspect_ratio_x" format="float" />
+        <attr name="sl_aspect_ratio_y" format="float" />
+
+        <!--Overlay view-->
+        <attr name="sl_show_oval_crop_frame" format="boolean" />
+        <attr name="sl_circle_dimmed_layer" format="boolean" />
+        <attr name="sl_dimmed_color" format="color" />
+
+        <attr name="sl_grid_stroke_size" format="dimension" />
+        <attr name="sl_grid_color" format="color" />
+        <attr name="sl_grid_row_count" format="integer" />
+        <attr name="sl_grid_column_count" format="integer" />
+        <attr name="sl_show_grid" format="boolean" />
+
+        <attr name="sl_frame_stroke_size" format="dimension" />
+        <attr name="sl_frame_color" format="color" />
+        <attr name="sl_show_frame" format="boolean" />
+
+    </declare-styleable>
+
+    <declare-styleable name="sl_AspectRatioTextView">
+        <attr name="sl_artv_ratio_title" format="string" />
+        <attr name="sl_artv_ratio_x" format="float" />
+        <attr name="sl_artv_ratio_y" format="float" />
+    </declare-styleable>
+
+</resources>

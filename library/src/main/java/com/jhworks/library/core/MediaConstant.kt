@@ -1,5 +1,7 @@
 package com.jhworks.library.core
 
+import com.jhworks.library.core.vo.MediaVo
+
 /**
  * Media Constant
  * @author jackson
@@ -23,15 +25,33 @@ object MediaConstant {
      */
     const val KEY_EXTRA_RESULT = "select_result"
 
-    const val KEY_EXTRA_IMAGE_SELECT_LIST = "image_select_list"
-
-    // all image list key
-    const val KEY_EXTRA_ALL_IMAGE_LIST = "image_all_list"
-
     /**
      * Current Position
      */
     const val KEY_EXTRA_CURRENT_POSITION = "current_position"
 
     const val KEY_MEDIA_SELECT_CONFIG = "media_select_config"
+
+    //all image list
+    private val mAllMediaList = arrayListOf<MediaVo>()
+    private val mSelectMediaList = arrayListOf<MediaVo>()
+
+    fun setAllMediaList(list: MutableList<MediaVo>?) {
+        if (mAllMediaList.isNotEmpty()) mAllMediaList.clear()
+        if (list != null) mAllMediaList.addAll(list)
+    }
+
+    fun getAllMediaList(): MutableList<MediaVo> = mAllMediaList
+
+    fun setSelectMediaList(list: MutableList<MediaVo>?) {
+        if (mSelectMediaList.isNotEmpty()) mSelectMediaList.clear()
+        if (list != null) mSelectMediaList.addAll(list)
+    }
+
+    fun getSelectMediaList(): MutableList<MediaVo> = mSelectMediaList
+
+    fun clear() {
+        mAllMediaList.clear()
+        mSelectMediaList.clear()
+    }
 }
