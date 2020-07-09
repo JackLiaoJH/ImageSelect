@@ -33,7 +33,7 @@ dependencies {
     implementation deps.androidx.exifinterface
 
     implementation deps.photoview
-    implementation "com.squareup.okhttp3:okhttp:3.12.1"
+//    implementation "com.squareup.okhttp3:okhttp:3.12.1"
 }
 repositories {
     mavenCentral()

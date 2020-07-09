@@ -9,7 +9,7 @@ import android.view.Display
 import android.view.WindowManager
 import androidx.exifinterface.media.ExifInterface
 import com.jhworks.library.crop.callback.BitmapLoadCallback
-import com.jhworks.library.crop.task.BitmapLoadTask
+//import com.jhworks.library.crop.task.BitmapLoadTask
 import java.io.Closeable
 import java.io.IOException
 
@@ -26,8 +26,8 @@ object BitmapLoadUtils {
                                  uri: Uri, outputUri: Uri,
                                  requiredWidth: Int, requiredHeight: Int,
                                  loadCallback: BitmapLoadCallback?) {
-        BitmapLoadTask(context, uri, outputUri, requiredWidth, requiredHeight, loadCallback)
-                .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR)
+//        BitmapLoadTask(context, uri, outputUri, requiredWidth, requiredHeight, loadCallback)
+//                .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR)
     }
 
     fun transformBitmap(bitmap: Bitmap, transformMatrix: Matrix): Bitmap? {
