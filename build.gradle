@@ -36,7 +36,13 @@ buildscript {
                     code    : 'com.github.bumptech.glide:glide:4.11.0',
                     compiler: 'com.github.bumptech.glide:compiler:4.11.0'
             ],
-            photoview  : "com.github.chrisbanes:PhotoView:2.2.0"
+            photoview  : "com.github.chrisbanes:PhotoView:2.2.0",
+            compress   : [
+                    luban       : 'top.zibin:Luban:1.1.8',
+                    compressor  : 'id.zelory:compressor:3.0.0',
+                    ucrop       : 'com.github.yalantis:ucrop:2.2.5',
+                    ucrop_native: 'com.github.yalantis:ucrop:2.2.5-native',
+            ]
     ]
 
     repositories {

@@ -27,7 +27,7 @@ open class ImageBaseActivity : AppCompatActivity() {
     private val mToolbarWidgetColor = Color.WHITE
 
     @DrawableRes
-    private val mToolbarCancelDrawable = R.drawable.ic_sl_crop_close
+    private val mToolbarCancelDrawable = R.drawable.ic_sl_close
 
     protected fun initToolBar(showTitle: Boolean) {
         if (mToolbar == null) return
@@ -61,9 +61,9 @@ open class ImageBaseActivity : AppCompatActivity() {
         // Set all of the Toolbar coloring
         toolbar.setBackgroundColor(mToolbarColor)
         toolbar.setTitleTextColor(mToolbarWidgetColor)
-        val toolbarTitle = toolbar.findViewById<TextView>(R.id.sl_toolbar_title)
-        toolbarTitle.setTextColor(mToolbarWidgetColor)
-        toolbarTitle.text = title
+//        val toolbarTitle = toolbar.findViewById<TextView>(R.id.sl_toolbar_title)
+//        toolbarTitle.setTextColor(mToolbarWidgetColor)
+//        toolbarTitle.text = title
 
         // Color buttons inside the Toolbar
         val stateButtonDrawable = ContextCompat.getDrawable(this, mToolbarCancelDrawable)?.mutate()

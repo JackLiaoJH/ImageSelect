@@ -2,6 +2,7 @@ package com.jhworks.library
 
 import android.app.Activity
 import android.content.Intent
+import android.net.Uri
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.jhworks.library.core.MediaConstant
@@ -74,5 +75,15 @@ object ImageSelector {
     fun getSelectResults(data: Intent?): ArrayList<String>? {
         data ?: return null
         return data.getStringArrayListExtra(MediaConstant.KEY_EXTRA_RESULT)
+    }
+
+    /**
+     * 获取结果数据
+     * @param data Intent
+     * @return 选择结果数据
+     */
+    fun getSelectUriResults(data: Intent?): ArrayList<Uri>? {
+        data ?: return null
+        return data.getParcelableArrayListExtra(MediaConstant.KEY_EXTRA_RESULT_URI)
     }
 }

@@ -8,7 +8,7 @@ import com.jhworks.library.ImageSelector
 import com.jhworks.library.core.MediaSelectConfig
 import com.jhworks.library.core.ui.ImageBaseActivity
 import com.jhworks.library.core.vo.SelectMode
-import com.jhworks.library.crop.ImageCrop
+import com.jhworks.imageselect.crop.ImageCrop
 
 
 /**
@@ -45,7 +45,7 @@ class TestImageCropActivity : ImageBaseActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_IMAGE_SELECT) {
             if (resultCode == Activity.RESULT_OK) {
-                val selectPath = ImageSelector.getSelectResults(data) ?: return
+                val selectPath = ImageSelector.getSelectUriResults(data) ?: return
                 ImageCrop.startAction(this, REQUEST_IMAGE_CROP, selectPath[0])
             }
         } else if (requestCode == REQUEST_IMAGE_CROP) {

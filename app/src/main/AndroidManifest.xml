@@ -23,6 +23,10 @@
             android:name=".TestImageCropActivity"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".crop.ImageCropActivity"
+            android:configChanges="orientation|screenSize" />
+
     </application>
 
 </manifest>

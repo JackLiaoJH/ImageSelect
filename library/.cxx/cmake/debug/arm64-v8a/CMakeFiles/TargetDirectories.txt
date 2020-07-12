@@ -1,0 +1,3 @@
+/Users/jiahui/workspace/android/github/ImageSelect/library/.cxx/cmake/debug/arm64-v8a/CMakeFiles/rebuild_cache.dir
+/Users/jiahui/workspace/android/github/ImageSelect/library/.cxx/cmake/debug/arm64-v8a/CMakeFiles/edit_cache.dir
+/Users/jiahui/workspace/android/github/ImageSelect/library/.cxx/cmake/debug/arm64-v8a/CMakeFiles/SlCrop.dir

@@ -18,7 +18,6 @@ import com.jhworks.library.core.vo.MediaType
 import com.jhworks.library.core.vo.MediaVo
 import com.jhworks.library.core.vo.SelectMode
 import java.io.File
-import java.util.*
 
 /**
  *
@@ -102,18 +101,11 @@ class ImageSelectActivity : ImagePermissionActivity(), ImageSelectorFragment.Cal
                 val selectList = MediaConstant.getSelectMediaList()
                 if (selectList.isNotEmpty()) {
                     // Notify success
-                    val allResultList = arrayListOf<String>()
-                    val resultList = selectList.filter { it.path != null }
-                            .map { it.path!! } as ArrayList<String>
-                    allResultList.addAll(resultList)
-
-                    val data = Intent()
-                    data.putStringArrayListExtra(MediaConstant.KEY_EXTRA_RESULT, allResultList)
-                    setResult(Activity.RESULT_OK, data)
+                    dealResult()
                 } else {
                     setResult(Activity.RESULT_CANCELED)
+                    finish()
                 }
-                finish()
             }
         } else {
             mSubmitButton.visibility = View.GONE
@@ -154,13 +146,10 @@ class ImageSelectActivity : ImagePermissionActivity(), ImageSelectorFragment.Cal
                 getString(R.string.sl_action_done), selectCount, mMediaConfig?.maxCount ?: 0)
     }
 
-    override fun onSingleImageSelected(path: String?) {
-        path ?: return
+    override fun onSingleImageSelected(media: MediaVo?) {
+        if (media?.path == null || media.uri == null) return
 
-        val data = Intent()
-        data.putStringArrayListExtra(MediaConstant.KEY_EXTRA_RESULT, arrayListOf(path))
-        setResult(RESULT_OK, data)
-        finish()
+        setIntentResult(arrayListOf(media.path), arrayListOf(media.uri))
     }
 
     override fun onImageSelected(path: String?) {
@@ -176,20 +165,11 @@ class ImageSelectActivity : ImagePermissionActivity(), ImageSelectorFragment.Cal
     override fun onCameraShot(imageFile: File?) {
         imageFile ?: return
 
+        val uriFile = Uri.fromFile(imageFile)
         //notify system the image has change
-        sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(imageFile)))
+        sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, uriFile))
 
-        val allResultList = arrayListOf<String>()
-        val resultList = MediaConstant.getSelectMediaList()
-                .filter { it.path != null }
-                .map { it.path!! } as ArrayList<String>
-        allResultList.addAll(resultList)
-        allResultList.add(imageFile.absolutePath)
-
-        val data = Intent()
-        data.putStringArrayListExtra(MediaConstant.KEY_EXTRA_RESULT, allResultList)
-        setResult(RESULT_OK, data)
-        finish()
+        dealResult(imageFile.absolutePath, uriFile)
     }
 
     override fun onImageSelectList(imageList: MutableList<MediaVo>) {
@@ -201,4 +181,28 @@ class ImageSelectActivity : ImagePermissionActivity(), ImageSelectorFragment.Cal
         super.onDestroy()
     }
 
+    private fun dealResult(path: String? = null, uriFile: Uri? = null) {
+        val allResultList = arrayListOf<String>()
+        val allUriResultList = arrayListOf<Uri>()
+        MediaConstant.getSelectMediaList().forEach {
+            if (it.path != null) {
+                allResultList.add(it.path)
+            }
+            if (it.uri != null) {
+                allUriResultList.add(it.uri)
+            }
+        }
+        if (uriFile != null) allUriResultList.add(uriFile)
+        if (path != null) allResultList.add(path)
+
+        setIntentResult(allResultList, allUriResultList)
+    }
+
+    private fun setIntentResult(pathList: ArrayList<String>, uriList: ArrayList<Uri>) {
+        val data = Intent()
+        data.putStringArrayListExtra(MediaConstant.KEY_EXTRA_RESULT, pathList)
+        data.putParcelableArrayListExtra(MediaConstant.KEY_EXTRA_RESULT_URI, uriList)
+        setResult(RESULT_OK, data)
+        finish()
+    }
 }

@@ -1,0 +1,7 @@
+[
+{
+  "directory": "/Users/jiahui/workspace/android/github/ImageSelect/library/.cxx/cmake/release/armeabi-v7a",
+  "command": "/Users/jiahui/Library/Android/sdk/ndk-bundle/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++ --target=armv7-none-linux-androideabi19 --gcc-toolchain=/Users/jiahui/Library/Android/sdk/ndk-bundle/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/jiahui/Library/Android/sdk/ndk-bundle/toolchains/llvm/prebuilt/darwin-x86_64/sysroot  -DSlCrop_EXPORTS  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security   -Oz -DNDEBUG  -fPIC   -o CMakeFiles/SlCrop.dir/src/main/jni/SlCrop.cpp.o -c /Users/jiahui/workspace/android/github/ImageSelect/library/src/main/jni/SlCrop.cpp",
+  "file": "/Users/jiahui/workspace/android/github/ImageSelect/library/src/main/jni/SlCrop.cpp"
+}
+]

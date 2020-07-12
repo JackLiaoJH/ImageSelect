@@ -63,6 +63,12 @@ dependencies {
     }
     kapt deps.glide.compiler
 
+    // 压缩
+    implementation deps.compress.luban
+    implementation deps.compress.compressor
+//    implementation deps.compress.ucrop
+//    implementation deps.compress.ucrop_native
+
     // 内存泄漏检测
     debugImplementation deps.leakcanary
     // 界面卡顿检测

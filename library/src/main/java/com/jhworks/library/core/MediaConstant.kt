@@ -1,5 +1,6 @@
 package com.jhworks.library.core
 
+import android.graphics.Bitmap.CompressFormat
 import com.jhworks.library.core.vo.MediaVo
 
 /**
@@ -26,11 +27,22 @@ object MediaConstant {
     const val KEY_EXTRA_RESULT = "select_result"
 
     /**
+     * Result data set，MutableList&lt;Uri&gt;
+     */
+    const val KEY_EXTRA_RESULT_URI = "select_result_uri"
+
+    /**
      * Current Position
      */
     const val KEY_EXTRA_CURRENT_POSITION = "current_position"
 
     const val KEY_MEDIA_SELECT_CONFIG = "media_select_config"
+
+    const val RESULT_ERROR = 400
+
+    //-------------------------crop-----------------------------//
+    const val DEFAULT_COMPRESS_QUALITY = 90
+    val DEFAULT_COMPRESS_FORMAT = CompressFormat.JPEG
 
     //all image list
     private val mAllMediaList = arrayListOf<MediaVo>()

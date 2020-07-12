@@ -33,7 +33,6 @@ dependencies {
     implementation deps.androidx.exifinterface
 
     implementation deps.photoview
-//    implementation "com.squareup.okhttp3:okhttp:3.12.1"
 }
 repositories {
     mavenCentral()
@@ -111,7 +110,7 @@ install {
                 name 'ImageSelect'
                 description 'Easy Image Select'
                 url siteUrl
-                version  versions.versionName
+                version versions.versionName
                 licenses {
                     license {
                         //开源协议,在bintray中创建仓库时选择的license为Apache-2.0，复制下面的就可以
@@ -146,7 +145,7 @@ bintray {
         userOrg = bintrayUserOrg
         repo = bintrayRepo
         name = libName
-        desc =  bintrayDesc
+        desc = bintrayDesc
         websiteUrl = siteUrl
         vcsUrl = gitUrl
         labels = ['android']    //标签

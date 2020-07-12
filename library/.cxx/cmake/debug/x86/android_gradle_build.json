@@ -1,0 +1,43 @@
+{
+  "stringTable": {
+    "0": "/Users/jiahui/workspace/android/github/ImageSelect/library/.cxx/cmake/debug/x86",
+    "1": "--target=i686-none-linux-android19 --gcc-toolchain=/Users/jiahui/Library/Android/sdk/ndk-bundle/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/jiahui/Library/Android/sdk/ndk-bundle/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -DSlCrop_EXPORTS -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security -O0 -fno-limit-debug-info -fPIC"
+  },
+  "buildFiles": [
+    "/Users/jiahui/Library/Android/sdk/ndk-bundle/build/cmake/platforms.cmake",
+    "/Users/jiahui/Library/Android/sdk/ndk-bundle/build/cmake/android.toolchain.cmake",
+    "/Users/jiahui/workspace/android/github/ImageSelect/library/CMakeLists.txt"
+  ],
+  "cleanCommands": [
+    "/Users/jiahui/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja -C \"/Users/jiahui/workspace/android/github/ImageSelect/library/.cxx/cmake/debug/x86\" clean"
+  ],
+  "buildTargetsCommand": "/Users/jiahui/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja  -C \"/Users/jiahui/workspace/android/github/ImageSelect/library/.cxx/cmake/debug/x86\" {LIST_OF_TARGETS_TO_BUILD}",
+  "libraries": {
+    "SlCrop-Debug-x86": {
+      "buildCommand": "/Users/jiahui/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja -C \"/Users/jiahui/workspace/android/github/ImageSelect/library/.cxx/cmake/debug/x86\" SlCrop",
+      "buildType": "debug",
+      "toolchain": "3599106317",
+      "abi": "x86",
+      "artifactName": "SlCrop",
+      "files": [
+        {
+          "src": "/Users/jiahui/workspace/android/github/ImageSelect/library/src/main/jni/SlCrop.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        }
+      ],
+      "headers": [],
+      "output": "/Users/jiahui/workspace/android/github/ImageSelect/jniLibs/x86/libSlCrop.so",
+      "runtimeFiles": []
+    }
+  },
+  "toolchains": {
+    "3599106317": {
+      "cppCompilerExecutable": "/Users/jiahui/Library/Android/sdk/ndk-bundle/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++"
+    }
+  },
+  "cFileExtensions": [],
+  "cppFileExtensions": [
+    "cpp"
+  ]
+}

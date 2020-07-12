@@ -29,4 +29,6 @@
     <string name="label_height" translatable="false">Height</string>
     <string name="label_compression_settings">Compression settings</string>
     <string name="label_hide_bottom_ui_controls">Hide bottom UI controls</string>
+
+    <string name="sl_menu_crop">Crop</string>
 </resources>

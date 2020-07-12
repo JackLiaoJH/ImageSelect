@@ -1,0 +1,7 @@
+Executable : /Users/jiahui/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja
+arguments : 
+-C
+/Users/jiahui/workspace/android/github/ImageSelect/library/.cxx/cmake/debug/arm64-v8a
+SlCrop
+jvmArgs : 
+

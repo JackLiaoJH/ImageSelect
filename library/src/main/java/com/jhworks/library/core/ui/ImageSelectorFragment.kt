@@ -132,10 +132,10 @@ class ImageSelectorFragment : MediaLoaderFragment() {
                         }
                         showCameraAction()
                     } else {
-                        openImageActivity(position - 1, selectMode, media?.path)
+                        openImageActivity(position - 1, selectMode, media)
                     }
                 } else {
-                    openImageActivity(position, selectMode, media?.path)
+                    openImageActivity(position, selectMode, media)
                 }
             }
 
@@ -234,14 +234,14 @@ class ImageSelectorFragment : MediaLoaderFragment() {
                     R.string.sl_folder_video_all)
     }
 
-    private fun openImageActivity(position: Int, mode: Int, path: String?) {
+    private fun openImageActivity(position: Int, mode: Int, media: MediaVo?) {
         if (mode == SelectMode.MODE_MULTI) {
             val intent = Intent(context, ImageDetailActivity::class.java)
             intent.putExtra(MediaConstant.KEY_EXTRA_CURRENT_POSITION, position)
             intent.putExtra(MediaConstant.KEY_EXTRA_SELECT_COUNT, selectImageMaxCount())
             startActivityForResult(intent, REQUEST_IMAGE_VIEW)
         } else if (mode == SelectMode.MODE_SINGLE) {
-            mCallback?.onSingleImageSelected(path)
+            mCallback?.onSingleImageSelected(media)
         }
     }
 
@@ -268,7 +268,7 @@ class ImageSelectorFragment : MediaLoaderFragment() {
             }
             mMediaAdapter.notifyItemChanged(position)
         } else if (mode == SelectMode.MODE_SINGLE) {
-            mCallback?.onSingleImageSelected(media.path)
+            mCallback?.onSingleImageSelected(media)
         }
     }
 
@@ -417,7 +417,7 @@ class ImageSelectorFragment : MediaLoaderFragment() {
      * Callback for host activity
      */
     interface Callback {
-        fun onSingleImageSelected(path: String?)
+        fun onSingleImageSelected(media: MediaVo?)
         fun onImageSelected(path: String?)
         fun onImageUnselected(path: String?)
         fun onCameraShot(imageFile: File?)

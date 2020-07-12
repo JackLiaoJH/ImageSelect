@@ -1,0 +1,1 @@
+ninja: error: '/libpng-android/obj/local/arm64-v8a/libpng.a', needed by '/Users/jiahui/workspace/android/github/ImageSelect/jniLibs/arm64-v8a/libSlCrop.so', missing and no known rule to make it
