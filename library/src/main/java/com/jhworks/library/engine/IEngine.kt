@@ -11,5 +11,9 @@ import java.net.URI
  * @date 2020/6/11 15:11
  */
 interface IEngine {
+    /**正常列表加载*/
     fun loadImage(imageView: ImageView, uiConfig: MediaUiConfigVo)
+
+    /**详情页加载*/
+    fun loadDetailImage(imageView: ImageView, uiConfig: MediaUiConfigVo)
 }

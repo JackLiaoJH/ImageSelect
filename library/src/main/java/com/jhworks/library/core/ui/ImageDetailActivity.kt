@@ -117,7 +117,7 @@ class ImageDetailActivity : ImageBaseActivity(), OnPageChangeListener {
             val photoView = PhotoView(mContext)
             val media = mMedias[position]
             val uiConfig = MediaUiConfigVo(media.path)
-            ImageSelector.getImageEngine().loadImage(photoView, uiConfig)
+            ImageSelector.getImageEngine().loadDetailImage(photoView, uiConfig)
             container.addView(photoView)
             return photoView
         }

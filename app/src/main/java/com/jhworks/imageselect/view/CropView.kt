@@ -19,7 +19,7 @@ class CropView(context: Context, attrs: AttributeSet?, defStyleAttr: Int)
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
     constructor(context: Context) : this(context, null)
 
-    private var mGestureCropImageView: com.jhworks.imageselect.view.GestureCropImageView
+    private var mGestureCropImageView: GestureCropImageView
     private var mViewOverlay: OverlayView
 
     init {
@@ -54,7 +54,7 @@ class CropView(context: Context, attrs: AttributeSet?, defStyleAttr: Int)
         return false
     }
 
-    fun getCropImageView(): com.jhworks.imageselect.view.GestureCropImageView {
+    fun getCropImageView(): GestureCropImageView {
         return mGestureCropImageView
     }
 
@@ -68,7 +68,7 @@ class CropView(context: Context, attrs: AttributeSet?, defStyleAttr: Int)
      */
     fun resetCropImageView() {
         removeView(mGestureCropImageView)
-        mGestureCropImageView = com.jhworks.imageselect.view.GestureCropImageView(context)
+        mGestureCropImageView = GestureCropImageView(context)
         setListenersToViews()
         mGestureCropImageView.setCropRect(getOverlayView().getCropViewRect())
         addView(mGestureCropImageView, 0)

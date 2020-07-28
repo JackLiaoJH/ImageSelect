@@ -24,6 +24,12 @@ android {
         versionName versions.versionName
 
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+
+        sourceSets {
+            main {
+                jniLibs.srcDir 'libs'
+            }
+        }
     }
 
     signingConfigs {
@@ -56,6 +62,7 @@ dependencies {
     implementation deps.kotlin.stdlib
     implementation deps.androidx.appcompat
     implementation deps.androidx.core_ktx
+    implementation deps.androidx.constraintlayout
 
     // glide
     implementation (deps.glide.code) {

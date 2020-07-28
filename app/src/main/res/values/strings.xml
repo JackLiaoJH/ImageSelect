@@ -31,4 +31,8 @@
     <string name="label_hide_bottom_ui_controls">Hide bottom UI controls</string>
 
     <string name="sl_menu_crop">Crop</string>
+    <string name="crop">Crop</string>
+    <string name="rotate">Rotate</string>
+    <string name="scale">Scale</string>
+    <string name="sl_label_original">Original</string>
 </resources>

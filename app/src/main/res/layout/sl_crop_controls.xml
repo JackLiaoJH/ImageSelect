@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tv_sl_control_rotate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="100" />
+
+    <ImageView
+        android:id="@+id/iv_sl_reset"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_sl_angle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/iv_sl_angle"
+        app:srcCompat="@drawable/ic_sl_reset" />
+
+
+    <com.jhworks.imageselect.view.HorizontalProgressWheelView
+        android:id="@+id/rotate_scroll_wheel"
+        android:layout_width="0dp"
+        android:layout_height="54dp"
+        app:layout_constraintEnd_toStartOf="@+id/iv_sl_angle"
+        app:layout_constraintStart_toEndOf="@+id/iv_sl_reset"
+        app:layout_constraintTop_toBottomOf="@+id/tv_sl_control_rotate" />
+
+
+    <ImageView
+        android:id="@+id/iv_sl_angle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:src="@drawable/ic_sl_crop_angle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <LinearLayout
+        android:id="@+id/layout_aspect_ratio"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TextView
+        android:id="@+id/tv_status_ratio"
+        android:layout_width="0dp"
+        android:layout_height="54dp"
+        android:background="#20242F"
+        android:gravity="center"
+        android:text="@string/crop"
+        android:textColor="@android:color/white"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toStartOf="@+id/tv_status_rotate"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rotate_scroll_wheel" />
+
+    <TextView
+        android:id="@+id/tv_status_rotate"
+        android:layout_width="0dp"
+        android:layout_height="54dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginEnd="1dp"
+        android:background="#20242F"
+        android:gravity="center"
+        android:text="@string/rotate"
+        android:textColor="@android:color/white"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toStartOf="@+id/tv_status_scale"
+        app:layout_constraintStart_toEndOf="@+id/tv_status_ratio"
+        app:layout_constraintTop_toTopOf="@+id/tv_status_ratio" />
+
+    <TextView
+        android:id="@+id/tv_status_scale"
+        android:layout_width="0dp"
+        android:layout_height="54dp"
+        android:background="#20242F"
+        android:gravity="center"
+        android:text="@string/scale"
+        android:textColor="@android:color/white"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tv_status_rotate"
+        app:layout_constraintTop_toTopOf="@+id/tv_status_ratio" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

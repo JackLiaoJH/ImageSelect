@@ -21,4 +21,14 @@ class GlideEngine : IEngine {
                 .centerCrop()
                 .into(imageView)
     }
+
+    override fun loadDetailImage(imageView: ImageView, uiConfig: MediaUiConfigVo) {
+        Glide.with(imageView)
+                .load(uiConfig.path)
+                .placeholder(uiConfig.placeholderResId)
+                .error(uiConfig.errorResId)
+                .override(uiConfig.width, uiConfig.height)
+                .fitCenter()
+                .into(imageView)
+    }
 }

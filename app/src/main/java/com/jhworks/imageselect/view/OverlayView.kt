@@ -14,6 +14,7 @@ import androidx.annotation.IntRange
 import androidx.core.content.ContextCompat
 import com.jhworks.imageselect.R
 import com.jhworks.imageselect.crop.callback.OverlayViewChangeListener
+import com.jhworks.imageselect.utils.RectUtils
 import kotlin.math.pow
 import kotlin.math.sqrt
 
@@ -45,10 +46,10 @@ class OverlayView(context: Context, attrs: AttributeSet?, defStyleAttr: Int)
     private val mCropViewRect = RectF()
     private val mTempRect = RectF()
 
-    protected var mThisWidth = 0
-    protected var mThisHeight = 0
-    protected var mCropGridCorners: FloatArray? = null
-    protected var mCropGridCenter: FloatArray? = null
+    private var mThisWidth = 0
+    private var mThisHeight = 0
+    private var mCropGridCorners: FloatArray? = null
+    private var mCropGridCenter: FloatArray? = null
 
     private var mCropGridRowCount = 0
     private var mCropGridColumnCount = 0
@@ -216,14 +217,14 @@ class OverlayView(context: Context, attrs: AttributeSet?, defStyleAttr: Int)
      * [.mCropViewRect] is used to draw crop bounds - uses padding.
      */
     fun setupCropBounds() {
-        val height = (mThisWidth / mTargetAspectRatio).toInt()
+        val height = mThisWidth / mTargetAspectRatio
         if (height > mThisHeight) {
-            val width = (mThisHeight * mTargetAspectRatio) as Int
+            val width = (mThisHeight * mTargetAspectRatio)
             val halfDiff = (mThisWidth - width) / 2
-            mCropViewRect[paddingLeft + halfDiff.toFloat(), paddingTop.toFloat(), paddingLeft + width + halfDiff.toFloat()] = paddingTop + mThisHeight.toFloat()
+            mCropViewRect[paddingLeft + halfDiff, paddingTop.toFloat(), paddingLeft + width + halfDiff] = paddingTop + mThisHeight.toFloat()
         } else {
-            val halfDiff: Int = (mThisHeight - height) / 2
-            mCropViewRect[paddingLeft.toFloat(), paddingTop + halfDiff.toFloat(), paddingLeft + mThisWidth.toFloat()] = paddingTop + height + halfDiff.toFloat()
+            val halfDiff = (mThisHeight - height) / 2
+            mCropViewRect[paddingLeft.toFloat(), paddingTop + halfDiff, paddingLeft + mThisWidth.toFloat()] = paddingTop + height + halfDiff
         }
 
         mCallback?.onCropRectUpdated(mCropViewRect)
@@ -232,8 +233,8 @@ class OverlayView(context: Context, attrs: AttributeSet?, defStyleAttr: Int)
     }
 
     private fun updateGridPoints() {
-        mCropGridCorners = com.jhworks.imageselect.utils.RectUtils.getCornersFromRect(mCropViewRect)
-        mCropGridCenter = com.jhworks.imageselect.utils.RectUtils.getCenterFromRect(mCropViewRect)
+        mCropGridCorners = RectUtils.getCornersFromRect(mCropViewRect)
+        mCropGridCenter = RectUtils.getCenterFromRect(mCropViewRect)
         mGridPoints = null
         mCircularPath.reset()
         mCircularPath.addCircle(mCropViewRect.centerX(), mCropViewRect.centerY(),

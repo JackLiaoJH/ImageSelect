@@ -146,7 +146,7 @@ class ImageHeaderParser(inputStream: InputStream) {
         var result = exifData != null && exifSegmentLength > JPEG_EXIF_SEGMENT_PREAMBLE_BYTES.size
         if (result) {
             for (i in JPEG_EXIF_SEGMENT_PREAMBLE_BYTES.indices) {
-                if (exifData!![i] != JPEG_EXIF_SEGMENT_PREAMBLE_BYTES.get(i)) {
+                if (exifData!![i] != JPEG_EXIF_SEGMENT_PREAMBLE_BYTES[i]) {
                     result = false
                     break
                 }
@@ -254,7 +254,7 @@ class ImageHeaderParser(inputStream: InputStream) {
                 Log.d(TAG, "Got tagIndex=" + i + " tagType=" + tagType + " formatCode=" + formatCode
                         + " componentCount=" + componentCount)
             }
-            val byteCount: Int = componentCount + BYTES_PER_FORMAT.get(formatCode)
+            val byteCount: Int = componentCount + BYTES_PER_FORMAT[formatCode]
             if (byteCount > 4) {
                 if (Log.isLoggable(TAG, Log.DEBUG)) {
                     Log.d(TAG, "Got byte count > 4, not orientation, continuing, formatCode=$formatCode")
@@ -289,9 +289,12 @@ class ImageHeaderParser(inputStream: InputStream) {
         return imageMagicNumber and EXIF_MAGIC_NUMBER == EXIF_MAGIC_NUMBER || imageMagicNumber == MOTOROLA_TIFF_MAGIC_NUMBER || imageMagicNumber == INTEL_TIFF_MAGIC_NUMBER
     }
 
-    private class RandomAccessReader(data: ByteArray?, length: Int) {
-        private val data: ByteBuffer
-        fun order(byteOrder: ByteOrder?) {
+    private class RandomAccessReader(data: ByteArray, length: Int) {
+        private val data: ByteBuffer = ByteBuffer.wrap(data)
+                .order(ByteOrder.BIG_ENDIAN)
+                .limit(length) as ByteBuffer
+
+        fun order(byteOrder: ByteOrder) {
             data.order(byteOrder)
         }
 
@@ -307,11 +310,6 @@ class ImageHeaderParser(inputStream: InputStream) {
             return data.getShort(offset)
         }
 
-        init {
-            this.data = ByteBuffer.wrap(data)
-                    .order(ByteOrder.BIG_ENDIAN)
-                    .limit(length) as ByteBuffer
-        }
     }
 
     private interface Reader {
@@ -325,7 +323,7 @@ class ImageHeaderParser(inputStream: InputStream) {
         fun skip(total: Long): Long
 
         @Throws(IOException::class)
-        fun read(buffer: ByteArray?, byteCount: Int): Int
+        fun read(buffer: ByteArray, byteCount: Int): Int
     }
 
     private class StreamReader // Motorola / big endian byte order.
@@ -365,7 +363,7 @@ class ImageHeaderParser(inputStream: InputStream) {
         }
 
         @Throws(IOException::class)
-        override fun read(buffer: ByteArray?, byteCount: Int): Int {
+        override fun read(buffer: ByteArray, byteCount: Int): Int {
             var toRead = byteCount
             var read = 0
             while (toRead > 0 && `is`.read(buffer, byteCount - toRead, toRead).also { read = it } != -1) {

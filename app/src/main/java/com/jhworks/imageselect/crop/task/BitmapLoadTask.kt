@@ -8,6 +8,7 @@ import android.net.Uri
 import android.os.AsyncTask
 import android.util.Log
 import com.jhworks.imageselect.crop.callback.BitmapLoadCallback
+import com.jhworks.imageselect.crop.vo.ExifInfo
 import com.jhworks.imageselect.utils.BitmapLoadUtils
 import java.io.*
 
@@ -30,7 +31,7 @@ class BitmapLoadTask(private val context: Context,
     }
 
     data class BitmapWorkerResult(var bitmapResult: Bitmap? = null,
-                                  var exifInfo: com.jhworks.imageselect.crop.vo.ExifInfo? = null,
+                                  var exifInfo: ExifInfo? = null,
                                   var ex: Exception? = null)
 
     override fun doInBackground(vararg params: Void?): BitmapWorkerResult {
@@ -44,7 +45,7 @@ class BitmapLoadTask(private val context: Context,
 
         val options = BitmapFactory.Options()
         options.inJustDecodeBounds = true
-        options.inSampleSize = com.jhworks.imageselect.utils.BitmapLoadUtils.calculateInSampleSize(options, requiredWidth, requiredHeight)
+        options.inSampleSize = BitmapLoadUtils.calculateInSampleSize(options, requiredWidth, requiredHeight)
         options.inJustDecodeBounds = false
 
         var decodeSampledBitmap: Bitmap? = null
@@ -60,7 +61,7 @@ class BitmapLoadTask(private val context: Context,
                                 ex = IllegalArgumentException("Bounds for bitmap could not be retrieved from the Uri: [$inputUri]"))
                     }
                 } finally {
-                    com.jhworks.imageselect.utils.BitmapLoadUtils.close(stream)
+                    BitmapLoadUtils.close(stream)
                 }
                 decodeAttemptSuccess = true
             } catch (error: OutOfMemoryError) {
@@ -76,11 +77,11 @@ class BitmapLoadTask(private val context: Context,
             return BitmapWorkerResult(ex = IllegalArgumentException("Bitmap could not be decoded from the Uri: [$inputUri]"))
         }
 
-        val exifOrientation: Int = com.jhworks.imageselect.utils.BitmapLoadUtils.getExifOrientation(context, inputUri)
-        val exifDegrees: Int = com.jhworks.imageselect.utils.BitmapLoadUtils.exifToDegrees(exifOrientation)
-        val exifTranslation: Int = com.jhworks.imageselect.utils.BitmapLoadUtils.exifToTranslation(exifOrientation)
+        val exifOrientation: Int = BitmapLoadUtils.getExifOrientation(context, inputUri)
+        val exifDegrees: Int = BitmapLoadUtils.exifToDegrees(exifOrientation)
+        val exifTranslation: Int = BitmapLoadUtils.exifToTranslation(exifOrientation)
 
-        val exifInfo = com.jhworks.imageselect.crop.vo.ExifInfo(exifOrientation, exifDegrees, exifTranslation)
+        val exifInfo = ExifInfo(exifOrientation, exifDegrees, exifTranslation)
 
         val matrix = Matrix()
         if (exifDegrees != 0) {
@@ -135,8 +136,8 @@ class BitmapLoadTask(private val context: Context,
                 outputStream.write(buffer, 0, length)
             }
         } finally {
-            com.jhworks.imageselect.utils.BitmapLoadUtils.close(outputStream)
-            com.jhworks.imageselect.utils.BitmapLoadUtils.close(inputStream)
+            BitmapLoadUtils.close(outputStream)
+            BitmapLoadUtils.close(inputStream)
 
             // swap uris, because input image was copied to the output destination
             // (cropped image will override it later)

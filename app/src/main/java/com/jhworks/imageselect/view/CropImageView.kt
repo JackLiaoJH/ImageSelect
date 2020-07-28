@@ -11,7 +11,7 @@ import androidx.annotation.IntRange
 import com.jhworks.imageselect.R
 import com.jhworks.imageselect.crop.callback.BitmapCropCallback
 import com.jhworks.imageselect.crop.callback.CropBoundsChangeListener
-import com.jhworks.imageselect.crop.task.BitmapCropTask
+import com.yalantis.ucrop.task.BitmapCropTask
 import com.jhworks.imageselect.crop.vo.CropParameters
 import com.jhworks.imageselect.crop.vo.ImageState
 import com.jhworks.imageselect.utils.CubicEasing
@@ -418,9 +418,9 @@ open class CropImageView(context: Context, attrs: AttributeSet?, defStyleAttr: I
      * @param drawableHeight - image height
      */
     private fun calculateImageScaleBounds(drawableWidth: Float, drawableHeight: Float) {
-        val widthScale = Math.min(mCropRect.width() / drawableWidth, mCropRect.width() / drawableHeight)
-        val heightScale = Math.min(mCropRect.height() / drawableHeight, mCropRect.height() / drawableWidth)
-        mMinScale = Math.min(widthScale, heightScale)
+        val widthScale = (mCropRect.width() / drawableWidth).coerceAtMost(mCropRect.width() / drawableHeight)
+        val heightScale = (mCropRect.height() / drawableHeight).coerceAtMost(mCropRect.height() / drawableWidth)
+        mMinScale = widthScale.coerceAtMost(heightScale)
         mMaxScale = mMinScale * mMaxScaleMultiplier
     }
 

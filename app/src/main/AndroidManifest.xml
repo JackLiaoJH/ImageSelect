@@ -27,6 +27,10 @@
             android:name=".crop.ImageCropActivity"
             android:configChanges="orientation|screenSize" />
 
+        <activity
+            android:name=".crop.ResultActivity"
+            android:configChanges="orientation|screenSize" />
+
     </application>
 
 </manifest>
