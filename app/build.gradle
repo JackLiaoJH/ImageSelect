@@ -58,6 +58,8 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
+//    implementation(name: 'library-release', ext: 'aar')
+
     testImplementation 'junit:junit:4.12'
     implementation deps.kotlin.stdlib
     implementation deps.androidx.appcompat
