@@ -33,6 +33,7 @@ android 经量级选择图片框架，支持拍照，获取相册图片,获取�
 allprojects {
     repositories {
         maven { url "https://jitpack.io" }
+        //maven { url "https://dl.bintray.com/jiahui/jiahui" } //访问不了,暂时加私有地址
         jcenter()
         mavenCentral()
         google()
@@ -42,7 +43,10 @@ allprojects {
 
 - step2: Add the dependency
 ```groovy
-implementation 'com.github.JackLiaoJH:ImageSelect:1.2.1'
+    // 老版本
+//    implementation 'com.github.JackLiaoJH:ImageSelect:1.2.1'
+    // 新版本
+    implementation 'com.jhworks.library:library:2.0.0'
 ```
 
   
