@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--attr-->
+    <attr name="toolbar" format="reference"/>
+    <attr name="toolbar.bg" format="reference|color"/>
+    <attr name="toolbar.title.color" format="reference|color"/>
+    <attr name="toolbar.done.color" format="reference|color"/>
+
+    <!--folder -->
+    <attr name="folder.item.bg" format="reference|color"/>
+    <attr name="folder.item.name.color" format="reference|color"/>
+    <attr name="folder.item.size.color" format="reference|color"/>
+    <attr name="folder.item.divider.color" format="reference|color"/>
+
+    <!--detail-->
+    <attr name="detail.bg" format="reference|color"/>
+    <attr name="detail.toolbar.bg" format="reference|color"/>
+    <attr name="detail.toolbar.title.color" format="reference|color"/>
+
+</resources>

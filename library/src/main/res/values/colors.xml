@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="sl_toolbar_color">#21282C</color>
-    <color name="sl_000000">#000000</color>
-    <color name="sl_80000000">#80000000</color>
-    <color name="sl_ffffff">#FFFFFF</color>
-    <color name="sl_toolbar_title_color">@android:color/white</color>
 
+    <color name="sl_select_count">#4D000000</color>
+    <color name="sl_item_camera_bg">#FF333333</color>
 </resources>

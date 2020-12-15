@@ -4,6 +4,7 @@
     <size
         android:width="@dimen/sl_space_size"
         android:height="@dimen/sl_space_size" />
-    <solid android:color="@color/sl_ffffff" />
+<!--    <solid android:color="?attr/toolbar.bg" />-->
+    <solid android:color="#f00" />
 
 </shape>

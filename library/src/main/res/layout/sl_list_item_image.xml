@@ -8,21 +8,24 @@
         android:id="@+id/sl_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:scaleType="fitXY"
-        android:src="@drawable/ic_sl_image_default" />
+        android:scaleType="centerCrop"
+        tools:src="@drawable/ic_sl_image_default" />
 
-<!--    <View-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:background="@drawable/sl_bg_shadow" />-->
+    <View
+        android:id="@+id/sl_check_container"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="end" />
+
 
     <androidx.appcompat.widget.AppCompatCheckBox
         android:id="@+id/sl_checkmark"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="4dp"
         android:button="@drawable/sl_bg_checkbox"
-        android:padding="8dp"
         android:visibility="gone"
         tools:visibility="visible" />
 

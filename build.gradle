@@ -10,8 +10,8 @@ buildscript {
             'kotlin'     : '1.3.71',
 
             // app 版本
-            'versionCode': 8,
-            'versionName': "1.2.3"
+            'versionCode': 10,
+            'versionName': "2.0.0"
     ]
 
     ext.deps = [
@@ -69,15 +69,6 @@ allprojects {
         mavenCentral()
         google()
     }
-
-//    tasks.withType(Javadoc) {
-//        options {
-//            encoding "UTF-8"
-//            charSet 'UTF-8'
-//            author true
-//            links "http://docs.oracle.com/javase/7/docs/api"
-//        }
-//    }
 }
 
 

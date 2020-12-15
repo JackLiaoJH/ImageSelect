@@ -43,9 +43,8 @@ class DividerGridItemDecoration : ItemDecoration {
         return spanCount
     }
 
-    private fun drawHorizontal(c: Canvas?, parent: RecyclerView) {
+    private fun drawHorizontal(c: Canvas, parent: RecyclerView) {
         mDivider ?: return
-        c ?: return
 
         val childCount = parent.childCount
         var child: View
@@ -61,14 +60,16 @@ class DividerGridItemDecoration : ItemDecoration {
         }
     }
 
-    private fun drawVertical(c: Canvas?, parent: RecyclerView) {
+    private fun drawVertical(c: Canvas, parent: RecyclerView) {
         mDivider ?: return
-        c ?: return
 
+//        val spanCount = getSpanCount(parent)
         val childCount = parent.childCount
         var child: View
         for (i in 0 until childCount) {
             child = parent.getChildAt(i)
+//            val itemPosition = parent.layoutManager?.getPosition(child) ?: 0
+//            if (!isLastColum(parent, itemPosition, spanCount, childCount)) {
             val params = child.layoutParams as RecyclerView.LayoutParams
             val top = child.top - params.topMargin
             val bottom = child.bottom + params.bottomMargin
@@ -76,6 +77,7 @@ class DividerGridItemDecoration : ItemDecoration {
             val right = left + mDivider!!.intrinsicWidth
             mDivider?.setBounds(left, top, right, bottom)
             mDivider?.draw(c)
+//            }
         }
     }
 
@@ -84,16 +86,13 @@ class DividerGridItemDecoration : ItemDecoration {
         var childCountTemp = childCount
         val layoutManager = parent.layoutManager
         if (layoutManager is GridLayoutManager) {
-            if ((pos + 1) % spanCount == 0) // 如果是最后一列，则不需要绘制右边
-            {
+            if ((pos + 1) % spanCount == 0) {// 如果是最后一列，则不需要绘制右边
                 return true
             }
         } else if (layoutManager is StaggeredGridLayoutManager) {
-            val orientation = layoutManager
-                    .orientation
+            val orientation = layoutManager.orientation
             if (orientation == StaggeredGridLayoutManager.VERTICAL) {
-                if ((pos + 1) % spanCount == 0) // 如果是最后一列，则不需要绘制右边
-                {
+                if ((pos + 1) % spanCount == 0) { // 如果是最后一列，则不需要绘制右边
                     return true
                 }
             } else {
@@ -174,6 +173,8 @@ class DividerGridItemDecoration : ItemDecoration {
         } else if (isLastColum(parent, itemPosition, spanCount, childCount)) {
             // 如果是最后一列，则不需要绘制右边
             outRect[0, 0, 0] = mDivider!!.intrinsicHeight
+//            Log.e("xxxxxxxxxxxx", "最后一列>> $itemPosition, $childCount")
+
         } else {
             outRect[0, 0, mDivider!!.intrinsicWidth] = mDivider!!.intrinsicHeight
         }

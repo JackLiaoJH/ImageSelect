@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="sl_image_size">120dp</dimen>
-    <dimen name="sl_space_size">4dp</dimen>
-    <dimen name="sl_folder_cover_size">72dp</dimen>
-    <dimen name="sl_bottom_size">48dp</dimen>
+
+    <dimen name="sl_space_size">3dp</dimen>
+    <dimen name="sl_folder_cover_size">48dp</dimen>
+    <dimen name="sl_folder_item_height">64dp</dimen>
     <dimen name="sl_toolbar_height">48dp</dimen>
+    <dimen name="sl_toolbar_title_size">16sp</dimen>
 </resources>

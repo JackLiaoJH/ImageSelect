@@ -27,9 +27,10 @@ class ResultActivity : ImageBaseActivity() {
         }
     }
 
+    override fun setLayout(): Int = R.layout.activity_sl_result
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_sl_result)
 
         ivResult = findViewById(R.id.iv_sl_result)
 

@@ -7,7 +7,9 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.jhworks.library.R
 import com.jhworks.library.core.MediaConstant
@@ -67,36 +69,43 @@ class ImageSelectActivity : ImagePermissionActivity(), ImageSelectorFragment.Cal
         }
     }
 
-    private lateinit var mSubmitButton: Button
-    private var mMediaConfig: MediaConfigVo? = null
+    private lateinit var mSubmitButton: TextView
+    private lateinit var mTvSelectCount: TextView
+    private lateinit var mTvCenterTitle: TextView
+    private lateinit var mLlFolder: LinearLayout
+    private lateinit var mIvFolderArrow: ImageView
+    private lateinit var mIvToolbarNav: ImageView
+
+    private var imageSelectorFragment: ImageSelectorFragment? = null
+
+    override fun setLayout(): Int = R.layout.activity_sl_image_select
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        mMediaConfig = intent.getParcelableExtra(KEY_MEDIA_SELECT_CONFIG)
 
         if (mMediaConfig == null) {
             finish()
             return
         }
-
         requestPermission(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
 
-        setTheme(R.style.SL_NO_ACTIONBAR)
-        setContentView(R.layout.activity_sl_image_select)
-        mToolbar = findViewById(R.id.sl_toolbar)
         mSubmitButton = findViewById(R.id.sl_commit)
-        mToolbar?.setTitle(
-                if (mMediaConfig?.mediaType == MediaType.IMAGE)
-                    R.string.sl_select_phone
-                else
-                    R.string.sl_select_video)
-        initToolBar(true)
+        mTvSelectCount = findViewById(R.id.tv_sl_select_image_count)
+        mTvCenterTitle = findViewById(R.id.tv_sl_toolbar_folder)
+        mLlFolder = findViewById(R.id.sl_ll_toolbar_folder)
+        mIvFolderArrow = findViewById(R.id.sl_iv_toolbar_folder_arrow)
+        mIvToolbarNav = findViewById(R.id.sl_ic_toolbar_nav)
+
+        updateNavIcon(mIvToolbarNav.drawable)
+        val titleResId = if (mMediaConfig?.mediaType == MediaType.IMAGE) R.string.sl_folder_image_all else R.string.sl_folder_video_all
+        mTvCenterTitle.setText(titleResId)
+        initToolBarConfig(false, false)
 
         if (mMediaConfig!!.selectMode == SelectMode.MODE_MULTI) {
             updateDoneText(mMediaConfig!!.originData?.size ?: 0)
 
             mSubmitButton.visibility = View.VISIBLE
+            mTvSelectCount.visibility = View.VISIBLE
             mSubmitButton.setOnClickListener {
                 val selectList = MediaConstant.getSelectMediaList()
                 if (selectList.isNotEmpty()) {
@@ -109,15 +118,18 @@ class ImageSelectActivity : ImagePermissionActivity(), ImageSelectorFragment.Cal
             }
         } else {
             mSubmitButton.visibility = View.GONE
+            mTvSelectCount.visibility = View.GONE
         }
+        mLlFolder.setOnClickListener {
+            imageSelectorFragment?.showFolderPopWin(mToolbar!!, mTvCenterTitle, mIvFolderArrow)
+        }
+        mIvToolbarNav.setOnClickListener { finish() }
     }
 
     override fun onRequestPermissionSuccess() {
-        val bundle = Bundle()
-        bundle.putParcelable(KEY_MEDIA_SELECT_CONFIG, mMediaConfig)
+        imageSelectorFragment = ImageSelectorFragment.newInstance(mMediaConfig)
         supportFragmentManager.beginTransaction()
-                .add(R.id.sl_image_grid, Fragment.instantiate(this,
-                        ImageSelectorFragment::class.java.name, bundle))
+                .add(R.id.sl_image_grid, imageSelectorFragment!!)
                 .commit()
     }
 
@@ -136,14 +148,12 @@ class ImageSelectActivity : ImagePermissionActivity(), ImageSelectorFragment.Cal
      * @param selectCount selected image count
      */
     private fun updateDoneText(selectCount: Int) {
-        if (selectCount <= 0) {
-            mSubmitButton.setText(R.string.sl_action_done)
-            mSubmitButton.isEnabled = false
-        } else {
-            mSubmitButton.isEnabled = true
-        }
-        mSubmitButton.text = getString(R.string.sl_action_button_string,
-                getString(R.string.sl_action_done), selectCount, mMediaConfig?.maxCount ?: 0)
+        mSubmitButton.isEnabled = selectCount > 0
+
+//        mSubmitButton.text = getString(R.string.sl_action_button_string,
+//                getString(R.string.sl_action_done), selectCount, mMediaConfig?.maxCount ?: 0)
+        mTvSelectCount.text =
+                getString(R.string.sl_select_image_count, selectCount, mMediaConfig?.maxCount ?: 0)
     }
 
     override fun onSingleImageSelected(media: MediaVo?) {

@@ -1,6 +1,8 @@
 package com.jhworks.library.core.ui
 
 import android.Manifest
+import android.animation.Animator
+import android.animation.ObjectAnimator
 import android.app.Activity
 import android.content.ContentValues
 import android.content.Context
@@ -17,6 +19,7 @@ import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -27,11 +30,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.jhworks.library.R
 import com.jhworks.library.core.MediaConstant
-import com.jhworks.library.core.vo.FolderVo
-import com.jhworks.library.core.vo.MediaType
-import com.jhworks.library.core.vo.MediaVo
-import com.jhworks.library.core.vo.SelectMode
-import com.jhworks.library.decoration.DividerGridItemDecoration
+import com.jhworks.library.core.vo.*
 import com.jhworks.library.utils.SlFileUtils
 import com.jhworks.library.utils.SlScreenUtils
 import java.io.File
@@ -50,6 +49,14 @@ class ImageSelectorFragment : MediaLoaderFragment() {
         const val REQUEST_IMAGE_VIEW = 120
 
         private const val KEY_TEMP_FILE = "key_temp_file"
+
+        fun newInstance(mediaConfigVo: MediaConfigVo?): ImageSelectorFragment {
+            return ImageSelectorFragment().apply {
+                arguments = Bundle().apply {
+                    putParcelable(MediaConstant.KEY_MEDIA_SELECT_CONFIG, mediaConfigVo)
+                }
+            }
+        }
     }
 
 
@@ -59,10 +66,9 @@ class ImageSelectorFragment : MediaLoaderFragment() {
     private lateinit var mFolderAdapter: FolderAdapter
 
     private var mFolderPopupWindow: ListPopupWindow? = null
+    private var mFolderArrow: ImageView? = null
 
     private lateinit var mRecyclerView: RecyclerView
-    private lateinit var mCategoryText: TextView
-    private lateinit var mPopupAnchorView: View
 
     private var mTmpFile: File? = null
 
@@ -113,7 +119,7 @@ class ImageSelectorFragment : MediaLoaderFragment() {
         mRecyclerView = view.findViewById(R.id.sl_grid)
         val layoutManager = GridLayoutManager(context, imageSpanCount)
         mRecyclerView.layoutManager = layoutManager
-        mRecyclerView.addItemDecoration(DividerGridItemDecoration(context!!, R.drawable.sl_divider))
+//        mRecyclerView.addItemDecoration(DividerGridItemDecoration(context!!, R.drawable.sl_divider))
         closeDefaultAnimator()
         mRecyclerView.adapter = mMediaAdapter
 
@@ -157,21 +163,11 @@ class ImageSelectorFragment : MediaLoaderFragment() {
                 }
             }
         }
-
-        mPopupAnchorView = view.findViewById(R.id.sl_footer)
-        mCategoryText = view.findViewById(R.id.sl_category_btn)
-        setFolderName()
-        mCategoryText.setOnClickListener { showFolderPopWin() }
-
         mFolderAdapter = FolderAdapter(context!!, mMediaConfig)
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
-        if (mFolderPopupWindow != null) {
-            if (mFolderPopupWindow!!.isShowing) {
-                mFolderPopupWindow!!.dismiss()
-            }
-        }
+        dismissFolderPopWin()
         super.onConfigurationChanged(newConfig)
     }
 
@@ -226,12 +222,10 @@ class ImageSelectorFragment : MediaLoaderFragment() {
         (mRecyclerView.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
     }
 
-    private fun setFolderName() {
-        mCategoryText.setText(
-                if (mMediaConfig?.mediaType == MediaType.IMAGE)
-                    R.string.sl_folder_image_all
-                else
-                    R.string.sl_folder_video_all)
+    private fun setFolderName(folderTextView: TextView) {
+        folderTextView.setText(
+                if (mMediaConfig?.mediaType == MediaType.IMAGE) R.string.sl_folder_image_all
+                else R.string.sl_folder_video_all)
     }
 
     private fun openImageActivity(position: Int, mode: Int, media: MediaVo?) {
@@ -239,6 +233,7 @@ class ImageSelectorFragment : MediaLoaderFragment() {
             val intent = Intent(context, ImageDetailActivity::class.java)
             intent.putExtra(MediaConstant.KEY_EXTRA_CURRENT_POSITION, position)
             intent.putExtra(MediaConstant.KEY_EXTRA_SELECT_COUNT, selectImageMaxCount())
+            intent.putExtra(MediaConstant.KEY_MEDIA_SELECT_CONFIG, mMediaConfig)
             startActivityForResult(intent, REQUEST_IMAGE_VIEW)
         } else if (mode == SelectMode.MODE_SINGLE) {
             mCallback?.onSingleImageSelected(media)
@@ -272,14 +267,17 @@ class ImageSelectorFragment : MediaLoaderFragment() {
         }
     }
 
-    private fun showFolderPopWin() {
+    fun showFolderPopWin(popupAnchorView: View, folderTextView: TextView, folderArrow: ImageView) {
+        mFolderArrow = folderArrow
         if (mFolderPopupWindow == null) {
-            createPopupFolderList()
+            createPopupFolderList(popupAnchorView, folderTextView)
         }
         if (mFolderPopupWindow != null && mFolderPopupWindow!!.isShowing) {
-            mFolderPopupWindow?.dismiss()
+            dismissFolderPopWin()
         } else {
-            mFolderPopupWindow?.show()
+//            folderArrow.rotation = 180f
+            rotateFolderArrow(0f, 180f) { mFolderPopupWindow?.show() }
+//            mFolderPopupWindow?.show()
             var index = mFolderAdapter.selectIndex
             index = if (index == 0) index else index - 1
             if (null != mFolderPopupWindow && mFolderPopupWindow?.listView != null)
@@ -287,31 +285,68 @@ class ImageSelectorFragment : MediaLoaderFragment() {
         }
     }
 
+    private fun dismissFolderPopWin() {
+        if (mFolderPopupWindow != null && mFolderPopupWindow!!.isShowing) {
+//            mFolderArrow?.rotation = 0f
+            rotateFolderArrow(180f, 0f) { mFolderPopupWindow?.dismiss() }
+//            mFolderPopupWindow?.dismiss()
+        }
+    }
+
+    private fun rotateFolderArrow(vararg values: Float, onAnimEnd: () -> Unit = {}) {
+        if (mFolderArrow == null) {
+            onAnimEnd.invoke()
+            return
+        }
+        val rotateAnim = ObjectAnimator.ofFloat(mFolderArrow, View.ROTATION, *values).apply {
+            duration = 50
+        }
+        rotateAnim.addListener(object : Animator.AnimatorListener {
+            override fun onAnimationStart(animation: Animator?) {
+
+            }
+
+            override fun onAnimationEnd(animation: Animator?) {
+                onAnimEnd.invoke()
+            }
+
+            override fun onAnimationCancel(animation: Animator?) {
+
+            }
+
+            override fun onAnimationRepeat(animation: Animator?) {
+
+            }
+        })
+        rotateAnim.start()
+    }
+
     /**
      * Create popup ListView
      */
-    private fun createPopupFolderList() {
+    private fun createPopupFolderList(popupAnchorView: View, folderTextView: TextView) {
         val point = SlScreenUtils.getScreenSize(context!!)
         val width = point.x
-        val height = (point.y * (4.5f / 8.0f)).toInt()
+//        val height = (point.y * (4.5f / 8.0f)).toInt()
         mFolderPopupWindow = ListPopupWindow(activity!!)
-        mFolderPopupWindow?.setBackgroundDrawable(ColorDrawable(Color.WHITE))
+        mFolderPopupWindow?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         mFolderPopupWindow?.setAdapter(mFolderAdapter)
         mFolderPopupWindow?.setContentWidth(width)
-        mFolderPopupWindow?.width = width
-        mFolderPopupWindow?.height = height
-        mFolderPopupWindow?.anchorView = mPopupAnchorView
+        mFolderPopupWindow?.width = ViewGroup.LayoutParams.MATCH_PARENT
+        mFolderPopupWindow?.height = ViewGroup.LayoutParams.WRAP_CONTENT
+//        mFolderPopupWindow?.height = height
+        mFolderPopupWindow?.anchorView = popupAnchorView
         mFolderPopupWindow?.isModal = true
         mFolderPopupWindow?.setOnItemClickListener { adapterView, _, i, _ ->
             mFolderAdapter.selectIndex = i
 
             mRecyclerView.postDelayed({
-                mFolderPopupWindow?.dismiss()
+                dismissFolderPopWin()
                 if (i == 0) {
                     isRestartLoaded = true
                     LoaderManager.getInstance(this)
                             .restartLoader(R.id.loader_all_media_store_data, null, this)
-                    setFolderName()
+                    setFolderName(folderTextView)
                     mMediaAdapter.setShowCamera(showCamera())
                 } else {
                     val folder = adapterView.adapter.getItem(i) as? FolderVo
@@ -320,12 +355,16 @@ class ImageSelectorFragment : MediaLoaderFragment() {
 
                         updateSelectMedia()
                         mMediaAdapter.setData(MediaConstant.getAllMediaList())
-                        mCategoryText.text = folder.name
+                        folderTextView.text = folder.name
                     }
                     mMediaAdapter.setShowCamera(false)
                 }
                 mRecyclerView.smoothScrollToPosition(0)
             }, 100)
+        }
+        mFolderPopupWindow?.setOnDismissListener {
+            rotateFolderArrow(180f, 0f)
+//            mFolderArrow?.rotation = 0f
         }
     }
 

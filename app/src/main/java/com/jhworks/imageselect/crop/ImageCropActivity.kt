@@ -71,15 +71,15 @@ class ImageCropActivity : ImageBaseActivity(), TransformImageView.TransformImage
 
     private val mCropAspectRatioViews = arrayListOf<AspectRatioTextView>()
 
+    override fun setLayout(): Int = R.layout.activity_sl_image_crop
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_sl_image_crop)
 
         val uri = intent.getParcelableExtra<Uri>("uri")
 
         mToolbarWidgetColor = Color.WHITE
 
-        setupAppBar(getString(R.string.sl_menu_crop))
 
 
         initView()

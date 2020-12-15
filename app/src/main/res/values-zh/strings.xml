@@ -12,6 +12,10 @@
     <string name="enable_camera">是否启用照相机</string>
     <string name="enable">是</string>
     <string name="disable">否</string>
+    <string name="theme">主题选择</string>
+    <string name="theme_light">白色</string>
+    <string name="theme_dark">夜色</string>
+    <string name="theme_custom">自定义</string>
     <string name="go_select">图片选择</string>
     <string name="max_image_span_count">图片列表个数</string>
     <string name="open_camera_only">仅打开相机</string>

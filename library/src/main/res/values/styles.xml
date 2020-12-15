@@ -1,4 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="SL_NO_ACTIONBAR" parent="Theme.AppCompat.Light.NoActionBar"/>
+
+    <style name="sl_toolbar_base_title_style">
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">@dimen/sl_toolbar_title_size</item>
+    </style>
+
+
+    <!--light 主题-->
+    <style name="sl_toolbar_light_style" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+
+    </style>
+
+    <style name="sl_theme_light" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/sl_light_primary</item>
+        <item name="colorPrimaryDark">@color/sl_light_primary_dark</item>
+        <item name="toolbar">@style/sl_toolbar_light_style</item>
+        <item name="toolbar.bg">@color/sl_toolbar_bg_light</item>
+        <item name="toolbar.title.color">@color/sl_toolbar_title_light</item>
+        <item name="toolbar.done.color">@color/sl_toolbar_done_light</item>
+
+        <item name="folder.item.bg">@color/sl_folder_item_bg_light</item>
+        <item name="folder.item.name.color">@color/sl_folder_item_name_light</item>
+        <item name="folder.item.size.color">@color/sl_folder_item_size_light</item>
+        <item name="folder.item.divider.color">@color/sl_folder_item_divider_light</item>
+
+        <item name="detail.bg">@color/sl_detail_bg_light</item>
+        <item name="detail.toolbar.bg">@color/sl_detail_toolbar_bg_light</item>
+        <item name="detail.toolbar.title.color">@color/sl_detail_toolbar_title_light</item>
+    </style>
+
+
+    <!--dark 主题-->
+    <style name="sl_toolbar_dark_style" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+
+    </style>
+
+    <style name="sl_theme_dark">
+        <item name="colorPrimary">@color/sl_dark_primary</item>
+        <item name="colorPrimaryDark">@color/sl_dark_primary_dark</item>
+        <item name="toolbar">@style/sl_toolbar_dark_style</item>
+        <item name="toolbar.bg">@color/sl_toolbar_bg_dark</item>
+        <item name="toolbar.title.color">@color/sl_toolbar_title_dark</item>
+        <item name="toolbar.done.color">@color/sl_toolbar_done_dark</item>
+
+        <item name="folder.item.bg">@color/sl_folder_item_bg_dark</item>
+        <item name="folder.item.name.color">@color/sl_folder_item_name_dark</item>
+        <item name="folder.item.size.color">@color/sl_folder_item_size_dark</item>
+        <item name="folder.item.divider.color">@color/sl_folder_item_divider_dark</item>
+
+        <item name="detail.bg">@color/sl_detail_bg_dark</item>
+        <item name="detail.toolbar.bg">@color/sl_detail_toolbar_bg_dark</item>
+        <item name="detail.toolbar.title.color">@color/sl_detail_toolbar_title_dark</item>
+    </style>
+
+
 </resources>

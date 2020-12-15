@@ -15,7 +15,6 @@ import com.jhworks.library.core.MediaConstant
 import com.jhworks.library.core.vo.MediaConfigVo
 import com.jhworks.library.core.vo.MediaUiConfigVo
 import com.jhworks.library.core.vo.MediaVo
-import com.jhworks.library.core.vo.SelectMode
 import com.jhworks.library.utils.SlScreenUtils
 import java.io.File
 
@@ -27,7 +26,7 @@ import java.io.File
  */
 class MediaAdapter(context: Context,
                    private var showCamera: Boolean,
-                   column: Int,
+                   private val column: Int,
                    mediaConfig: MediaConfigVo?)
     : RecyclerView.Adapter<MediaHolder>() {
     companion object {
@@ -40,6 +39,7 @@ class MediaAdapter(context: Context,
     var mOnItemClickListener: OnItemClickListener? = null
     private val mInflater = LayoutInflater.from(context)
     var mGridWidth = 0
+    private var mSpaceSize = 0
     private var mLayoutParams: FrameLayout.LayoutParams
     var showSelectIndicator = true
 
@@ -48,10 +48,9 @@ class MediaAdapter(context: Context,
     private val mMaxSelectCount = mediaConfig?.maxCount ?: MediaConstant.DEFAULT_IMAGE_SIZE
 
     init {
-        val screenSize = SlScreenUtils.getScreenSize(context)
-        val width = screenSize.x
-        val mSpaceSize = context.resources.getDimensionPixelSize(R.dimen.sl_space_size)
-        mGridWidth = (width - mSpaceSize * (2 + column - 1)) / column
+        val screenWidth = SlScreenUtils.getScreenWidth(context)
+        mSpaceSize = context.resources.getDimensionPixelSize(R.dimen.sl_space_size)
+        mGridWidth = (screenWidth - mSpaceSize * (column - 1)) / column
         mLayoutParams = FrameLayout.LayoutParams(mGridWidth, mGridWidth)
     }
 
@@ -75,14 +74,38 @@ class MediaAdapter(context: Context,
 
     override fun onBindViewHolder(holder: MediaHolder, position: Int) {
         val data = getItem(position)
+        val itemLp = holder.itemView.layoutParams as? RecyclerView.LayoutParams
+        itemLp?.width = mGridWidth
+        itemLp?.height = mGridWidth
+
+        itemLp?.topMargin = mSpaceSize
+        when {
+            (position + 1) % column == 0 -> {
+                // end
+                itemLp?.rightMargin = 0
+                itemLp?.leftMargin = mSpaceSize
+            }
+            position % column == 0 -> {
+                // first
+                itemLp?.rightMargin = mSpaceSize
+                itemLp?.leftMargin = 0
+            }
+            else -> {
+                itemLp?.rightMargin = mSpaceSize
+                itemLp?.leftMargin = mSpaceSize / 2
+            }
+        }
+
+
+        val imgLp = holder.image?.layoutParams as? FrameLayout.LayoutParams
         if (showCamera) {
             if (position != 0) {
-                holder.image?.layoutParams = mLayoutParams
-            } else {
-                holder.itemView.layoutParams = mLayoutParams
+                imgLp?.width = mGridWidth
+                imgLp?.height = mGridWidth
             }
         } else {
-            holder.image?.layoutParams = mLayoutParams
+            imgLp?.width = mGridWidth
+            imgLp?.height = mGridWidth
         }
         holder.bindData(data, position)
         holder.itemView.setOnClickListener {
@@ -124,8 +147,9 @@ class MediaAdapter(context: Context,
 
 class MediaHolder(itemView: View, private val adapter: MediaAdapter, private val maxCount: Int)
     : RecyclerView.ViewHolder(itemView) {
-    var image: ImageView? = itemView.findViewById(R.id.sl_image)
-    private var mCheckBox: AppCompatCheckBox? = itemView.findViewById(R.id.sl_checkmark)
+    val image: ImageView? = itemView.findViewById(R.id.sl_image)
+    private val mCheckBox: AppCompatCheckBox? = itemView.findViewById(R.id.sl_checkmark)
+    private val view: View? = itemView.findViewById(R.id.sl_check_container)
 
     init {
         itemView.tag = this
@@ -136,9 +160,10 @@ class MediaHolder(itemView: View, private val adapter: MediaAdapter, private val
         // 处理单选和多选状态
         if (adapter.showSelectIndicator) {
             mCheckBox?.visibility = View.VISIBLE
+            view?.setOnClickListener { mCheckBox?.performClick() }
             mCheckBox?.setOnClickListener {
                 if (MediaConstant.getSelectMediaList().size >= maxCount) {
-                    mCheckBox?.isChecked = false
+                    mCheckBox.isChecked = false
                 }
                 adapter.mOnItemClickListener?.onCheckClick(data, position)
             }

@@ -21,6 +21,7 @@ class MainActivity : AppCompatActivity() {
     private var mResultText: TextView? = null
     private var mChoiceMode: RadioGroup? = null
     private var mShowCamera: RadioGroup? = null
+    private lateinit var mRgTheme: RadioGroup
     private var mRequestNum: EditText? = null
     private var mImageSpanCount: EditText? = null
     private var mBtnOpenCameraOnly: Button? = null
@@ -37,6 +38,7 @@ class MainActivity : AppCompatActivity() {
         mResultText = findViewById<View>(R.id.result) as TextView
         mChoiceMode = findViewById<View>(R.id.choice_mode) as RadioGroup
         mShowCamera = findViewById<View>(R.id.show_camera) as RadioGroup
+        mRgTheme = findViewById(R.id.rg_theme)
         mRequestNum = findViewById<View>(R.id.request_num) as EditText
         mImageSpanCount = findViewById<View>(R.id.image_span_count) as EditText
         mBtnOpenCameraOnly = findViewById<View>(R.id.btn_open_camera_only) as Button
@@ -106,11 +108,19 @@ class MainActivity : AppCompatActivity() {
         }
 //        if (mSelectPath != null && mSelectPath!!.size > 0) mSelectPath!!.clear()
 
+        // theme
+        val theme = when (mRgTheme.checkedRadioButtonId) {
+            R.id.theme_custom -> R.style.sl_theme_custom
+            R.id.theme_light -> R.style.sl_theme_light
+            R.id.theme_dark -> R.style.sl_theme_dark
+            else -> R.style.sl_theme_light
+        }
 
         ImageSelector.startImageAction(this@MainActivity, REQUEST_IMAGE,
                 MediaSelectConfig.Builder()
                         .setSelectMode(getSelectMode())
                         .setOriginData(mSelectPath)
+                        .setTheme(theme)
                         .setShowCamera(showCamera)
                         .setPlaceholderResId(R.mipmap.ic_launcher)
                         .setOpenCameraOnly(isOpneCameraOnly)

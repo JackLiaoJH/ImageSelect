@@ -12,6 +12,10 @@
     <string name="enable_camera">Enable Camera</string>
     <string name="enable">Enable</string>
     <string name="disable">Disable</string>
+    <string name="theme">Theme Select</string>
+    <string name="theme_light">Light</string>
+    <string name="theme_dark">Dark</string>
+    <string name="theme_custom">Custom</string>
     <string name="go_select">Select</string>
     <string name="open_camera_only">Open Camera Only</string>
     <string name="max_image_span_count">image span count</string>

@@ -19,4 +19,23 @@
 
     <style name="MIS_NO_ACTIONBAR" parent="AppTheme"/>
 
+
+
+    <style name="sl_theme_custom">
+        <item name="colorPrimary">@color/sl_custom_primary</item>
+        <item name="colorPrimaryDark">@color/sl_custom_primary_dark</item>
+        <item name="toolbar.bg">@color/sl_toolbar_bg_custom</item>
+        <item name="toolbar.title.color">@color/sl_toolbar_title_custom</item>
+        <item name="toolbar.done.color">@color/sl_toolbar_done_custom</item>
+
+        <item name="folder.item.bg">@color/sl_folder_item_bg_custom</item>
+        <item name="folder.item.name.color">@color/sl_folder_item_name_custom</item>
+        <item name="folder.item.size.color">@color/sl_folder_item_size_custom</item>
+        <item name="folder.item.divider.color">@color/sl_folder_item_divider_custom</item>
+
+        <item name="detail.bg">@color/sl_detail_bg_custom</item>
+        <item name="detail.toolbar.bg">@color/sl_detail_toolbar_bg_custom</item>
+        <item name="detail.toolbar.title.color">@color/sl_detail_toolbar_title_custom</item>
+    </style>
+
 </resources>

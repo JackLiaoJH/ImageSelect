@@ -5,6 +5,7 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.AppCompatCheckBox
 import androidx.viewpager.widget.PagerAdapter
@@ -22,19 +23,24 @@ import com.jhworks.library.view.HackyViewPager
  */
 class ImageDetailActivity : ImageBaseActivity(), OnPageChangeListener {
     private lateinit var mCheckBox: AppCompatCheckBox
+    private lateinit var mTvToolbarOk: TextView
+    private lateinit var mTvImageSelectCount: TextView
     private lateinit var mViewPager: HackyViewPager
 
     private var mCurrentPosition = 0
     private var mAllMediaList: MutableList<MediaVo>? = null
     private var maxImageCount = 0
 
+    override fun setLayout(): Int = R.layout.activity_sl_image_detail
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_sl_image_detail)
-        mToolbar = findViewById(R.id.sl_toolbar)
+        setStatusBarColor()
+
         mCheckBox = findViewById(R.id.sl_check_image)
+        mTvToolbarOk = findViewById(R.id.sl_tv_detail_ok)
+        mTvImageSelectCount = findViewById(R.id.sl_tv_select_image_count)
         mViewPager = findViewById(R.id.sl_view_pager)
-        initToolBar(false)
 
         mCurrentPosition = intent.getIntExtra(MediaConstant.KEY_EXTRA_CURRENT_POSITION, 0)
         maxImageCount = intent.getIntExtra(MediaConstant.KEY_EXTRA_SELECT_COUNT, MediaConstant.DEFAULT_IMAGE_SIZE)
@@ -45,6 +51,7 @@ class ImageDetailActivity : ImageBaseActivity(), OnPageChangeListener {
             return
         }
 
+        updateImageCount()
         mCheckBox.setOnClickListener {
             val b = mCheckBox.isChecked
             val selectList = MediaConstant.getSelectMediaList()
@@ -63,7 +70,10 @@ class ImageDetailActivity : ImageBaseActivity(), OnPageChangeListener {
                     if (selectList.contains(media)) selectList.remove(media)
                 }
             }
+
+            updateImageCount()
         }
+        mTvToolbarOk.setOnClickListener { onBackPressed() }
 
         val adapter = ImagePageAdapter(this, mAllMediaList!!)
         mViewPager.adapter = adapter
@@ -85,6 +95,11 @@ class ImageDetailActivity : ImageBaseActivity(), OnPageChangeListener {
                 && position < mAllMediaList!!.size) {
             mCheckBox.isChecked = mAllMediaList!![position].isSelect
         }
+    }
+
+    private fun updateImageCount() {
+        val selectList = MediaConstant.getSelectMediaList()
+        mTvImageSelectCount.text = getString(R.string.sl_select_image_count, selectList.size, maxImageCount)
     }
 
     override fun onPageScrollStateChanged(state: Int) {}

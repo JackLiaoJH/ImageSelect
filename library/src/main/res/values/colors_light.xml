@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--light theme-->
+    <color name="sl_light_primary">@android:color/white</color>
+    <color name="sl_light_primary_dark">@android:color/white</color>
+
+    <color name="sl_toolbar_bg_light">@android:color/white</color>
+    <color name="sl_toolbar_title_light">#FF222222</color>
+    <color name="sl_toolbar_done_light">#FF7F50FA</color>
+
+    <color name="sl_folder_item_bg_light">@android:color/white</color>
+    <color name="sl_folder_item_name_light">#FF222222</color>
+    <color name="sl_folder_item_size_light">#FF979A9E</color>
+    <color name="sl_folder_item_divider_light">#FFBCBFC5</color>
+
+    <color name="sl_detail_bg_light">@android:color/black</color>
+    <color name="sl_detail_toolbar_bg_light">#FF111111</color>
+    <color name="sl_detail_toolbar_title_light">@android:color/white</color>
+
+
+</resources>

@@ -1,18 +1,18 @@
 package com.jhworks.library.core.ui
 
-import android.annotation.TargetApi
-import android.graphics.Color
 import android.graphics.PorterDuff
+import android.graphics.drawable.Drawable
 import android.os.Build
+import android.os.Bundle
 import android.view.MenuItem
 import android.view.WindowManager
-import android.widget.TextView
-import androidx.annotation.ColorInt
-import androidx.annotation.DrawableRes
+import androidx.annotation.ColorRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.core.content.ContextCompat
 import com.jhworks.library.R
+import com.jhworks.library.core.MediaConstant
+import com.jhworks.library.core.vo.MediaConfigVo
+import com.jhworks.library.utils.SlScreenUtils
 
 /**
  *
@@ -20,27 +20,33 @@ import com.jhworks.library.R
  * @version 1.0
  * @date 2020/6/11 9:54
  */
-open class ImageBaseActivity : AppCompatActivity() {
+abstract class ImageBaseActivity : AppCompatActivity() {
     protected var mToolbar: Toolbar? = null
-    private val mStatusBarColor = Color.BLACK
-    private val mToolbarColor = Color.BLACK
-    private val mToolbarWidgetColor = Color.WHITE
+    protected var mMediaConfig: MediaConfigVo? = null
 
-    @DrawableRes
-    private val mToolbarCancelDrawable = R.drawable.ic_sl_close
-
-    protected fun initToolBar(showTitle: Boolean) {
+    protected fun initToolBarConfig(showTitle: Boolean = true, isSHowNavIcon: Boolean = true) {
         if (mToolbar == null) return
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            window.statusBarColor = Color.BLACK
-            window.navigationBarColor = Color.BLACK
-        }
+
+        supportActionBar?.setDisplayHomeAsUpEnabled(isSHowNavIcon)
+        supportActionBar?.setDisplayShowTitleEnabled(showTitle)
+
+        if (!isSHowNavIcon) return
+        updateNavIcon(mToolbar?.navigationIcon)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        mMediaConfig = intent.getParcelableExtra(MediaConstant.KEY_MEDIA_SELECT_CONFIG)
+        val theme = mMediaConfig?.theme ?: R.style.sl_theme_light
+        setTheme(theme)
+        super.onCreate(savedInstanceState)
+        setContentView(setLayout())
+
+        mToolbar = findViewById(R.id.sl_toolbar)
+        if (mToolbar == null) return
+
         setSupportActionBar(mToolbar)
-        val actionBar = supportActionBar
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true)
-            actionBar.setDisplayShowTitleEnabled(showTitle)
-        }
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -54,36 +60,25 @@ open class ImageBaseActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    protected open fun setupAppBar(title:String) {
-        setStatusBarColor(mStatusBarColor)
-        val toolbar = findViewById<Toolbar>(R.id.sl_toolbar)
+    protected fun updateNavIcon(navDrawable: Drawable?): Drawable? {
+        navDrawable ?: return null
 
-        // Set all of the Toolbar coloring
-        toolbar.setBackgroundColor(mToolbarColor)
-        toolbar.setTitleTextColor(mToolbarWidgetColor)
-//        val toolbarTitle = toolbar.findViewById<TextView>(R.id.sl_toolbar_title)
-//        toolbarTitle.setTextColor(mToolbarWidgetColor)
-//        toolbarTitle.text = title
-
-        // Color buttons inside the Toolbar
-        val stateButtonDrawable = ContextCompat.getDrawable(this, mToolbarCancelDrawable)?.mutate()
-        stateButtonDrawable?.setColorFilter(mToolbarWidgetColor, PorterDuff.Mode.SRC_ATOP)
-        toolbar.navigationIcon = stateButtonDrawable
-        setSupportActionBar(toolbar)
-        val actionBar = supportActionBar
-        actionBar?.setDisplayShowTitleEnabled(false)
+        val ta = theme.obtainStyledAttributes(intArrayOf(R.attr.toolbar_title_color))
+        val color = ta.getColor(0, 0)
+        ta.recycle()
+        navDrawable.setColorFilter(color, PorterDuff.Mode.SRC_IN)
+        return navDrawable
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    private fun setStatusBarColor(@ColorInt color: Int) {
+    protected fun setStatusBarColor(@ColorRes color: Int = R.color.sl_dark_primary) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            val window = window
-            if (window != null) {
-                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-                window.statusBarColor = color
-            }
+            window?.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+            window?.statusBarColor = SlScreenUtils.getColor(this, color)
+            window.navigationBarColor = SlScreenUtils.getColor(this, R.color.sl_dark_primary)
         }
     }
 
     protected open fun onBackIconClick() {}
+
+    protected abstract fun setLayout(): Int
 }

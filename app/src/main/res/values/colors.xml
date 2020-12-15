@@ -4,6 +4,8 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
+    <color name="sl_80000000">#80000000</color>
+
     <!--Crop View-->
     <color name="sl_color_default_crop_grid">#80ffffff</color>
     <color name="sl_color_default_crop_frame">#ffffff</color>

@@ -2,21 +2,22 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#343535"
+    android:background="@color/sl_item_camera_bg"
     android:gravity="center"
     android:orientation="vertical">
 
+
     <androidx.appcompat.widget.AppCompatImageView
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:src="@drawable/sl_asy" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/sl_ic_camera" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="8dp"
         android:text="@string/sl_tip_take_photo"
-        android:textColor="#CDCECE"
-        android:textSize="13sp" />
+        android:textColor="@android:color/white"
+        android:textSize="16sp" />
 
 </LinearLayout>

@@ -2,71 +2,61 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@android:color/white"
-    android:orientation="horizontal"
-    android:paddingTop="10dp"
-    android:paddingBottom="10dp">
+    android:layout_height="@dimen/sl_folder_item_height"
+    android:background="?attr/folder.item.bg">
 
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/sl_cover"
         android:layout_width="@dimen/sl_folder_cover_size"
         android:layout_height="@dimen/sl_folder_cover_size"
         android:layout_centerVertical="true"
-        android:layout_gravity="center_vertical"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="16dp"
         android:scaleType="centerInside"
         android:src="@drawable/ic_sl_image_default" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
+
+    <TextView
+        android:id="@+id/sl_name"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_gravity="center_vertical"
-        android:layout_marginStart="16dp"
-        android:layout_toStartOf="@+id/sl_indicator"
+        android:layout_marginStart="12dp"
         android:layout_toEndOf="@+id/sl_cover"
-        android:orientation="vertical">
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="?attr/folder.item.name.color"
+        android:textSize="15sp"
+        tools:text="img" />
 
-        <TextView
-            android:id="@+id/sl_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
-            android:textSize="16sp"
-            tools:text="img" />
 
-        <TextView
-            android:id="@+id/sl_path"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ellipsize="middle"
-            android:singleLine="true"
-            android:textColor="#AFAFAF"
-            android:textSize="12sp"
-            tools:text="/sdcard/a/" />
+    <TextView
+        android:id="@+id/sl_size"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="4dp"
+        android:layout_toEndOf="@+id/sl_name"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="?attr/folder.item.size.color"
+        android:textSize="15sp"
+        tools:text="(1)" />
 
-        <TextView
-            android:id="@+id/sl_size"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:ellipsize="end"
-            android:singleLine="true"
-            android:textColor="#AFAFAF"
-            android:textSize="12sp"
-            tools:text="1张" />
-
-    </LinearLayout>
-
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/sl_indicator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
-        android:layout_gravity="center_vertical"
-        android:layout_marginEnd="18dp"
-        android:src="@drawable/ic_sl_select_pressed" />
+        android:layout_marginEnd="12dp"
+        android:src="@drawable/sl_ic_folder_item_select" />
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_alignStart="@+id/sl_name"
+        android:layout_alignParentBottom="true"
+        android:background="?attr/folder.item.divider.color" />
 
 </RelativeLayout>

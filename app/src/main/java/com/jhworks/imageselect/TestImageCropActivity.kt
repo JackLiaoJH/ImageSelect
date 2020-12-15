@@ -24,10 +24,10 @@ class TestImageCropActivity : ImageBaseActivity() {
         private const val REQUEST_IMAGE_CROP = 30
     }
 
+    override fun setLayout(): Int  = R.layout.activity_test_image_crop
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        setContentView(R.layout.activity_test_image_crop)
 
         findViewById<View>(R.id.button_crop).setOnClickListener {
             ImageSelector.startImageAction(this, REQUEST_IMAGE_SELECT,

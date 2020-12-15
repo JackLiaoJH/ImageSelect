@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/sl_000000"
+    android:background="?attr/detail.bg"
     android:gravity="center">
 
     <com.jhworks.library.view.HackyViewPager
@@ -16,18 +17,45 @@
         android:id="@+id/sl_toolbar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/sl_toolbar_height"
-        android:background="@color/sl_80000000"
-        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        android:background="?attr/detail.toolbar.bg"
+        app:theme="?toolbar">
 
-        <androidx.appcompat.widget.AppCompatCheckBox
-            android:id="@+id/sl_check_image"
+        <TextView
+            android:id="@+id/sl_tv_detail_ok"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="end"
-            android:button="@drawable/sl_bg_checkbox"
             android:gravity="center"
-            android:paddingStart="0dp"
-            android:paddingEnd="18dp" />
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:text="@string/sl_action_done"
+            android:textColor="?attr/detail.toolbar.title.color"
+            android:textSize="16sp" />
+
     </androidx.appcompat.widget.Toolbar>
+
+    <androidx.appcompat.widget.AppCompatCheckBox
+        android:id="@+id/sl_check_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginTop="64dp"
+        android:layout_marginEnd="16dp"
+        android:button="@drawable/sl_bg_checkbox"
+        android:gravity="center" />
+
+    <TextView
+        android:id="@+id/sl_tv_select_image_count"
+        android:layout_width="wrap_content"
+        android:layout_height="19dp"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="50dp"
+        android:background="@drawable/sl_bg_select_image"
+        android:gravity="center"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:textColor="@android:color/white"
+        android:textSize="14sp"
+        tools:text="9/9" />
 
 </FrameLayout>

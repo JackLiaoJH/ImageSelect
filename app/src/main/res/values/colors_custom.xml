@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <!--custom theme-->
+    <color name="sl_custom_primary">#3F51B5</color>
+    <color name="sl_custom_primary_dark">#303F9F</color>
+
+    <color name="sl_toolbar_bg_custom">#3F51B5</color>
+    <color name="sl_toolbar_title_custom">@android:color/white</color>
+    <color name="sl_toolbar_done_custom">#FF4081</color>
+
+    <color name="sl_folder_item_bg_custom">@android:color/white</color>
+    <color name="sl_folder_item_name_custom">#FF222222</color>
+    <color name="sl_folder_item_size_custom">#FF979A9E</color>
+    <color name="sl_folder_item_divider_custom">#FFBCBFC5</color>
+
+    <color name="sl_detail_bg_custom">#88FF4081</color>
+    <color name="sl_detail_toolbar_bg_custom">#FF111111</color>
+    <color name="sl_detail_toolbar_title_custom">#FF6300</color>
+</resources>

@@ -6,8 +6,8 @@
     <string name="sl_msg_no_camera">没有系统相机</string>
     <string name="sl_msg_amount_limit">已经达到最高选择数量</string>
     <string name="sl_action_done">完成</string>
-    <string name="sl_photo_unit">%1$d 张</string>
-    <string name="sl_no_photo_unit">* 张</string>
+    <string name="sl_photo_unit">(%1$d)</string>
+    <string name="sl_no_photo_unit">(*)</string>
     <string name="sl_tip_take_photo">拍摄照片</string>
     <string name="sl_error_image_not_exist">图片错误</string>
     <string name="sl_error_no_permission">无权限</string>

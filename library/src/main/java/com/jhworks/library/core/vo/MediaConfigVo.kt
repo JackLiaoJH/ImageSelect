@@ -3,6 +3,7 @@ package com.jhworks.library.core.vo
 import android.os.Parcel
 import android.os.Parcelable
 import androidx.annotation.DrawableRes
+import androidx.annotation.StyleRes
 import com.jhworks.library.R
 import com.jhworks.library.core.MediaConstant
 import com.jhworks.library.core.MediaSelectConfig
@@ -26,7 +27,9 @@ data class MediaConfigVo(
         @DrawableRes
         var errorResId: Int = R.drawable.ic_sl_image_default,
         @DrawableRes
-        var placeholderResId: Int = R.drawable.ic_sl_image_default
+        var placeholderResId: Int = R.drawable.ic_sl_image_default,
+        @StyleRes
+        var theme: Int = R.style.sl_theme_light
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
             parcel.readByte() != 0.toByte(),
@@ -34,6 +37,7 @@ data class MediaConfigVo(
             parcel.readInt(),
             parcel.readByte() != 0.toByte(),
             parcel.createStringArrayList(),
+            parcel.readInt(),
             parcel.readInt(),
             parcel.readInt(),
             parcel.readInt(),
@@ -50,6 +54,7 @@ data class MediaConfigVo(
         parcel.writeInt(mediaType)
         parcel.writeInt(errorResId)
         parcel.writeInt(placeholderResId)
+        parcel.writeInt(theme)
     }
 
     override fun describeContents(): Int {
@@ -68,7 +73,8 @@ data class MediaConfigVo(
                     config.selectMode,
                     config.mediaType,
                     config.errorResId,
-                    config.placeholderResId
+                    config.placeholderResId,
+                    config.theme
             )
         }
 

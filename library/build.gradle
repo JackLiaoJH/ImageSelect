@@ -40,17 +40,6 @@ repositories {
     mavenCentral()
 }
 
-//添加
-//publish {
-//    userOrg = 'jiahui'//bintray.com用户名
-//    repoName = 'jiahui'//要传到的maven的名字。你可能有多个maven，要传哪个写哪个。
-//    groupId = 'com.jhworks.library'//jcenter上的路径
-//    artifactId = 'ImageSelect'//项目名称
-//    publishVersion = '1.2.0'//版本号
-//    desc = 'Easy Image Select'//描述，不重要
-//    website = 'https://github.com/JackLiaoJH'//网站，不重要
-//}
-
 
 group = "com.jhworks.library"
 version = versions.versionName

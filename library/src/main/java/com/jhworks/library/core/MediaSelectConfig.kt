@@ -1,6 +1,7 @@
 package com.jhworks.library.core
 
 import androidx.annotation.DrawableRes
+import androidx.annotation.StyleRes
 import com.jhworks.library.R
 import com.jhworks.library.core.vo.MediaType
 import com.jhworks.library.core.vo.SelectMode
@@ -31,6 +32,9 @@ class MediaSelectConfig private constructor(builder: Builder) {
     @DrawableRes
     var placeholderResId = builder.placeholderResId
 
+    @StyleRes
+    var theme: Int = builder.theme
+
     class Builder {
         var isShowCamera: Boolean = false
         var maxCount = MediaConstant.DEFAULT_IMAGE_SIZE
@@ -49,6 +53,9 @@ class MediaSelectConfig private constructor(builder: Builder) {
 
         @MediaType
         private var mediaType = MediaType.IMAGE
+
+        @StyleRes
+        var theme: Int = R.style.sl_theme_light
 
         fun build(): MediaSelectConfig {
             return MediaSelectConfig(this)
@@ -119,6 +126,14 @@ class MediaSelectConfig private constructor(builder: Builder) {
 
         fun setPlaceholderResId(@DrawableRes resId: Int): Builder {
             this.placeholderResId = resId
+            return this
+        }
+
+        /**
+         * set theme ，default is R.style.sl_theme_light
+         */
+        fun setTheme(@StyleRes theme: Int): Builder {
+            this.theme = theme
             return this
         }
 

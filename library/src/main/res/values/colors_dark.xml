@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <!--dark theme-->
+    <color name="sl_dark_primary">@android:color/black</color>
+    <color name="sl_dark_primary_dark">@android:color/black</color>
+
+    <color name="sl_toolbar_bg_dark">@android:color/black</color>
+    <color name="sl_toolbar_title_dark">@android:color/white</color>
+    <color name="sl_toolbar_done_dark">#FF7F50FA</color>
+
+    <color name="sl_folder_item_bg_dark">@android:color/white</color>
+    <color name="sl_folder_item_name_dark">#FF222222</color>
+    <color name="sl_folder_item_size_dark">#FF979A9E</color>
+    <color name="sl_folder_item_divider_dark">#FFBCBFC5</color>
+
+    <color name="sl_detail_bg_dark">@android:color/black</color>
+    <color name="sl_detail_toolbar_bg_dark">#FF111111</color>
+    <color name="sl_detail_toolbar_title_dark">@android:color/white</color>
+</resources>
