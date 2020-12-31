@@ -29,4 +29,26 @@
         android:visibility="gone"
         tools:visibility="visible" />
 
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/sl_video_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:src="@drawable/sl_ic_video_icon"
+        android:visibility="gone" />
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_video_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="6dp"
+        android:layout_marginBottom="4dp"
+        android:textColor="#ffffffff"
+        android:textSize="12sp"
+        android:visibility="gone"
+        tools:text="00:20" />
+
 </FrameLayout>

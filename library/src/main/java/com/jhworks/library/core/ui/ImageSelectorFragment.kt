@@ -45,7 +45,8 @@ import java.io.IOException
 class ImageSelectorFragment : MediaLoaderFragment() {
     companion object {
         private const val REQUEST_CAMERA_PERMISSION = 110
-        private const val REQUEST_CAMERA = 100
+        private const val REQUEST_CAMERA_IMAGE = 100
+        private const val REQUEST_CAMERA_VIDEO = 101
         const val REQUEST_IMAGE_VIEW = 120
 
         private const val KEY_TEMP_FILE = "key_temp_file"
@@ -173,10 +174,14 @@ class ImageSelectorFragment : MediaLoaderFragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_CAMERA) {
+        if (requestCode == REQUEST_CAMERA_IMAGE || requestCode == REQUEST_CAMERA_VIDEO) {
             if (resultCode == Activity.RESULT_OK) {
                 if (mTmpFile != null) {
-                    mCallback?.onCameraShot(mTmpFile)
+                    if (resultCode == REQUEST_CAMERA_IMAGE) {
+                        mCallback?.onCameraShot(mTmpFile)
+                        return
+                    }
+                    mCallback?.onVideoShot(mTmpFile)
                 }
             } else {
                 // delete tmp file
@@ -391,10 +396,12 @@ class ImageSelectorFragment : MediaLoaderFragment() {
             requestPermission(Manifest.permission.CAMERA,
                     getString(R.string.sl_permission_camera), REQUEST_CAMERA_PERMISSION)
         } else {
-            val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            val isVideoType = mMediaConfig?.mediaType == MediaType.VIDEO
+            val action = if (isVideoType) MediaStore.ACTION_VIDEO_CAPTURE else MediaStore.ACTION_IMAGE_CAPTURE
+            val intent = Intent(action)
             if (intent.resolveActivity(activity!!.packageManager) != null) {
                 try {
-                    mTmpFile = SlFileUtils.createTmpFile(activity!!)
+                    mTmpFile = SlFileUtils.createTmpFile(activity!!, isVideoType)
                 } catch (e: IOException) {
                     e.printStackTrace()
                 }
@@ -403,11 +410,19 @@ class ImageSelectorFragment : MediaLoaderFragment() {
                         intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mTmpFile))
                     } else {
                         val contentValues = ContentValues(1)
-                        contentValues.put(MediaStore.Images.Media.DATA, mTmpFile?.absolutePath)
-                        val uri = createImageUri(contentValues)
-                        intent.putExtra(MediaStore.EXTRA_OUTPUT, uri)
+                        if (isVideoType) {
+                            contentValues.put(MediaStore.Video.Media.DATA, mTmpFile?.absolutePath)
+                            val uri = createVideoUri(contentValues)
+                            intent.putExtra(MediaStore.EXTRA_OUTPUT, uri)
+                            intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1)
+                        } else {
+                            contentValues.put(MediaStore.Images.Media.DATA, mTmpFile?.absolutePath)
+                            val uri = createImageUri(contentValues)
+                            intent.putExtra(MediaStore.EXTRA_OUTPUT, uri)
+                        }
                     }
-                    startActivityForResult(intent, REQUEST_CAMERA)
+                    val requestCode = if (isVideoType) REQUEST_CAMERA_VIDEO else REQUEST_CAMERA_IMAGE
+                    startActivityForResult(intent, requestCode)
                 } else {
                     Toast.makeText(activity, R.string.sl_error_image_not_exist, Toast.LENGTH_SHORT).show()
                 }
@@ -423,6 +438,15 @@ class ImageSelectorFragment : MediaLoaderFragment() {
             context?.let { context?.contentResolver?.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues) }
         } else {
             context?.let { context?.contentResolver?.insert(MediaStore.Images.Media.INTERNAL_CONTENT_URI, contentValues) }
+        }
+    }
+
+    private fun createVideoUri(contentValues: ContentValues): Uri? {
+        val status: String = Environment.getExternalStorageState()
+        return if (status == Environment.MEDIA_MOUNTED) {
+            context?.let { context?.contentResolver?.insert(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, contentValues) }
+        } else {
+            context?.let { context?.contentResolver?.insert(MediaStore.Video.Media.INTERNAL_CONTENT_URI, contentValues) }
         }
     }
 
@@ -460,6 +484,7 @@ class ImageSelectorFragment : MediaLoaderFragment() {
         fun onImageSelected(path: String?)
         fun onImageUnselected(path: String?)
         fun onCameraShot(imageFile: File?)
+        fun onVideoShot(imageFile: File?)
         fun onImageSelectList(imageList: MutableList<MediaVo>)
     }
 }

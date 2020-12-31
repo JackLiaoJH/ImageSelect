@@ -84,6 +84,7 @@ class MainActivity : AppCompatActivity() {
                         .setSelectMode(getSelectMode())
                         .setOriginData(mSelectPath)
                         .setMaxCount(maxNum)
+                        .setShowCamera(true)
                         .setImageSpanCount(imageSpanCount)
                         .build())
     }

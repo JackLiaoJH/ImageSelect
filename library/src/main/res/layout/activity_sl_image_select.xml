@@ -37,7 +37,7 @@
                 android:gravity="center"
                 android:orientation="horizontal">
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_sl_toolbar_folder"
                     style="@style/sl_toolbar_base_title_style"
                     android:layout_gravity="center"
@@ -54,7 +54,7 @@
             </LinearLayout>
 
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/sl_commit"
                 style="@style/sl_toolbar_base_title_style"
                 android:layout_gravity="end"
@@ -74,7 +74,7 @@
         android:layout_marginTop="@dimen/sl_toolbar_height" />
 
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_sl_select_image_count"
         android:layout_width="wrap_content"
         android:layout_height="19dp"

@@ -84,11 +84,11 @@ dependencies {
     debugImplementation deps.blockcanary.debug
     releaseImplementation deps.blockcanary.release
 
-//    implementation project(':library')
+    implementation project(':library')
     // 老版本
 //    implementation 'com.github.JackLiaoJH:ImageSelect:1.2.1'
     // 新版本
-    implementation 'com.jhworks.library:library:2.0.0'
+//    implementation 'com.jhworks.library:library:2.0.0'
 }
 repositories {
     mavenCentral()

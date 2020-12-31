@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:src="@drawable/sl_ic_camera" />
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"

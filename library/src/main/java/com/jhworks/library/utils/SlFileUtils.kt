@@ -18,10 +18,13 @@ object SlFileUtils {
     private const val JPEG_FILE_PREFIX = "IMG_"
     private const val JPEG_FILE_SUFFIX = ".jpg"
 
+    private const val VID_FILE_PREFIX = "VID_"
+    private const val MP4_FILE_SUFFIX = ".mp4"
+
     private const val EXTERNAL_STORAGE_PERMISSION = "android.permission.WRITE_EXTERNAL_STORAGE"
 
     @Throws(IOException::class)
-    fun createTmpFile(context: Context): File {
+    fun createTmpFile(context: Context, isVideo: Boolean): File {
         var dir: File?
         if (TextUtils.equals(Environment.getExternalStorageState(), Environment.MEDIA_MOUNTED)) {
             dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM)
@@ -34,7 +37,8 @@ object SlFileUtils {
         } else {
             dir = getCacheDirectory(context, true)
         }
-        return File.createTempFile(JPEG_FILE_PREFIX, JPEG_FILE_SUFFIX, dir)
+        return if (isVideo) File.createTempFile(VID_FILE_PREFIX, MP4_FILE_SUFFIX, dir)
+        else File.createTempFile(JPEG_FILE_PREFIX, JPEG_FILE_SUFFIX, dir)
     }
 
     fun getUriFromPath(context: Context, path: String?): Uri? {

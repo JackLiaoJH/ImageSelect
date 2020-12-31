@@ -37,11 +37,12 @@ object MediaParse {
             MediaStore.Video.VideoColumns.DATE_TAKEN,
             MediaStore.Video.VideoColumns.DATE_MODIFIED,
             MediaStore.Video.VideoColumns.MIME_TYPE,
-            "0 AS " + MediaStore.Images.ImageColumns.ORIENTATION,
+            MediaStore.Images.ImageColumns.ORIENTATION,
             MediaStore.Images.ImageColumns.DATA,
             MediaStore.Images.ImageColumns.DISPLAY_NAME,
             MediaStore.Images.ImageColumns.DATE_ADDED,
-            MediaStore.Images.ImageColumns.SIZE)
+            MediaStore.Images.ImageColumns.SIZE,
+            MediaStore.Video.VideoColumns.DURATION)
     val MEDIA_IMAGE_URI: Uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
     val MEDIA_VIDEO_URI: Uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI
 
@@ -66,11 +67,8 @@ object MediaParse {
             }
         }
         val cursor = context.contentResolver.query(
-                MEDIA_IMAGE_URI,
-                IMAGE_PROJECTION,
-                selectAction.toString(),
-                selectArgs,
-                "${IMAGE_PROJECTION[7]} DESC"
+                MEDIA_IMAGE_URI, IMAGE_PROJECTION, selectAction.toString(),
+                selectArgs, "${IMAGE_PROJECTION[7]} DESC"
         )
 
         return query(MEDIA_IMAGE_URI, cursor, MediaType.IMAGE, resultFolder)
@@ -79,11 +77,7 @@ object MediaParse {
     fun queryVideos(context: Context, resultFolder: MutableList<FolderVo>): MutableList<MediaVo>? {
         try {
             val cursor = context.contentResolver.query(
-                    MEDIA_VIDEO_URI,
-                    VIDEO_PROJECTION,
-                    null,
-                    null,
-                    "${VIDEO_PROJECTION[1]} DESC"
+                    MEDIA_VIDEO_URI, VIDEO_PROJECTION, null, null, "${VIDEO_PROJECTION[1]} DESC"
             )
             return query(MEDIA_VIDEO_URI, cursor, MediaType.VIDEO, resultFolder)
         } catch (e: IllegalArgumentException) {
@@ -98,6 +92,7 @@ object MediaParse {
         if (cursor == null) return data
         cursor.use {
             while (it.moveToNext()) {
+
                 val id = it.getLong(it.getColumnIndexOrThrow(IMAGE_PROJECTION[0]))
                 val dateTaken = it.getLong(it.getColumnIndexOrThrow(IMAGE_PROJECTION[1]))
                 val mimeType = it.getString(it.getColumnIndexOrThrow(IMAGE_PROJECTION[3]))
@@ -114,9 +109,13 @@ object MediaParse {
                         orientation, type.toLong(), path,
                         displayName, dateAdded, size
                 )
+
+                if (type == MediaType.VIDEO) {
+                    val duration = it.getInt(it.getColumnIndexOrThrow(VIDEO_PROJECTION[9]))
+                    media.duration = duration
+                }
+
                 data.add(media)
-
-
                 // get all folder data
                 val folderFile = File(path).parentFile
                 if (folderFile != null && folderFile.exists()) {

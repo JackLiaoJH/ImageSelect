@@ -27,6 +27,9 @@ data class MediaVo(
 ) : Parcelable {
     var isSelect: Boolean = false
 
+    // 视频时长
+    var duration: Int = 0
+
     constructor(parcel: Parcel) : this(
             parcel.readLong(),
             parcel.readParcelable(Uri::class.java.classLoader),
@@ -40,6 +43,7 @@ data class MediaVo(
             parcel.readLong(),
             parcel.readInt()) {
         isSelect = parcel.readByte() != 0.toByte()
+        duration = parcel.readInt()
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -55,6 +59,7 @@ data class MediaVo(
         parcel.writeLong(time)
         parcel.writeInt(size)
         parcel.writeByte(if (isSelect) 1 else 0)
+        parcel.writeInt(duration)
     }
 
     override fun describeContents(): Int {

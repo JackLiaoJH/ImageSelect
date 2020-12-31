@@ -7,12 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.widget.AppCompatCheckBox
 import androidx.recyclerview.widget.RecyclerView
 import com.jhworks.library.ImageSelector
 import com.jhworks.library.R
 import com.jhworks.library.core.MediaConstant
 import com.jhworks.library.core.vo.MediaConfigVo
+import com.jhworks.library.core.vo.MediaType
 import com.jhworks.library.core.vo.MediaUiConfigVo
 import com.jhworks.library.core.vo.MediaVo
 import com.jhworks.library.utils.SlScreenUtils
@@ -27,7 +29,7 @@ import java.io.File
 class MediaAdapter(context: Context,
                    private var showCamera: Boolean,
                    private val column: Int,
-                   mediaConfig: MediaConfigVo?)
+                   private val mediaConfig: MediaConfigVo?)
     : RecyclerView.Adapter<MediaHolder>() {
     companion object {
         private const val TYPE_CAMERA = 0
@@ -56,9 +58,9 @@ class MediaAdapter(context: Context,
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MediaHolder {
         return if (viewType == TYPE_CAMERA) {
-            MediaHolder(mInflater.inflate(R.layout.sl_list_item_camera, parent, false), this, mMaxSelectCount)
+            MediaHolder(mInflater.inflate(R.layout.sl_list_item_camera, parent, false), this, mMaxSelectCount, mediaConfig)
         } else {
-            MediaHolder(mInflater.inflate(R.layout.sl_list_item_image, parent, false), this, mMaxSelectCount)
+            MediaHolder(mInflater.inflate(R.layout.sl_list_item_image, parent, false), this, mMaxSelectCount, mediaConfig)
         }
     }
 
@@ -145,11 +147,14 @@ class MediaAdapter(context: Context,
     }
 }
 
-class MediaHolder(itemView: View, private val adapter: MediaAdapter, private val maxCount: Int)
+class MediaHolder(itemView: View, private val adapter: MediaAdapter, private val maxCount: Int,
+                  private val mediaConfig: MediaConfigVo?)
     : RecyclerView.ViewHolder(itemView) {
     val image: ImageView? = itemView.findViewById(R.id.sl_image)
     private val mCheckBox: AppCompatCheckBox? = itemView.findViewById(R.id.sl_checkmark)
     private val view: View? = itemView.findViewById(R.id.sl_check_container)
+    private val ivVideoIcon: ImageView? = itemView.findViewById(R.id.sl_video_icon)
+    private val tvVideoTime: TextView? = itemView.findViewById(R.id.tv_video_time)
 
     init {
         itemView.tag = this
@@ -171,6 +176,16 @@ class MediaHolder(itemView: View, private val adapter: MediaAdapter, private val
         } else {
             mCheckBox?.visibility = View.GONE
         }
+
+        if (mediaConfig?.mediaType == MediaType.VIDEO) {
+            ivVideoIcon?.visibility = View.VISIBLE
+            tvVideoTime?.visibility = View.VISIBLE
+            tvVideoTime?.text = formatDuration((data.duration + 500) / 1000)
+        } else {
+            ivVideoIcon?.visibility = View.GONE
+            tvVideoTime?.visibility = View.GONE
+        }
+
         if (TextUtils.isEmpty(data.path)) {
             image?.setImageResource(adapter.placeholderResId)
             return
@@ -184,6 +199,20 @@ class MediaHolder(itemView: View, private val adapter: MediaAdapter, private val
         } else {
             image?.setImageResource(adapter.placeholderResId)
         }
+    }
+
+    /**
+     * 格式化时长在一个小时以内的时间
+     */
+    private fun formatDuration(duration: Int): String {
+        if (duration < 10) return "00:0$duration"
+        if (duration < 60) return "00:$duration"
+        val second = duration % 60
+        val min = duration / 60
+        if (min < 10) {
+            return if (second < 10) "0${min}:0${second}" else "0${min}:${second}"
+        }
+        return if (second < 10) "${min}:0${second}" else "${min}:${second}"
     }
 }
 

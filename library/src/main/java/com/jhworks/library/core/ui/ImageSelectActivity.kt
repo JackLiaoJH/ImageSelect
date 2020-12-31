@@ -182,6 +182,13 @@ class ImageSelectActivity : ImagePermissionActivity(), ImageSelectorFragment.Cal
         dealResult(imageFile.absolutePath, uriFile)
     }
 
+    override fun onVideoShot(imageFile: File?) {
+//        imageFile ?: return
+//        val uriFile = Uri.fromFile(imageFile)
+//        dealResult(imageFile.absolutePath, uriFile)
+        onCameraShot(imageFile)
+    }
+
     override fun onImageSelectList(imageList: MutableList<MediaVo>) {
         updateDoneText(imageList.size)
     }
