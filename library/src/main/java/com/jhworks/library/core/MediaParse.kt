@@ -26,7 +26,6 @@ object MediaParse {
             MediaStore.Images.ImageColumns.DATE_TAKEN,
             MediaStore.Images.ImageColumns.DATE_MODIFIED,
             MediaStore.Images.ImageColumns.MIME_TYPE,
-            MediaStore.Images.ImageColumns.ORIENTATION,
             MediaStore.Images.ImageColumns.DATA,
             MediaStore.Images.ImageColumns.DISPLAY_NAME,
             MediaStore.Images.ImageColumns.DATE_ADDED,
@@ -37,7 +36,6 @@ object MediaParse {
             MediaStore.Video.VideoColumns.DATE_TAKEN,
             MediaStore.Video.VideoColumns.DATE_MODIFIED,
             MediaStore.Video.VideoColumns.MIME_TYPE,
-            MediaStore.Images.ImageColumns.ORIENTATION,
             MediaStore.Images.ImageColumns.DATA,
             MediaStore.Images.ImageColumns.DISPLAY_NAME,
             MediaStore.Images.ImageColumns.DATE_ADDED,
@@ -53,22 +51,22 @@ object MediaParse {
         var selectArgs: Array<String>? = null
         if (mediaId == R.id.loader_all_media_store_data) {
             selectAction
-                    .append(IMAGE_PROJECTION[8]).append(">0 AND ")
+                    .append(IMAGE_PROJECTION[7]).append(">0 AND ")
                     .append(IMAGE_PROJECTION[3]).append("=? OR ")
                     .append(IMAGE_PROJECTION[3]).append("=? ")
             selectArgs = arrayOf("image/jpeg", "image/png")
         } else if (mediaId == R.id.loader_category_media_store_data) {
-            selectAction.append(IMAGE_PROJECTION[8]).append(">0 ")
+            selectAction.append(IMAGE_PROJECTION[7]).append(">0 ")
             if (bundle != null) {
                 selectAction
                         .append(" AND ")
-                        .append(IMAGE_PROJECTION[5]).append(" like '%")
+                        .append(IMAGE_PROJECTION[4]).append(" like '%")
                         .append(bundle.getString(KEY_TYPE_CATEGORY)).append("%'")
             }
         }
         val cursor = context.contentResolver.query(
                 MEDIA_IMAGE_URI, IMAGE_PROJECTION, selectAction.toString(),
-                selectArgs, "${IMAGE_PROJECTION[7]} DESC"
+                selectArgs, "${IMAGE_PROJECTION[6]} DESC"
         )
 
         return query(MEDIA_IMAGE_URI, cursor, MediaType.IMAGE, resultFolder)
@@ -95,23 +93,21 @@ object MediaParse {
 
                 val id = it.getLong(it.getColumnIndexOrThrow(IMAGE_PROJECTION[0]))
                 val dateTaken = it.getLong(it.getColumnIndexOrThrow(IMAGE_PROJECTION[1]))
-                val mimeType = it.getString(it.getColumnIndexOrThrow(IMAGE_PROJECTION[3]))
                 val dateModified = it.getLong(it.getColumnIndexOrThrow(IMAGE_PROJECTION[2]))
-                val orientation = it.getInt(it.getColumnIndexOrThrow(IMAGE_PROJECTION[4]))
-                val path = it.getString(it.getColumnIndexOrThrow(IMAGE_PROJECTION[5]))
-                val displayName = it.getString(it.getColumnIndexOrThrow(IMAGE_PROJECTION[6]))
-                val dateAdded = it.getLong(it.getColumnIndexOrThrow(IMAGE_PROJECTION[7]))
-                val size = it.getInt(it.getColumnIndexOrThrow(IMAGE_PROJECTION[8]))
+                val mimeType = it.getString(it.getColumnIndexOrThrow(IMAGE_PROJECTION[3]))
+                val path = it.getString(it.getColumnIndexOrThrow(IMAGE_PROJECTION[4]))
+                val displayName = it.getString(it.getColumnIndexOrThrow(IMAGE_PROJECTION[5]))
+                val dateAdded = it.getLong(it.getColumnIndexOrThrow(IMAGE_PROJECTION[6]))
+                val size = it.getInt(it.getColumnIndexOrThrow(IMAGE_PROJECTION[7]))
                 if (!fileExist(path) || TextUtils.isEmpty(displayName)) continue
                 val media = MediaVo(
                         id, Uri.withAppendedPath(contentUri, id.toString()),
-                        mimeType, dateTaken, dateModified.toInt(),
-                        orientation, type.toLong(), path,
+                        mimeType, dateModified, type, dateTaken, path,
                         displayName, dateAdded, size
                 )
 
                 if (type == MediaType.VIDEO) {
-                    val duration = it.getInt(it.getColumnIndexOrThrow(VIDEO_PROJECTION[9]))
+                    val duration = it.getInt(it.getColumnIndexOrThrow(VIDEO_PROJECTION[8]))
                     media.duration = duration
                 }
 

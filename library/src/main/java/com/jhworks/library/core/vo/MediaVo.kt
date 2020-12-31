@@ -17,7 +17,6 @@ data class MediaVo(
         val uri: Uri? = null,
         val mimeType: String? = null,
         val dateModified: Long = 0,
-        val orientation: Int = 0,
         val type: Int = 0,
         val dateTaken: Long = 0,
         val path: String? = null,
@@ -36,7 +35,6 @@ data class MediaVo(
             parcel.readString(),
             parcel.readLong(),
             parcel.readInt(),
-            parcel.readInt(),
             parcel.readLong(),
             parcel.readString(),
             parcel.readString(),
@@ -51,7 +49,6 @@ data class MediaVo(
         parcel.writeParcelable(uri, flags)
         parcel.writeString(mimeType)
         parcel.writeLong(dateModified)
-        parcel.writeInt(orientation)
         parcel.writeInt(type)
         parcel.writeLong(dateTaken)
         parcel.writeString(path)
@@ -76,7 +73,7 @@ data class MediaVo(
     }
 
     override fun toString(): String {
-        return "MediaVo(rowId=$rowId, uri=$uri, mimeType=$mimeType, dateModified=$dateModified, orientation=$orientation, type=$type, dateTaken=$dateTaken, path=$path, name=$name, time=$time, size=$size, isSelect=$isSelect)"
+        return "MediaVo(rowId=$rowId, uri=$uri, mimeType=$mimeType, dateModified=$dateModified, type=$type, dateTaken=$dateTaken, path=$path, name=$name, time=$time, size=$size, isSelect=$isSelect)"
     }
 
     companion object CREATOR : Parcelable.Creator<MediaVo> {
