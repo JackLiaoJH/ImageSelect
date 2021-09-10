@@ -12,6 +12,9 @@ import androidx.core.content.ContextCompat
  */
 object SlScreenUtils {
 
+    private var screenWidth = 0
+    private var screenHeight = 0
+
     fun getScreenSize(context: Context): Point {
         val wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
         val out = Point()
@@ -20,10 +23,21 @@ object SlScreenUtils {
     }
 
     fun getScreenWidth(context: Context): Int {
+        if (screenWidth > 0) return screenWidth
         val metric = DisplayMetrics()
         val wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
         wm.defaultDisplay.getMetrics(metric)
-        return metric.widthPixels
+        screenWidth = metric.widthPixels
+        return screenWidth
+    }
+
+    fun getScreenHeight(context: Context): Int {
+        if (screenHeight > 0) return screenHeight
+        val metric = DisplayMetrics()
+        val wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        wm.defaultDisplay.getMetrics(metric)
+        screenHeight = metric.heightPixels
+        return screenHeight
     }
 
 

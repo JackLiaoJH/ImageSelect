@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root_fl"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent"
+    tools:ignore="ResourceName">
+
+    <com.jhworks.library.view.ScrollDownPhotoView
+        android:id="@+id/sl_scroll_down_photo_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.jhworks.library.view.HackyViewPager
+            android:id="@+id/sl_page_image_viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </com.jhworks.library.view.ScrollDownPhotoView>
+
+<!--    <me.relex.circleindicator.CircleIndicator-->
+<!--        android:id="@+id/indicator"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="40dp"-->
+<!--        android:layout_gravity="bottom"-->
+<!--        android:layout_marginBottom="@dimen/sl_bottom_indicator_size" />-->
+
+    <TextView
+        android:id="@+id/sl_page_image_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="26dp"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        tools:text="0/0" />
+
+</FrameLayout>

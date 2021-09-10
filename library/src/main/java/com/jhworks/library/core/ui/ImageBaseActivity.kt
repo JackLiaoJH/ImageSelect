@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
 import android.view.WindowManager
 import androidx.annotation.ColorRes
 import androidx.appcompat.app.AppCompatActivity
@@ -70,8 +71,16 @@ abstract class ImageBaseActivity : AppCompatActivity() {
         return navDrawable
     }
 
-    protected fun setStatusBarColor(@ColorRes color: Int = R.color.sl_dark_primary) {
+    protected fun setStatusBarColor(
+        @ColorRes color: Int = R.color.sl_dark_primary,
+        isOpenImmersion: Boolean = false
+    ) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (isOpenImmersion) {
+                window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+                window.decorView.systemUiVisibility =
+                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+            }
             window?.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
             window?.statusBarColor = SlScreenUtils.getColor(this, color)
             window.navigationBarColor = SlScreenUtils.getColor(this, R.color.sl_dark_primary)

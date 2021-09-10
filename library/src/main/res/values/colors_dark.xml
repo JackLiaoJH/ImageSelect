@@ -18,4 +18,5 @@
     <color name="sl_detail_bg_dark">@android:color/black</color>
     <color name="sl_detail_toolbar_bg_dark">#FF111111</color>
     <color name="sl_detail_toolbar_title_dark">@android:color/white</color>
+    <color name="sl_transparent">@android:color/transparent</color>
 </resources>

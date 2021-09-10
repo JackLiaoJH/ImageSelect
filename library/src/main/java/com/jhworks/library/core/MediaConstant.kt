@@ -37,6 +37,7 @@ object MediaConstant {
     const val KEY_EXTRA_CURRENT_POSITION = "current_position"
 
     const val KEY_MEDIA_SELECT_CONFIG = "media_select_config"
+    const val KEY_BIG_IMAGE_LIST = "big_image_list"
 
     const val RESULT_ERROR = 400
 

@@ -116,7 +116,7 @@ class ImageDetailActivity : ImageBaseActivity(), OnPageChangeListener {
         setResult(Activity.RESULT_OK)
     }
 
-    private class ImagePageAdapter internal constructor(
+    private class ImagePageAdapter(
             private val mContext: Context,
             private val mMedias: MutableList<MediaVo>)
         : PagerAdapter() {

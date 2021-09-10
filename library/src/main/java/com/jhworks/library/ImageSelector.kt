@@ -7,7 +7,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.jhworks.library.core.MediaConstant
 import com.jhworks.library.core.MediaSelectConfig
+import com.jhworks.library.core.ui.ImagePageActivity
 import com.jhworks.library.core.ui.ImageSelectActivity
+import com.jhworks.library.core.vo.ImageInfoVo
 import com.jhworks.library.core.vo.MediaType
 import com.jhworks.library.engine.IEngine
 import com.jhworks.library.utils.CheckNullUtils
@@ -20,6 +22,23 @@ import com.jhworks.library.utils.CheckNullUtils
  */
 object ImageSelector {
     private var imageEngine: IEngine? = null
+
+    fun startBigImaDetail(target: Any?, position: Int, imgList: ArrayList<ImageInfoVo>) {
+        target ?: return
+        when (target) {
+            is Activity -> {
+                ImagePageActivity.start(target, position, imgList)
+            }
+            is FragmentActivity -> {
+                ImagePageActivity.start(target, position, imgList)
+            }
+            is Fragment -> {
+                val activity: Activity? = target.activity
+                if (activity == null || activity.isFinishing) return
+                ImagePageActivity.start(activity, position, imgList)
+            }
+        }
+    }
 
     fun startImageAction(activity: Activity?, requestCode: Int, config: MediaSelectConfig) {
         activity ?: return

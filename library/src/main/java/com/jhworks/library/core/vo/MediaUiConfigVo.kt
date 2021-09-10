@@ -10,12 +10,15 @@ import com.jhworks.library.R
  * @date 2020/6/11 15:32
  */
 class MediaUiConfigVo(
-        var path: Any?, var width: Int = -1,
-        var height: Int = -1,
+    var path: Any?, var width: Int = -1,
+    var height: Int = -1,
 
-        @DrawableRes
-        var placeholderResId: Int = R.drawable.ic_sl_image_default,
+    @DrawableRes
+    var placeholderResId: Int = R.drawable.ic_sl_image_default,
 
-        @DrawableRes
-        var errorResId: Int = R.drawable.ic_sl_image_default) {
+    @DrawableRes
+    var errorResId: Int = R.drawable.ic_sl_image_default,
+
+    var imageInfoVo: ImageInfoVo? = null
+) {
 }

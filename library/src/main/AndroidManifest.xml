@@ -20,6 +20,10 @@
             android:name=".core.ui.ImageDetailActivity"
             android:configChanges="orientation|screenSize" />
 
+        <activity
+            android:name=".core.ui.ImagePageActivity"
+            android:configChanges="orientation|screenSize" />
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.sl.fileprovider"

@@ -42,7 +42,9 @@ buildscript {
                     compressor  : 'id.zelory:compressor:3.0.0',
                     ucrop       : 'com.github.yalantis:ucrop:2.2.5',
                     ucrop_native: 'com.github.yalantis:ucrop:2.2.5-native',
-            ]
+            ],
+            //跟随viewpager的点
+            circle_indicator : 'me.relex:circleindicator:1.1.8@aar'
     ]
 
     repositories {

@@ -12,6 +12,7 @@ import android.widget.RadioGroup
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import com.jhworks.imageselect.utils.DataProvider
 import com.jhworks.library.ImageSelector
 import com.jhworks.library.core.MediaSelectConfig
 import com.jhworks.library.core.vo.SelectMode
@@ -56,7 +57,12 @@ class MainActivity : AppCompatActivity() {
         findViewById<View>(R.id.btn_open_video).setOnClickListener { pickVideo() }
 
         findViewById<View>(R.id.btn_test_crop).setOnClickListener {
-            startActivity(Intent(this, TestImageCropActivity::class.java))
+//            startActivity(Intent(this, TestImageCropActivity::class.java))
+
+
+            ImageSelector.startBigImaDetail(
+                this@MainActivity, 0, DataProvider.getBigImageList()
+            )
         }
     }
 
@@ -79,14 +85,16 @@ class MainActivity : AppCompatActivity() {
         }
         if (mSelectPath != null && mSelectPath!!.size > 0) mSelectPath!!.clear()
 
-        ImageSelector.startVideoAction(this@MainActivity, REQUEST_IMAGE,
-                MediaSelectConfig.Builder()
-                        .setSelectMode(getSelectMode())
-                        .setOriginData(mSelectPath)
-                        .setMaxCount(maxNum)
-                        .setShowCamera(true)
-                        .setImageSpanCount(imageSpanCount)
-                        .build())
+        ImageSelector.startVideoAction(
+            this@MainActivity, REQUEST_IMAGE,
+            MediaSelectConfig.Builder()
+                .setSelectMode(getSelectMode())
+                .setOriginData(mSelectPath)
+                .setMaxCount(maxNum)
+                .setShowCamera(true)
+                .setImageSpanCount(imageSpanCount)
+                .build()
+        )
     }
 
     private fun pickImage(isOpneCameraOnly: Boolean) {
@@ -117,17 +125,18 @@ class MainActivity : AppCompatActivity() {
             else -> R.style.sl_theme_light
         }
 
-        ImageSelector.startImageAction(this@MainActivity, REQUEST_IMAGE,
-                MediaSelectConfig.Builder()
-                        .setSelectMode(getSelectMode())
-                        .setOriginData(mSelectPath)
-                        .setTheme(theme)
-                        .setShowCamera(showCamera)
-                        .setPlaceholderResId(R.mipmap.ic_launcher)
-                        .setOpenCameraOnly(isOpneCameraOnly)
-                        .setMaxCount(maxNum)
-                        .setImageSpanCount(imageSpanCount)
-                        .build()
+        ImageSelector.startImageAction(
+            this@MainActivity, REQUEST_IMAGE,
+            MediaSelectConfig.Builder()
+                .setSelectMode(getSelectMode())
+                .setOriginData(mSelectPath)
+                .setTheme(theme)
+                .setShowCamera(showCamera)
+                .setPlaceholderResId(R.mipmap.ic_launcher)
+                .setOpenCameraOnly(isOpneCameraOnly)
+                .setMaxCount(maxNum)
+                .setImageSpanCount(imageSpanCount)
+                .build()
         )
     }
 

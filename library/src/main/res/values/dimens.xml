@@ -6,4 +6,5 @@
     <dimen name="sl_folder_item_height">64dp</dimen>
     <dimen name="sl_toolbar_height">48dp</dimen>
     <dimen name="sl_toolbar_title_size">16sp</dimen>
+    <dimen name="sl_bottom_indicator_size">16dp</dimen>
 </resources>

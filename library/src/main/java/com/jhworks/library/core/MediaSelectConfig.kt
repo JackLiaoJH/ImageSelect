@@ -3,6 +3,7 @@ package com.jhworks.library.core
 import androidx.annotation.DrawableRes
 import androidx.annotation.StyleRes
 import com.jhworks.library.R
+import com.jhworks.library.core.vo.ImageInfoVo
 import com.jhworks.library.core.vo.MediaType
 import com.jhworks.library.core.vo.SelectMode
 
@@ -35,6 +36,10 @@ class MediaSelectConfig private constructor(builder: Builder) {
     @StyleRes
     var theme: Int = builder.theme
 
+
+    var bigImgEnable = builder.bigImgEnable
+    var bigImageList = builder.bigImageList
+
     class Builder {
         var isShowCamera: Boolean = false
         var maxCount = MediaConstant.DEFAULT_IMAGE_SIZE
@@ -56,6 +61,12 @@ class MediaSelectConfig private constructor(builder: Builder) {
 
         @StyleRes
         var theme: Int = R.style.sl_theme_light
+
+
+        //add 2021.9.9
+        // 大图模式下加载预览,类似微信
+        var bigImgEnable = false
+        var bigImageList = arrayListOf<ImageInfoVo>()
 
         fun build(): MediaSelectConfig {
             return MediaSelectConfig(this)
@@ -134,6 +145,16 @@ class MediaSelectConfig private constructor(builder: Builder) {
          */
         fun setTheme(@StyleRes theme: Int): Builder {
             this.theme = theme
+            return this
+        }
+
+        fun setBigImgEnable(enable: Boolean): Builder {
+            this.bigImgEnable = enable
+            return this
+        }
+
+        fun setBigImageInfo(imageinfos: ArrayList<ImageInfoVo>): Builder {
+            this.bigImageList = imageinfos
             return this
         }
 

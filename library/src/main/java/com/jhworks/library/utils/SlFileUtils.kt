@@ -29,7 +29,8 @@ object SlFileUtils {
         if (TextUtils.equals(Environment.getExternalStorageState(), Environment.MEDIA_MOUNTED)) {
             dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM)
             if (!dir.exists()) {
-                dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM + "/Camera")
+                dir =
+                    Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM + "/Camera")
                 if (!dir.exists()) {
                     dir = getCacheDirectory(context, true)
                 }
@@ -46,9 +47,9 @@ object SlFileUtils {
         try {
             return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 FileProvider.getUriForFile(
-                        context,
-                        "${context.applicationInfo?.packageName}.sl.fileprovider",
-                        File(path)
+                    context,
+                    "${context.applicationInfo?.packageName}.sl.fileprovider",
+                    File(path)
                 )
             } else {
                 Uri.fromFile(File(path))
@@ -96,8 +97,9 @@ object SlFileUtils {
             ""
         }
         if (preferExternal
-                && Environment.MEDIA_MOUNTED == externalStorageState
-                && hasExternalStoragePermission(context)) {
+            && Environment.MEDIA_MOUNTED == externalStorageState
+            && hasExternalStoragePermission(context)
+        ) {
             appCacheDir = getExternalCacheDir(context)
         }
         if (appCacheDir == null) {
@@ -148,5 +150,11 @@ object SlFileUtils {
     private fun hasExternalStoragePermission(context: Context): Boolean {
         val perm = context.checkCallingOrSelfPermission(EXTERNAL_STORAGE_PERMISSION)
         return perm == PackageManager.PERMISSION_GRANTED
+    }
+
+    fun isFileExits(fileName: String?): Boolean {
+        if (fileName == null || fileName.isEmpty()) return false
+        if (File(fileName).exists()) return true
+        return false
     }
 }
