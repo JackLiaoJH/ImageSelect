@@ -13,6 +13,7 @@ import com.jhworks.library.core.vo.ImageInfoVo
 import com.jhworks.library.core.vo.MediaType
 import com.jhworks.library.engine.IEngine
 import com.jhworks.library.utils.CheckNullUtils
+import com.jhworks.library.utils.SlLog
 
 /**
  * 图片选择器
@@ -78,6 +79,11 @@ object ImageSelector {
 
     fun setImageEngine(imageEngine: IEngine): ImageSelector {
         this.imageEngine = imageEngine
+        return this
+    }
+
+    fun isDebug(debug: Boolean): ImageSelector {
+        SlLog.isDebug = debug
         return this
     }
 

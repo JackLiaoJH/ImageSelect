@@ -17,7 +17,7 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        ImageSelector.setImageEngine(GlideEngine())
+        ImageSelector.setImageEngine(GlideEngine()).isDebug(BuildConfig.DEBUG)
 
         if (BuildConfig.DEBUG) {
             enabledStrictMode()
@@ -28,23 +28,23 @@ class App : Application() {
 
     private fun enabledStrictMode() {
         StrictMode.setThreadPolicy(
-                StrictMode.ThreadPolicy.Builder()
+            StrictMode.ThreadPolicy.Builder()
 //                .detectAll()
 //                .detectDiskReads()
 //                .detectDiskWrites()
-                        .detectNetwork()
-                        .penaltyLog()
-                        .penaltyDialog()
-                        .penaltyDeath()
-                        .build()
+                .detectNetwork()
+                .penaltyLog()
+                .penaltyDialog()
+                .penaltyDeath()
+                .build()
         )
 
         StrictMode.setVmPolicy(
-                StrictMode.VmPolicy.Builder()
-                        //检测资源是否正确关闭
-                        .detectLeakedClosableObjects()
-                        .penaltyLog()
-                        .build()
+            StrictMode.VmPolicy.Builder()
+                //检测资源是否正确关闭
+                .detectLeakedClosableObjects()
+                .penaltyLog()
+                .build()
         );
     }
 }

@@ -5,7 +5,6 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.os.Handler
 import android.os.Message
-import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +13,7 @@ import android.widget.ImageView
 import com.github.chrisbanes.photoview.PhotoView
 import com.jhworks.library.core.callback.ImgProgressListener
 import com.jhworks.library.core.vo.ImageInfoVo
+import com.jhworks.library.utils.SlLog
 import java.io.File
 import java.lang.ref.WeakReference
 
@@ -53,6 +53,7 @@ class SlPhotoView(
     override fun onDetachedFromWindow() {
         progressHandler?.removeCallbacksAndMessages(null)
         progressHandler = null
+        onViewWindowChangeListener?.onDetachedFromWindow()
         super.onDetachedFromWindow()
     }
 
@@ -61,6 +62,7 @@ class SlPhotoView(
     fun getImgLoadingView(): SlImgLoadingBar = mImageLoadingBar
 
     fun setLongImageView(file: File, resource: Bitmap, url: String?) {
+        SlLog.e("setLongImageView: ${file}, $resource")
         val longImageView = SlLongImageView(context)
         longImageView.setData(file, resource, url)
         longImageView.tag = position
@@ -93,17 +95,23 @@ class SlPhotoView(
 //        fun onItemTapClick(imageInfoVo: ImageInfoVo, pos: Int)
     }
 
+    var onViewWindowChangeListener: OnViewWindowChangeListener? = null
+
+    interface OnViewWindowChangeListener {
+        /**资源释放处理*/
+        fun onDetachedFromWindow()
+    }
+
     fun getProgressListener(): ImgProgressListener = progressListener
 
     private val progressListener = object : ImgProgressListener {
         override fun onLoadStart() {
-            Log.e("LIAO", "onLoadStart>>>>>")
-
+            SlLog.i("onLoadStart>>>>>")
             progressHandler?.sendEmptyMessage(PROGRESS_VISIBLE)
         }
 
         override fun onLoadProgress(progress: Int, isSuccess: Boolean) {
-            Log.e("LIAO", "加载进度回调：${progress}, $isSuccess")
+            SlLog.i("onLoadProgress：${progress}, $isSuccess")
             progressHandler?.sendMessage(Message.obtain().apply {
                 what = PROGRESS_NUM
                 arg1 = progress
@@ -111,7 +119,7 @@ class SlPhotoView(
         }
 
         override fun onLoadFail() {
-            Log.e("LIAO", "onLoadFail：")
+            SlLog.e("onLoadFail>>>>")
             progressHandler?.sendEmptyMessage(PROGRESS_GONE)
         }
     }

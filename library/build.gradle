@@ -36,7 +36,7 @@ dependencies {
 
     implementation deps.photoview
     implementation deps.circle_indicator
-    implementation 'com.davemorrissey.labs:subsampling-scale-image-view-androidx:3.10.0'
+    implementation deps.subsampling
 }
 repositories {
     mavenCentral()

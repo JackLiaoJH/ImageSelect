@@ -8,6 +8,7 @@ import com.davemorrissey.labs.subscaleview.ImageSource
 import com.davemorrissey.labs.subscaleview.ImageViewState
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
 import com.jhworks.library.utils.SlImageUtils
+import com.jhworks.library.utils.SlLog
 import java.io.File
 
 /**
@@ -25,8 +26,9 @@ class SlLongImageView(context: Context, attrs: AttributeSet?) :
 
 
     fun setData(file: File?, resource: Bitmap?, url: String?) {
+        SlLog.e("setData1: ${file}, $resource")
         if (file == null || resource == null) return
-
+        SlLog.e("setData2: ${file}, $resource")
         val resourceW = resource.width.toFloat()
         val resourceH = resource.height.toFloat()
         val ratio = SlImageUtils.calculateImageRatio(context, resourceW, resourceH)
@@ -34,9 +36,11 @@ class SlLongImageView(context: Context, attrs: AttributeSet?) :
         val offsetH = ratio[1]
         if (offsetW > SlImageUtils.RATIO_W) {
             // 横向长图
+            SlLog.i("[${url}]横向长图: ${resourceW}*${resourceH}")
             setLongImageView(file, HORIZONTAL)
         } else if (offsetH > SlImageUtils.RATIO_H) {
             //纵向长图
+            SlLog.i("[${url}]纵向长图: ${resourceW}*${resourceH}")
             setLongImageView(file, VERTICAL)
         }
     }

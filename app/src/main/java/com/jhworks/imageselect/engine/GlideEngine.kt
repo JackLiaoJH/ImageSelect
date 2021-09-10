@@ -77,6 +77,11 @@ class GlideEngine : IEngine {
                 Log.e(TAG, "onItemLongClick: ${imageInfoVo.url}, $pos")
             }
         }
+        photoView.onViewWindowChangeListener = object : SlPhotoView.OnViewWindowChangeListener {
+            override fun onDetachedFromWindow() {
+                removeProgressListener(bigImageUrl, progressListener)
+            }
+        }
 
 
         if (SlImageUtils.isGifOrWebp(bigImageUrl)) {
@@ -88,11 +93,9 @@ class GlideEngine : IEngine {
             .asBitmap()
             .load(bigImageUrl)
 //            .thumbnail(Glide.with(photoView.context).asBitmap().load(bigImageInfo?.smallUrl))
-            .placeholder(uiConfig.placeholderResId)
             .error(uiConfig.errorResId)
-            .skipMemoryCache(true)
-            .diskCacheStrategy(DiskCacheStrategy.NONE)
-//            .override(uiConfig.width, uiConfig.height)
+//            .skipMemoryCache(true)
+//            .diskCacheStrategy(DiskCacheStrategy.NONE)
             .listener(object : RequestListener<Bitmap> {
                 override fun onLoadFailed(
                     e: GlideException?,
@@ -169,10 +172,9 @@ class GlideEngine : IEngine {
             .asGif()
             .load(url)
 //            .thumbnail(Glide.with(photoView.context).asBitmap().load(bigImageInfo?.smallUrl))
-            .placeholder(uiConfig.placeholderResId)
             .error(uiConfig.errorResId)
-            .diskCacheStrategy(DiskCacheStrategy.NONE)
-            .skipMemoryCache(true)
+//            .diskCacheStrategy(DiskCacheStrategy.NONE)
+//            .skipMemoryCache(true)
 //            .override(uiConfig.width, uiConfig.height)
             .listener(object : RequestListener<GifDrawable> {
                 override fun onLoadFailed(
