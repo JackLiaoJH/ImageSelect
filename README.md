@@ -1,6 +1,9 @@
 # ImageSelect
 android 经量级选择图片框架，支持拍照，获取相册图片,获取本地视频，可以多选，单选
 
+### 应国内访问原因项目迁移gittree
+地址：https://gitee.com/jacksonliao/ImageSelect
+
 ### 声明
  此框架功能点有：
 
